@@ -447,7 +447,7 @@
 			}
 			if (_text != "") {
 				tf.text = _text;
-				tf.setTextFormat(new TextFormat("楷体", _fontSize, _fontColor));
+				tf.setTextFormat(new TextFormat("宋体", _fontSize, _fontColor));
 				tf.x = (-(tf.width) / 2);
 				tf.y = (-(tf.height) / 2);
 				if (tf.parent != this){
