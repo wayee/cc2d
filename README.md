@@ -1,4 +1,4 @@
 cc2d
 ====
 
-A 2d game engine of ActionScript 3.0.
+A 2D Game Engine for ActionScript 3.0.

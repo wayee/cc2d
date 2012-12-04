@@ -1,12 +1,13 @@
 package cc.graphics.tagger
 {
+	import cc.ext.CCFont;
+	import cc.tools.ScenePool;
+	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
 	
-	import cc.tools.ScenePool;
 	import wit.pool.IPoolObject;
-	import mm.zuma.plugin.ZmFont;
 	
 	/**
 	 * 攻击时, 血量获得/丢失, 接/交人物, 等的文字显示
@@ -37,7 +38,7 @@ package cc.graphics.tagger
 		public static const DEFAULT_FOUNT_COLOR_WHITE:int = 0xFFFFFF;
 		public static const DEFAULT_FOUNT_COLOR_ORANGE:int = 0xFF8A00;
 		
-		private var _font:ZmFont;
+		private var _font:CCFont;
 		private var _type:String = '';
 		private var _value:String = '';
 		private var _dir:int = 4;				// 运动方向
@@ -88,13 +89,13 @@ package cc.graphics.tagger
 			_bitmap = new Bitmap;
 			addChild(_bitmap);
 			
-			_font = new ZmFont;
+			_font = new CCFont;
 			_type = value[0];
 			_value = value[1];
 			
 			switch (_type) {
 				case ATTACK_NORMAL:
-					_font.init(bmdTextDict[ATTACK_NORMAL], 16, 24, ZmFont.SET3, 96);
+					_font.init(bmdTextDict[ATTACK_NORMAL], 16, 24, CCFont.SET3, 96);
 					_bitmap.bitmapData = _font.getLine(_value);
 					break;
 				case ATTACK_CRITICALHIT: // 暴击
