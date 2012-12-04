@@ -20,7 +20,7 @@ package wit.utils
 		
 		public static const classMap:Object = {};
 		
-		public static function loopObjectVals(obj:Object):void{
+		public static function loopObjectVals(obj:Object):void {
 			for(var i:Object in obj){
 //				trace("propName:"+i+", type:"+typeof(obj[i])+", value:"+obj[i]);
 				if(typeof(obj[i])=='object') {
@@ -40,8 +40,7 @@ package wit.utils
 		 * @return array
 		 * 
 		 */
-		public static function parseJSONToVoList(json:Object, voClass:Class, members:Object=null, strict:Boolean=false):Array
-		{
+		public static function parseJSONToVoList(json:Object, voClass:Class, members:Object=null, strict:Boolean=false):Array {
 			var list:Array = new Array;
 			
 			for each (var value:Object in json) {
@@ -61,8 +60,7 @@ package wit.utils
 		 * @return object
 		 * 
 		 */
-		public static function parseJSONToVo(json:Object, voClass:Class, strict:Boolean=false, jsonDecodeObj:Boolean=true):Object
-		{
+		public static function parseJSONToVo(json:Object, voClass:Class, strict:Boolean=false, jsonDecodeObj:Boolean=true):Object {
 			var obj:Object = new (voClass);
 			
 			var desc:XMLList = describeType( obj )["variable"];
@@ -124,8 +122,7 @@ package wit.utils
 		 * @return 反射后的 Class
 		 * 
 		 */
-		private static function getVoClass(className:String):Class
-		{
+		private static function getVoClass(className:String):Class {
 			if (className === 'Object') return null;
 			
 			var tClass:Class = Reflection.getClass(className);
@@ -144,8 +141,7 @@ package wit.utils
 		 * @param strictMode	严格模式, 当 xml 中不包含对应的字段时, 返回 null
 		 * @return				由 tClass 实例构成的对象列表
 		 */
-		public static function parseList(xml:XMLList, tClass:Object, strictMode:Boolean=false):Array
-		{
+		public static function parseList(xml:XMLList, tClass:Object, strictMode:Boolean=false):Array {
 						
 			// 得到属性描述
 			var desc:XMLList = describeType(new (tClass))["variable"];
@@ -203,8 +199,6 @@ package wit.utils
 			return arr;
 		}
 		
-		
-		
 		/**
 		 * 从 XMLList 中解析对象, 对象可以包含 Array 成员
 		 * 
@@ -215,8 +209,7 @@ package wit.utils
 		 * @param arrNameMap	当 tClass 中包含 Array 属性时, 表示从 变量名 到 xml节点名 的映射
 		 * @return				tClass 实例
 		 */
-		public static function parseObject(xml:XMLList, tClass:Class, strictMode:Boolean=false, arrClassMap:Object=null, arrNameMap:Object=null):Object
-		{
+		public static function parseObject(xml:XMLList, tClass:Class, strictMode:Boolean=false, arrClassMap:Object=null, arrNameMap:Object=null):Object {
 			
 			// 得到属性描述
 			var obj:Object = new tClass;
@@ -280,8 +273,7 @@ package wit.utils
 		 * @return Object
 		 * 
 		 */
-		public static function parseUniObject(xml:Object, tClass:Class, ignoreProps:Array=null):Object
-		{
+		public static function parseUniObject(xml:Object, tClass:Class, ignoreProps:Array=null):Object {
 			if(xml is XMLList) xml = xml[0];		// 调整到子结点
 			if(xml == null) return null;
 //			if(! (xml is XML) ) return null;
@@ -349,8 +341,7 @@ package wit.utils
 		 * @return array(object, ...)
 		 * 
 		 */
-		public static function parseUniList(xmlList:XMLList, defaultClass:Class=null, ignoreProps:Array=null):Array
-		{
+		public static function parseUniList(xmlList:XMLList, defaultClass:Class=null, ignoreProps:Array=null):Array {
 			if(xmlList==null) return null;
 			xmlList = xmlList.children();
 			
@@ -367,15 +358,14 @@ package wit.utils
 		}
 		
 		// 解析标准数组, xml.ret.node, xml.ret.node => xml.ret.node
-		public static function parseUniListFilter(xmllist:XMLList, defaultClass:Class=null, ignoreProps:Array=null):Array{
+		public static function parseUniListFilter(xmllist:XMLList, defaultClass:Class=null, ignoreProps:Array=null):Array {
 			var xml:XML = new XML(<xml/>);
 			xml.appendChild(<nodes/>);
 			xml.nodes.appendChild(xmllist);
 			return parseUniList(xml.nodes, defaultClass, ignoreProps);
 		}
 		
-		public static function fillObject(obj:Object, xmlList:XMLList):void
-		{
+		public static function fillObject(obj:Object, xmlList:XMLList):void {
 			for each(var xml:XML in xmlList.children())
 			{
 				var propName:String = xml.name();	
@@ -386,14 +376,14 @@ package wit.utils
 			}
 		}
 		
-		/**
-		 * 私有方法 
-		 */		
+		
+		///////////////////////////////////
+		// private methods
+		///////////////////////////////////
 		
 		// 获得一个类, name 可以包含包路径, 如 name="flash.display::Sprite"
 		// 或者, name 也可以为绝对名, 如 name="Sprite"
-		private static function getClassByName(name:String, defaultClass:Class):Class{
-			
+		private static function getClassByName(name:String, defaultClass:Class):Class {
 			if(name == "Object") return null;
 			
 			// 获取末尾名字

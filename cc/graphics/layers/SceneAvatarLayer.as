@@ -11,7 +11,7 @@
 	import cc.CCCharacter;
 	import cc.graphics.avatar.CCAvatarPart;
 	import wit.draw.Bounds;
-	import wit.utils.DirtyBoundsMaker;
+	import cc.utils.DirtyBoundsMaker;
 	import wit.utils.Fun;
 	
 

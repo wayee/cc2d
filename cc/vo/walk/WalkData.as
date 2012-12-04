@@ -26,8 +26,7 @@
 		/**
 		 * 清空移动数据
 		 */
-        public function clear():void
-		{
+        public function clear():void {
             walk_pathArr = null;
             walk_targetP = null;
             walk_lastTime = 0;

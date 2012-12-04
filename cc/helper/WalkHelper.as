@@ -119,7 +119,7 @@
 			
 			// 角色当前位置是不可到达
 			var currentPosTile:MapTile = SceneCache.mapTiles[sceneChar.TileX + "_" + sceneChar.TileY];
-			mapTile = SceneUtil.getRoundMapTile(currentPosTile, mapTile);
+			mapTile = SceneUtil.GetRoundMapTile(currentPosTile, mapTile);
 			if (mapTile == null) {
 				sceneChar.faceToTile(targetTilePoint.x, targetTilePoint.y);
 				if (sceneChar == sceneChar.scene.mainChar) {

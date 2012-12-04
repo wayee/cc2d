@@ -15,22 +15,21 @@
 	 */
     public class AvatarParamData
 	{
-        private var _id:String;						// ID, AvatarPartID, AvatarPartID.xxx
+        private var id:String;							// ID, AvatarPartID, AvatarPartID.xxx
 		
-        public var sourcePath:String;				// 保存该资源的 URL 源路径
-        public var avatarPartType:String;			// 角色部件类型 see AvatarPartID.xxx
-        public var depth:int = 0;					// 深度, AvatarPartType.getDefaultDepth
+        public var sourcePath:String;					// 保存该资源的 URL 源路径
+        public var avatarPartType:String;				// 角色部件类型 see AvatarPartID.xxx
+        public var depth:int = 0;						// 深度, AvatarPartType.getDefaultDepth
         public var status:String = "stand";
         public var angle:int = -1;
         public var rotation:int = -1;
         public var clearSameType:Boolean = false;		// 唯一，清空其它相同类型
         public var vars:Object = null;
-        public var useType:int = 0;			// 1:setBornAvatarParamData, 2:setBornMountAvatarParamData|setBornOnMountAvatarParamData
+        public var useType:int = 0;						// 1:setBornAvatarParamData, 2:setBornMountAvatarParamData|setBornOnMountAvatarParamData
 
-        public function AvatarParamData(path:String="", partType:String="body", _depth:int=0, useType:int=0)
-		{
+        public function AvatarParamData(path:String="", partType:String="body", 
+										_depth:int=0, useType:int=0) {
             avatarPartType = AvatarPartType.BODY;
-            super();
             sourcePath = path;
             avatarPartType = partType;
             depth = _depth;
@@ -41,31 +40,27 @@
 		/**
 		 * ID, 必须非空, 且非  AvatarPartID 中枚举的内容
 		 */
-        public function get Id():String
-		{
-            return _id;
+        public function get Id():String {
+            return id;
         }
-        public function set Id(id:String):void
-		{
-            if ( !AvatarPartID.IsValidID(id) ) {
+        public function set Id(p_id:String):void {
+            if ( !AvatarPartID.IsValidID(p_id) ) {
                 throw new Error("换装ID非法（原因：该ID为引擎换装ID关键字）");
             }
-            _id = id;
+            id = p_id;
         }
 		
 		/**
 		 * 设置 ID, 不检测有效性
 		 */
-        public function set id_noCheckValid(id:String):void
-		{
-            _id = id;
+        public function set id_noCheckValid(p_id:String):void {
+            id = p_id;
         }
 		
 		/**
 		 * 从源代码中获取文件名部分, 作为类名
 		 */
-        public function get className():String
-		{
+        public function get className():String {
             if (sourcePath != null && sourcePath != "") {
                 return sourcePath.replace(/^(.*\/)*([a-zA-Z_\d]+)\..+$/, "$2");
             }
@@ -87,8 +82,7 @@
         public function extendCallBack(new_onPlayBeforeStart:Function=null, new_onPlayStart:Function=null, 
 									   new_onPlayUpdate:Function=null, new_onPlayComplete:Function=null, 
 									   new_onAdd:Function=null, new_onRemove:Function=null, 
-									   clearOld:Boolean=false):void
-		{
+									   clearOld:Boolean=false):void {
             var onPlayBeforeStart_old:Function = null;
             var onPlayStart_old:Function = null;
             var onPlayUpdate_old:Function = null;
@@ -187,8 +181,7 @@
 										execPlayUpdate:Boolean=true, execPlayComplete:Boolean=true, 
 										execOnAdd:Boolean=true, execOnRemove:Boolean=true, 
 										delayOnPlayBeforeStart:int=0, delayOnPlayStart:int=0, delayOnPlayUpdate:int=0, 
-										delayPlayComplete:int=0, delayOnAdd:int=0, delayOnRemove:int=0):void
-		{
+										delayPlayComplete:int=0, delayOnAdd:int=0, delayOnRemove:int=0):void {
             if (vars == null) {
                 return;
             }
@@ -213,8 +206,7 @@
             }
         }
 		
-        public function clone():AvatarParamData
-		{
+        public function clone():AvatarParamData {
             var data:AvatarParamData = new AvatarParamData(sourcePath, avatarPartType, depth, useType);
             data.id_noCheckValid = Id;
             data.status = status;

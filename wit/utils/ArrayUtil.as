@@ -8,11 +8,7 @@ package wit.utils
 	 */
 	public class ArrayUtil
 	{
-		/**
-		 * each函数 
-		 */
-		public static function eachArray(arr:Array, operation:Function):void
-		{
+		public static function Each(arr:Array, operation:Function):void {
 			for (var i:int=0; i<arr.length; i++) {
 				operation(arr[i]);
 			}
@@ -23,15 +19,14 @@ package wit.utils
 		 * @param arr 数组对象
 		 * @param size 新的长度值
 		 */
-		public static function setSize(arr:Array, size:int):void
-		{
-			if(size < 0) size = 0;
-			if(size == arr.length){
+		public static function SetSize(arr:Array, size:int):void {
+			if (size < 0) size = 0;
+			if (size == arr.length) {
 				return;
 			}
-			if(size > arr.length){
+			if(size > arr.length) {
 				arr[size - 1] = undefined;
-			}else{
+			} else {
 				arr.splice(size);
 			}
 		}
@@ -42,8 +37,7 @@ package wit.utils
 		 * @param obj 需要删除的对象
 		 * @return int 索引值
 		 */
-		public static function removeFromArray(arr:Array, obj:Object):int
-		{
+		public static function RemoveFromArray(arr:Array, obj:Object):int {
 			for(var i:int=0; i<arr.length; i++){
 				if(arr[i] == obj){
 					arr.splice(i, 1);
@@ -58,8 +52,7 @@ package wit.utils
 		 * @param arr 数组对象
 		 * @param obj 需要删除的对象值
 		 */
-		public static function removeAllFromArray(arr:Array, obj:Object):void
-		{
+		public static function RemoveAllFromArray(arr:Array, obj:Object):void {
 			for (var i:int=0; i<arr.length; i++) {
 				if(arr[i] == obj){
 					arr.splice(i, 1);
@@ -73,8 +66,7 @@ package wit.utils
 		 * @param array 数组对象
 		 * @param index 索引值
 		 */
-		public static function removeAllBehindSomeIndex(array:Array, index:int):void
-		{
+		public static function RemoveAllBehindSomeIndex(array:Array, index:int):void {
 			if (index <= 0) {
 				array.splice(0, array.length);
 				return;
@@ -90,8 +82,7 @@ package wit.utils
 		 * @param arr 数组对象
 		 * @return number
 		 */
-		public static function max(arr:Array):Number
-		{
+		public static function Max(arr:Array):Number {
 			var len:int = arr.length;
 			var max:Number = 0;
 			for (var i:int=0; i<len; i++) {
@@ -109,8 +100,7 @@ package wit.utils
 		 * @param arr 数组对象
 		 * @return number
 		 */
-		public static function min(arr:Array):Number
-		{
+		public static function Min(arr:Array):Number {
 			var len:int = arr.length;
 			var min:Number = 0;
 			for (var i:int=0; i<len; i++) {
@@ -128,8 +118,7 @@ package wit.utils
 		 * @param arr 数组对象
 		 * @return array 克隆后的数组
 		 */
-		public static function clone(arr:Array):Array
-		{
+		public static function Clone(arr:Array):Array {
 			return arr.concat();
 		}
 		
@@ -138,8 +127,7 @@ package wit.utils
 		 * @param value 需要检查的对象
 		 * @return bool
 		 */
-		public function isArray(value:*):Boolean
-		{
+		public function IsArray(value:*):Boolean {
 			var g:String = value.constructor.toString();
 			if (g.match(/function Array()/)) {
 				return true;
@@ -152,16 +140,14 @@ package wit.utils
 		 * @param value 对象
 		 * @return bool
 		 */
-		public static function isArray2(value:*):Boolean
-		{
+		public static function IsArray2(value:*):Boolean {
 			var ObjProto:* = Object.prototype;
 			var toString:Function = ObjProto.toString;
 			
 			return toString.call(value) == '[object Array]';
 		} 
 		
-		public function ArrayUtil()
-		{    
+		public function ArrayUtil() {    
 			throw new Error("ArrayUtil class is static class only");    
 		}
 		

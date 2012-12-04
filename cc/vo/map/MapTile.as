@@ -22,14 +22,14 @@
 		 * @param isMask isMask 遮罩（遮挡表示）
 		 * @param isTransport isTransport 传送点
 		 */
-		public function MapTile(tx:int, ty:int, PisSolid:Boolean=false, PisIsland:Boolean=false, PisMask:Boolean=false, PisTransport:Boolean=false)
-		{
+		public function MapTile(tx:int, ty:int, p_isSolid:Boolean=false, p_isIsland:Boolean=false, 
+								p_isMask:Boolean=false, p_isTransport:Boolean=false) {
 			this.TileY = ty;
 			this.TileX = tx;
-			this.isSolid = PisSolid;
-			this.isIsland = PisIsland;
-			this.isMask = PisMask;
-			this.isTransport = PisTransport;
+			this.isSolid = p_isSolid;
+			this.isIsland = p_isIsland;
+			this.isMask = p_isMask;
+			this.isTransport = p_isTransport;
 		}
 	}
 }

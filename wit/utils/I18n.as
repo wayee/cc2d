@@ -11,13 +11,11 @@ package wit.utils
 		public static var lang:String			= 'zh-cn';			// target language: en-us, es-es, zh-cn, etc
 		public static var table:Object;								// cache of loaded languages
 		
-		public function I18n()
-		{
+		public function I18n() {
 			throw new Error("I18n class is static class only");
 		}
 		
-		public static function getLang(lang:String = ''):String
-		{
+		public static function getLang(lang:String = ''):String {
 			if (lang)
 			{
 				// Normalize the language
@@ -29,8 +27,7 @@ package wit.utils
 			return I18n.lang;
 		}
 		
-		public static function get(text:String, lang:String=''):String
-		{
+		public static function get(text:String, lang:String=''):String {
 			var l:Object;
 			if (I18n.table == null) I18n.table = {};
 			if (lang != '') {
@@ -48,8 +45,7 @@ package wit.utils
 			return l && l[text] ? l[text] : text; 
 		}
 		
-		public static function __(text:String, lang:String=''):String
-		{
+		public static function __(text:String, lang:String=''):String {
 			text = text.replace(/\n\n/g, "\\n\\n"); // double \n
 			text = text.replace(/\t\n\n/g, "\\t\\n\\n");
 			text = text.replace(/\n/g, "\\n");

@@ -19,7 +19,7 @@ package cc
 		 * @param resourcePath 资源路径
 		 * @param frameRate 帧速率
 		 */
-		public static function initEngine(resourcePath:String, frameRate:int=24):void
+		public static function Init(resourcePath:String, frameRate:int=24):void
 		{
 			CCG.resourcePath = resourcePath;
 			CCG.frameRate = frameRate;
@@ -28,10 +28,10 @@ package cc
 		}
 		
 		/**
-		 * 设置传送门
+		 * 设置传送点
 		 * @param value [ [mapid, x, y], ... ]
 		 */
-		public static function initTransport(value:Array):void
+		public static function InitTransport(value:Array):void
 		{
 			if (value == null) {
 				return;

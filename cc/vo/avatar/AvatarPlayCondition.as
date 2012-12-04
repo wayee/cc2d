@@ -11,50 +11,43 @@
 	 */
     public class AvatarPlayCondition
 	{
-        private var _playAtBegin:Boolean;
-        private var _stayAtEnd:Boolean;
-        private var _showEnd:Boolean;
+        private var playAtBegin:Boolean;
+        private var stayAtEnd:Boolean;
+        private var showEnd:Boolean;
 
-        public function AvatarPlayCondition(PplayAtBegin:Boolean=false, PstayAtEnd:Boolean=false, PshowEnd:Boolean=false)
-		{
-            this._playAtBegin = PplayAtBegin;
-			this._stayAtEnd = PstayAtEnd;
-			this._showEnd = PshowEnd;
+        public function AvatarPlayCondition(p_playAtBegin:Boolean=false, p_stayAtEnd:Boolean=false, 
+											p_showEnd:Boolean=false) {
+            this.playAtBegin = p_playAtBegin;
+			this.stayAtEnd = p_stayAtEnd;
+			this.showEnd = p_showEnd;
         }
 		
-		public function get showEnd():Boolean
-		{
-			return _showEnd;
+		public function get ShowEnd():Boolean {
+			return showEnd;
 		}
 
-		public function set showEnd(value:Boolean):void
-		{
-			_showEnd = value;
+		public function set ShowEnd(value:Boolean):void {
+			showEnd = value;
 		}
 
-		public function get stayAtEnd():Boolean
-		{
-			return _stayAtEnd;
+		public function get StayAtEnd():Boolean {
+			return stayAtEnd;
 		}
 
-		public function set stayAtEnd(value:Boolean):void
-		{
-			_stayAtEnd = value;
+		public function set StayAtEnd(value:Boolean):void {
+			stayAtEnd = value;
 		}
 
-		public function get playAtBegin():Boolean
-		{
-			return _playAtBegin;
+		public function get PlayAtBegin():Boolean {
+			return playAtBegin;
 		}
 
-		public function set playAtBegin(value:Boolean):void
-		{
-			_playAtBegin = value;
+		public function set PlayAtBegin(value:Boolean):void {
+			playAtBegin = value;
 		}
 
-        public function clone():AvatarPlayCondition
-		{
-            var cond:AvatarPlayCondition = new AvatarPlayCondition(_playAtBegin, _stayAtEnd, _showEnd);
+        public function clone():AvatarPlayCondition {
+            var cond:AvatarPlayCondition = new AvatarPlayCondition(playAtBegin, stayAtEnd, showEnd);
             return cond;
         }
     }

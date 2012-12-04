@@ -21,28 +21,24 @@
 		/**
 		 * 块数量的中点位置
 		 */
-        public static function getViewTileRangeXY(scene:CCScene):Point
-		{
+        public static function GetViewTileRangeXY(scene:CCScene):Point {
             var pos:Point = new Point();
             pos.x = Math.ceil((scene.sceneConfig.width/SceneInfo.TILE_WIDTH - 1) / 2) + 1;
             pos.y = Math.ceil((scene.sceneConfig.height/SceneInfo.TILE_HEIGHT - 1) / 2) + 1;
             return pos;
         }
 		
-        public static function getViewZoneRangeXY(scene:CCScene):Point
-		{
+        public static function GetViewZoneRangeXY(scene:CCScene):Point {
             var pos:Point = new Point();
 //            pos.x = Math.ceil((scene.sceneConfig.width/SceneConfig.ZONE_WIDTH - 1) / 2) + 1;
 //            pos.y = Math.ceil((scene.sceneConfig.height/SceneConfig.ZONE_HEIGHT - 1) / 2) + 1;
             return pos;
         }
 		
-		
 		/**
 		 * 返回  pos.x +/- width, pos.y +/- height 范围内的坐标点 [Point]
 		 */
-        public static function findViewZonePoints(pos:Point, width:int, height:int):Array
-		{
+        public static function FindViewZonePoints(pos:Point, width:int, height:int):Array {
             var x:int;
             var y:int;
             var ret:Array = [];
@@ -71,20 +67,15 @@
 		 * @param y int tile Y
 		 * @return MapTile地图块对象
 		 */
-        public static function getMapTile(x:int, y:int):MapTile
-		{
+        public static function GetMapTile(x:int, y:int):MapTile {
             return SceneCache.mapTiles[x + "_" + y] as MapTile;
         }
 		
 		/**
-		 * 否是障碍
-		 * @param x 
-		 * @param y
-		 * @return bool
+		 * 障碍
 		 */
-        public static function isSolid(x:int, y:int):Boolean
-		{
-            var mapTile:MapTile = getMapTile(x, y);
+        public static function IsSolid(x:int, y:int):Boolean {
+            var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile == null || mapTile.isSolid) {
                 return true;
             }
@@ -92,14 +83,10 @@
         }
 		
 		/**
-		 * 是否孤立
-		 * @param x
-		 * @param y
-		 * @return bool
+		 * 孤立
 		 */
-        public static function isIsland(x:int, y:int):Boolean
-		{
-            var mapTile:MapTile = getMapTile(x, y);
+        public static function IsIsland(x:int, y:int):Boolean {
+            var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile != null && mapTile.isIsland) {
                 return true;
             }
@@ -107,14 +94,10 @@
         }
 		
 		/**
-		 * 是否遮罩 
-		 * @param x
-		 * @param y
-		 * @return bool
+		 * 遮罩 
 		 */
-        public static function isMask(x:int, y:int):Boolean
-		{
-            var mapTile:MapTile = getMapTile(x, y);
+        public static function IsMask(x:int, y:int):Boolean {
+            var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile != null && mapTile.isMask) {
                 return true;
             }
@@ -128,8 +111,7 @@
 		 * @param mapGridY
 		 * @return int 编号
 		 */
-		public static function tileToId(tile:Array, mapGridX:int, mapGridY:int):int
-		{
+		public static function ConvertTileToId(tile:Array, mapGridX:int, mapGridY:int):int {
 			return (tile[1]-1) * mapGridX + tile[0];
 		}
 		
@@ -140,8 +122,7 @@
 		 * @param mapGridY int
 		 * @return array 格子坐标数组
 		 */
-		public static function idToTile(id:int, mapGridX:int, mapGridY:int):Array
-		{
+		public static function ConvertIdToTile(id:int, mapGridX:int, mapGridY:int):Array {
 			var tile:Array;
 			var tx:int = int(id-1)%mapGridX + 1;
 			var ty:int = int(id-1)/mapGridX + 1;
@@ -156,17 +137,15 @@
 		 * @param mapGridY
 		 * @return array 格子坐标数组
 		 */
-		public static function idsToTile(ids:Array, mapGridX:int, mapGridY:int):Array
-		{
+		public static function ConvertIdsToTile(ids:Array, mapGridX:int, mapGridY:int):Array {
 			var tiles:Array = new Array;
 			for each (var id:int in ids) {
-				tiles.push(idToTile(id, mapGridX, mapGridY));
+				tiles.push(ConvertIdToTile(id, mapGridX, mapGridY));
 			}
 			return tiles;
 		}
 		
-        public static function hasSolidBetween2MapTile(mapTile1:MapTile, mapTile2:MapTile):Boolean
-		{
+        public static function HasSolidBetween2MapTile(mapTile1:MapTile, mapTile2:MapTile):Boolean {
             var mapTile:MapTile;
             var pos1:Point = new Point(mapTile1.PixelX, mapTile1.PixelY);
             var pos2:Point = new Point(mapTile2.PixelX, mapTile2.PixelY);
@@ -191,8 +170,7 @@
 			return false;
         }
 		
-        public static function getLineMapTile(mapTile1:MapTile, mapTile2:MapTile, customDist:Number=0):MapTile
-		{
+        public static function GetLineMapTile(mapTile1:MapTile, mapTile2:MapTile, customDist:Number=0):MapTile {
             var mapTile:MapTile;
             var pos1:Point = new Point(mapTile1.PixelX, mapTile1.PixelY);
             var pos2:Point = new Point(mapTile2.PixelX, mapTile2.PixelY);
@@ -225,8 +203,7 @@
 			return mapTile;
         }
         
-		public static function getRoundMapTile(mapTile1:MapTile, mapTile2:MapTile):MapTile
-		{
+		public static function GetRoundMapTile(mapTile1:MapTile, mapTile2:MapTile):MapTile {
             var _local7:Point;
             var _local8:Point;
             var _local9:MapTile;
@@ -275,8 +252,7 @@
 			return _local9;
         }
 		
-        public static function getRoundMapTile2(mapTile1:MapTile, mapTile2:Number=0):MapTile
-		{
+        public static function GetRoundMapTile2(mapTile1:MapTile, mapTile2:Number=0):MapTile {
             var _local7:Point;
             var _local8:Point;
             var _local9:MapTile;

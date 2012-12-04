@@ -17,10 +17,9 @@
 		public var width:Number = 1024;	// 场景尺寸
 		public var height:Number = 600;
 		
-		public function SceneInfo(Pwidth:Number, Pheight:Number)
-		{
-			this.width = Pwidth;
-			this.height = Pheight;
+		public function SceneInfo(p_width:Number, p_height:Number) {
+			this.width = p_width;
+			this.height = p_height;
 		}
 	}
 } 

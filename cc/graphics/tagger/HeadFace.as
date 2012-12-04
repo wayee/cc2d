@@ -1,5 +1,8 @@
 ﻿package cc.graphics.tagger
 {
+	import cc.CCRender;
+	import cc.tools.ScenePool;
+	
 	import com.greensock.TweenLite;
 	
 	import flash.display.Bitmap;
@@ -16,8 +19,6 @@
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	import cc.CCRender;
-	import cc.tools.ScenePool;
 	import wit.pool.IPoolObject;
 	import wit.utils.Fun;
 
@@ -73,13 +74,11 @@
             reset([nickName, nickNameColor, customTitle, leftIcon, topIcon]);
         }
 		
-		public function get topMc():MovieClip
-		{
+		public function get topMc():MovieClip {
 			return _topMc;
 		}
 
-		public function set topMc(value:MovieClip):void
-		{
+		public function set topMc(value:MovieClip):void {
 			_topMc = value;
 		}
 
@@ -99,8 +98,7 @@
 		 */
         public static function createHeadFace(nickName:String="", nickNameColor:uint=0xFFFFFF, 
 											  customTitle:String="", leftIcon:DisplayObject=null, 
-											  topIcon:DisplayObject=null):HeadFace
-		{
+											  topIcon:DisplayObject=null):HeadFace {
             return ScenePool.headFacePool.createObj(HeadFace, nickName, nickNameColor, customTitle, leftIcon, topIcon) as HeadFace;
         }
 		
@@ -108,88 +106,65 @@
 		 * 回收对象到对象池 
 		 * @param hf
 		 */
-        public static function recycleHeadFace(hf:HeadFace):void
-		{
+        public static function recycleHeadFace(hf:HeadFace):void {
             ScenePool.headFacePool.disposeObj(hf);
         }
 
 		/**
 		 * 获取昵称
 		 */
-        public function get nickName():String
-		{
+        public function get nickName():String {
             return _nickName;
         }
 		
 		/**
 		 * 获取昵称文字颜色 
 		 */
-        public function get nickNameColor():uint
-		{
+        public function get nickNameColor():uint {
             return _nickNameColor;
         }
 		
 		/**
 		 * 获取称号 
 		 */
-        public function get customTitle():String
-		{
+        public function get customTitle():String {
             return _customTitle;
         }
 		
 		/**
 		 * 获取左边的图标 
 		 */
-        public function get leftIco():DisplayObject
-		{
+        public function get leftIco():DisplayObject {
             return _leftIco;
         }
 		
 		/**
 		 * 获取顶部的图标 
 		 */
-        public function get topIco():DisplayObject
-		{
+        public function get topIco():DisplayObject {
             return _topIco;
         }
 		
 		/**
 		 * 血条当前值 
 		 */
-        public function get barNow():int
-		{
+        public function get barNow():int {
             return _barNow;
         }
 		
-		/**
-		 * 血条总数 
-		 */
-        public function get barTotal():int
-		{
+        public function get barTotal():int {
             return _barTotal;
         }
 		
-		/**
-		 * 对话文字 
-		 */
-        public function get talkText():String
-		{
+        public function get talkText():String {
             return _talkText;
         }
 		
-		/**
-		 * 对话文字颜色 
-		 */
-        public function get talkTextColor():int
-		{
+        public function get talkTextColor():int {
             return _talkTextColor;
         }
 		
-		/**
-		 * 释放资源 
-		 */
-        public function dispose():void
-		{
+        public function dispose():void {
             Fun.clearChildren(this, true);
             _nickName = "";
             _nickNameColor = 0xFFFFFF;
@@ -213,11 +188,10 @@
         }
 		
 		/**
-		 * 重置
+		 * init face
 		 * @param arr [nickName, nickNameColor, customTitle, leftIcon, topIcon]
 		 */
-        public function reset(arr:Array):void
-		{
+        public function reset(arr:Array):void {
             _nickName = arr[0];
             _nickNameColor = arr[1];
             _customTitle = arr[2];
@@ -227,32 +201,27 @@
             drawMain();
         }
 		
-        public function setHeadFaceNickNameVisible(b:Boolean):void
-		{
+        public function setHeadFaceNickNameVisible(b:Boolean):void {
             _showNickName = b;
             drawMain();
         }
 		
-        public function setHeadFaceCustomTitleVisible(b:Boolean):void
-		{
+        public function setHeadFaceCustomTitleVisible(b:Boolean):void {
             _showCustomTitle = b;
             drawMain();
         }
 		
-        public function setHeadFaceLeftIcoVisible(b:Boolean):void
-		{
+        public function setHeadFaceLeftIcoVisible(b:Boolean):void {
             _showLeftIco = b;
             drawMain();
         }
 		
-        public function setHeadFaceTopIcoVisible(b:Boolean):void
-		{
+        public function setHeadFaceTopIcoVisible(b:Boolean):void {
             _showTopIco = b;
             drawMain();
         }
 		
-        public function setHeadFaceBarVisible(b:Boolean):void
-		{
+        public function setHeadFaceBarVisible(b:Boolean):void {
             _showBar = b;
             if (_barBackShape != null){
                 _barBackShape.visible = _showBar;
@@ -263,41 +232,32 @@
             drawMain();
         }
 		
-        public function setHeadFaceTalkTextVisible(b:Boolean):void
-		{
+        public function setHeadFaceTalkTextVisible(b:Boolean):void {
             _showTalkText = b;
             drawTalk();
         }
 		
-        public function setHeadFaceNickName(name:String="", nickNameColor:uint=0xFFFFFF):void
-		{
+        public function setHeadFaceNickName(name:String="", nickNameColor:uint=0xFFFFFF):void {
             reset([name, nickNameColor, _customTitle, _leftIco, _topIco,_topMc]);
         }
 		
-        public function setHeadFaceCustomTitleHtmlText(title:String=""):void
-		{
+        public function setHeadFaceCustomTitleHtmlText(title:String=""):void {
             reset([_nickName, _nickNameColor, title, _leftIco, _topIco,_topMc]);
         }
 		
-        public function setHeadFaceLeftIco(disp:DisplayObject=null):void
-		{
+        public function setHeadFaceLeftIco(disp:DisplayObject=null):void {
             reset([_nickName, _nickNameColor, _customTitle, disp, _topIco,_topMc]);
         }
 		
-        public function setHeadFaceTopIco(disp:DisplayObject=null):void
-		{
+        public function setHeadFaceTopIco(disp:DisplayObject=null):void {
             reset([_nickName, _nickNameColor, _customTitle, _leftIco, disp]);
         }
 		
-		public function setHeadFaceTopMc(disp:MovieClip=null):void
-		{
+		public function setHeadFaceTopMc(disp:MovieClip=null):void {
 			reset([_nickName, _nickNameColor, _customTitle, _leftIco, _topIco , disp]);
 		}
 		
-		
-		
-        public function setHeadFaceBar(barNow:int, barTotal:int):void
-		{
+        public function setHeadFaceBar(barNow:int, barTotal:int):void {
             if (barNow < 0){
                 barNow = 0;
             }
@@ -333,8 +293,7 @@
             TweenLite.to(_barShape, 0.5, {scaleX:(_barNow / _barTotal)});
         }
 		
-        public function setHeadFaceTalkText(talkText:String="", talkTextColor:uint=0xFFFFFF, talkTimeDelay:int=8000):void
-		{
+        public function setHeadFaceTalkText(talkText:String="", talkTextColor:uint=0xFFFFFF, talkTimeDelay:int=8000):void {
             _talkText = talkText;
             _talkTextColor = talkTextColor;
             _talkTime = CCRender.nowTime;
@@ -345,15 +304,13 @@
 		/**
 		 * 说话时间检测, 过期则隐藏
 		 */
-        public function checkTalkTime():void
-		{
+        public function checkTalkTime():void {
             if (_talkText != "" && (CCRender.nowTime - _talkTime) > _talkTimeDelay) {
                 setHeadFaceTalkText("");
             }
         }
 		
-        private function drawMain():void
-		{
+        private function drawMain():void {
             var nickTF:TextField;
             var titleTF:TextField;
             var leftIconRect:Rectangle;
@@ -474,8 +431,7 @@
             resize();
         }
 		
-        private function drawTalk():void
-		{
+        private function drawTalk():void {
             var _tf:TextField;
             var rect:Rectangle;
             var matrix:Matrix;
@@ -520,13 +476,11 @@
             resize();
         }
 		
-		public function get mainBitmap():Bitmap
-		{
+		public function get mainBitmap():Bitmap {
 			return _mainBitmap;
 		}
 		
-        private function resize():void
-		{
+        private function resize():void {
             var _local4:Number;
             var _local5:Number;
             var _local1:Boolean;

@@ -84,9 +84,9 @@
 				mapConfig.mapGridX = dataObj.mapGridX;	// 水平格子(块)数量 
 				mapConfig.mapGridY = dataObj.mapGridY;	// 垂直格子(块)数量
 				mapConfig.width = mapConfig.mapGridX * SceneInfo.TILE_WIDTH;			// 宽度
-				mapConfig.height = mapConfig.mapGridY * SceneInfo.TILE_HEIGHT;		// 高度
-				mapConfig.mapUrl = CCG.getMapPath(dataObj.pic.toString()); 		// 地图路径
-				mapConfig.smallMapUrl = CCG.getSmallMapPath(dataObj.pic.toString()); 	// 小地图路径
+				mapConfig.height = mapConfig.mapGridY * SceneInfo.TILE_HEIGHT;			// 高度
+				mapConfig.mapUrl = CCG.GetMapPath(dataObj.pic.toString()); 				// 地图路径
+				mapConfig.smallMapUrl = CCG.GetSmallMapPath(dataObj.pic.toString()); 	// 小地图路径
 				
 				// 覆盖物
 //				if (dataObj && dataObj.slipcovers) {
@@ -114,7 +114,7 @@
 				var tileValue:int;
 				var realTiles:Object = new Object;
 				for (var i:int=1; i<=len; i++) { // [0, 0] 开始
-					var tileArr:Array = SceneUtil.idToTile(i, mapConfig.mapGridX, mapConfig.mapGridY);
+					var tileArr:Array = SceneUtil.ConvertIdToTile(i, mapConfig.mapGridX, mapConfig.mapGridY);
 					tx = tileArr[0];
 					ty = tileArr[1];
 					tileValue = int(tileInfo[i-1]);
@@ -136,7 +136,7 @@
 			SceneLoader.smallMapImgLoader.pauseAll();
 			SceneLoader.smallMapImgLoader.removeAll();
 			
-			var loadData:LoadData = new LoadData(CCG.getMapConfigPath(mapPicId.toString()), newOnComplete, updateHandler);
+			var loadData:LoadData = new LoadData(CCG.GetMapConfigPath(mapPicId.toString()), newOnComplete, updateHandler);
 			LoaderManager.load([loadData], SceneLoader.smallMapImgLoader);
 		}
 		

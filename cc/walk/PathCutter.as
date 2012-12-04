@@ -34,8 +34,7 @@
 		/**
 		 * 移动一格
 		 */
-        public function walkNext(tx:int, ty:int):void
-		{
+        public function walkNext(tx:int, ty:int):void {
             if (movePaths == null || movePaths.length == 0) {
                 return;
             }
@@ -60,13 +59,7 @@
             }
         }
 		
-		/**
-		 * 
-		 * @param paths
-		 * 
-		 */
-        public function cutMovePath(paths:Array):void
-		{
+        public function cutMovePath(paths:Array):void {
             var index:int;
             if (paths.length < 1) {
                 return;
@@ -96,8 +89,7 @@
 		/**
 		 * 到达下一个路径, 发送路径
 		 */
-        public function sendPathMsg(path:Array):void
-		{
+        public function sendPathMsg(path:Array):void {
             if (path.length < 2) {
                 return;
             }
@@ -106,8 +98,7 @@
             EventDispatchCenter.getInstance().dispatchEvent(event);
         }
 		
-        private function convertPath(_arg1:Array):Array
-		{
+        private function convertPath(_arg1:Array):Array {
             var index:int;
             var _local2:Array = [];
             _local2[_local2.length] = [_arg1[0][0], _arg1[0][1]];
@@ -120,8 +111,7 @@
             return _local2;
         }
 		
-        private function getVectorBy2Point(p1:Point, p2:Point):int
-		{
+        private function getVectorBy2Point(p1:Point, p2:Point):int {
             var xDistance:int = p2.x - p1.x;
             var yDistance:int = p2.y - p1.y;
             if (xDistance == 0 && yDistance == 1) {

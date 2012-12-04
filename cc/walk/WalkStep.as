@@ -43,7 +43,6 @@
 		 */
         public static function step(sceneChar:CCCharacter):void
 		{
-//			trace('WalkStep.step');
             var sceneEvent:CCEvent;
             var passUnit:Array;
             var lastTime:int;
@@ -101,13 +100,13 @@
 				// 如果是主对象, 发送消息: 经过
                 if (sceneChar == sceneChar.scene.mainChar) {
 //                    walkData.walk_pathCutter.walkNext(passUnit[0], passUnit[1]);
-                    sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.THROUGH, [sceneChar, SceneUtil.getMapTile(passUnit[0], passUnit[1])]);
+                    sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.THROUGH, [sceneChar, SceneUtil.GetMapTile(passUnit[0], passUnit[1])]);
                     EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
                 }
 				
 				// 回调函数, walkData.walk_vars.onWalkThrough( sceneChar, MapTile);
                 if (walkData.walk_vars != null && walkData.walk_vars.onWalkThrough != null) {
-                    walkData.walk_vars.onWalkThrough(sceneChar, SceneUtil.getMapTile(passUnit[0], passUnit[1]));
+                    walkData.walk_vars.onWalkThrough(sceneChar, SceneUtil.GetMapTile(passUnit[0], passUnit[1]));
                 }
             }
 			
@@ -136,7 +135,7 @@
 				// 主对象, 发送消息: 到达
                 if (sceneChar == sceneChar.scene.mainChar) {
 					var obj:Object = SceneCache.mapTiles;
-                    mapTile = SceneUtil.getMapTile(sceneChar.TileX, sceneChar.TileY);
+                    mapTile = SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY);
                     sceneChar.scene.hideMouseChar();
 //					ZLog.add('WalkStep.step: SceneEventAction_walk.ARRIVED');
                     sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [sceneChar, mapTile]);
@@ -153,7 +152,7 @@
 				
 				// 回调通知, walkData.walk_vars.onWalkArrived( sceneChar, mapTile) 
                 if (walkData.walk_vars != null && walkData.walk_vars.onWalkArrived != null) {
-                    walkData.walk_vars.onWalkArrived(sceneChar, SceneUtil.getMapTile(sceneChar.TileX, sceneChar.TileY));
+                    walkData.walk_vars.onWalkArrived(sceneChar, SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY));
                 }
                 walkData.clear();
 				

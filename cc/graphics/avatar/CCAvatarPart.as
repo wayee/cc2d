@@ -250,18 +250,18 @@
 			var statusTypeShowEnd:Array = [CharStatusType.DEATH];
 			
 			// 如果自己属于  partTypePlayAtBegin/statusTypePlayAtBegin 中的类型和状态
-			_playCondition.playAtBegin = 
-					_playCondition.playAtBegin && partTypePlayAtBegin.indexOf(type) != -1	// 自己属于 partTypePlayAtBegin 中类型
+			_playCondition.PlayAtBegin = 
+					_playCondition.PlayAtBegin && partTypePlayAtBegin.indexOf(type) != -1	// 自己属于 partTypePlayAtBegin 中类型
 					&& statusTypePlayAtBegin.indexOf(this._currentStatus) != -1	// _自己属于 statusTypePlayAtBegin 中的状态
 					? true : false;
 			
-			_playCondition.stayAtEnd = 
-					_playCondition.stayAtEnd && partTypeStayAtEnd.indexOf(type) != -1 
+			_playCondition.StayAtEnd = 
+					_playCondition.StayAtEnd && partTypeStayAtEnd.indexOf(type) != -1 
 					&& statusTypeStayAtEnd.indexOf(this._currentStatus) != -1
 					? true : false;
 			
-			_playCondition.showEnd = 
-					_playCondition.showEnd && partTypeShowEnd.indexOf(type) != -1
+			_playCondition.ShowEnd = 
+					_playCondition.ShowEnd && partTypeShowEnd.indexOf(type) != -1
 					&& statusTypeShowEnd.indexOf(this._currentStatus) != -1 
 					? true : false;
 			
@@ -310,7 +310,7 @@
 				_enablePlay = true;
 				needRender = true;
 			}
-			if (_playCondition.playAtBegin) {
+			if (_playCondition.PlayAtBegin) {
 				needRender = true;
 				_lastTime = 0;
 				_currentFrame = -1;
@@ -319,7 +319,7 @@
 				_playStart = true;
 				_playComplete = false;
 			}
-			if (_playCondition.showEnd) {
+			if (_playCondition.ShowEnd) {
 				needRender = true;
 				_playCount = 0;
 				_playBeforeStart = false;
@@ -386,7 +386,7 @@
 				_currentFrame = frame;			// 如果外部提供
 				needRender = true;
 			} else {
-				if (_playCondition.showEnd) {	// 如果显示在末尾
+				if (_playCondition.ShowEnd) {	// 如果显示在末尾
 					_currentFrame = (_currentAvatarPartStatus.frame - 1);
 				} else {
 					time_1 = CCRender.nowTime;	// 否则根据当前时间, 来播放帧
@@ -398,7 +398,7 @@
 						
 						if (_currentFrame >= _currentAvatarPartStatus.frame) {	// 检测循环
 							_currentFrame = 0;
-							if (_playCondition.stayAtEnd) {
+							if (_playCondition.StayAtEnd) {
 								_currentFrame = (_currentAvatarPartStatus.frame - 1);	// 停留末尾
 								bb = true;
 							} else {

@@ -45,7 +45,7 @@
 		 */
         public function updateRangeXY():void
 		{
-            tileRangeXY = SceneUtil.getViewTileRangeXY(_scene);
+            tileRangeXY = SceneUtil.GetViewTileRangeXY(_scene);
             x_limen = _scene.sceneConfig.width * LIMEN_RATIO;
             y_limen = _scene.sceneConfig.height * LIMEN_RATIO;
         }

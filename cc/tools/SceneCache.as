@@ -91,8 +91,7 @@
 		 */
         public static function addWaitingLoadAvatar(sceneChar:CCCharacter, 
 													avatarParamData:AvatarParamData, 
-													loadSource:Function=null):void
-		{
+													loadSource:Function=null):void {
             var exists:Boolean;
             var avatarData:Array;
             if (loadSource != null) {
@@ -132,8 +131,7 @@
 		 */
         public static function addWaitingAddAvatar(sceneChar:CCCharacter, 
 												   avatarParamData:AvatarParamData, 
-												   avatarParamDataRes:Object):void
-		{
+												   avatarParamDataRes:Object):void {
             var arr:Array = null;
             var ht_addAvatarPart:Function = null;
 			
@@ -162,8 +160,7 @@
         public static function removeWaitingAvatar(sceneChar:CCCharacter=null, 
 												   avatarPartID:String=null, 
 												   avatarPartType:String=null, 
-												   except_char_arr:Array=null):void
-		{
+												   except_char_arr:Array=null):void {
             var removeLoadFun:Function = function(sourcePath:String):void
 			{
                 var loadSource:Function = waitingLoadAvatarFun[apd.sourcePath];
@@ -238,8 +235,7 @@
 		 * @param avatarParamDataRes Object see SceneCache.avatarXmlCache.get(paramData.sourcePath).data
 		 * 
 		 */
-        public static function dowithWaiting(sourcePath:String, avatarParamDataRes:Object=null):void
-		{
+        public static function dowithWaiting(sourcePath:String, avatarParamDataRes:Object=null):void {
             var arr:Array;
             var sceneChar:CCCharacter;
             var avatarParamData:AvatarParamData;
@@ -265,8 +261,7 @@
 		 * @param avatarParamDataRes
 		 * 
 		 */		
-        private static function addAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void
-		{
+        private static function addAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void {
             if (sceneChar == null || !sceneChar.usable) {
                 avatarParamData.executeCallBack(sceneChar);
                 return;
@@ -304,7 +299,7 @@
 		/**
 		 * 每 1000 帧检查1次(30秒), 当资源超过2分钟没有使用, 则释放它
 		 */
-        public static function checkUninstall():void{
+        public static function checkUninstall():void {
             var name:String;
             if (++count < 1000) {		// 1000 次检查一次
                 return;
@@ -323,7 +318,7 @@
 		/**
 		 * 释放资源, 减少引用技术, 如果<=0则记录到释放队列中
 		 */
-        public static function uninstallAvatarImg(name:String):void{
+        public static function uninstallAvatarImg(name:String):void {
             var avatarImgData:AvatarImgData;
             if (avatarImgCache.has(name)) {
                 avatarImgData = avatarImgCache.get(name) as AvatarImgData;
@@ -339,8 +334,7 @@
 		/**
 		 * 删除对象, 执行删除动作
 		 */
-        private static function doUninstallAvatarImg(name:String):void
-		{
+        private static function doUninstallAvatarImg(name:String):void {
             var data:AvatarImgData;
             if (avatarImgCache.has(name)) {
                 data = avatarImgCache.get(name) as AvatarImgData;
@@ -360,8 +354,7 @@
 		 * 检索1个资源, 新建, 或复用, 增加引用计数，获取镜像
 		 * @param name 资源类名
 		 */
-        public static function installAvatarImg(name:String, only1LogicAngel:Boolean):AvatarImgData
-		{
+        public static function installAvatarImg(name:String, only1LogicAngel:Boolean):AvatarImgData {
             var avatarImgData:AvatarImgData;
             var bm0:BitmapData;
             var bm1:BitmapData;

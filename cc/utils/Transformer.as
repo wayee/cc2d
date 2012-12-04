@@ -21,17 +21,16 @@
 //        }
 		
 		/**
-		 * 普通场景
+		 * tile坐标 -> pixel坐标
 		 */
-		// tile坐标 -> pixel坐标
-        public static function transTilePoint2PixelPoint(tilePoint:Point):Point
-		{
+        public static function transTilePoint2PixelPoint(tilePoint:Point):Point {
             return new Point(tilePoint.x * SceneInfo.TILE_WIDTH, tilePoint.y * SceneInfo.TILE_HEIGHT);
         }
 		
-		// pixel坐标 -> tile坐标
-        public static function transPixelPoint2TilePoint(pixelPoint:Point):Point
-		{
+		/**
+		 * pixel坐标 -> tile坐标
+		 */
+        public static function transPixelPoint2TilePoint(pixelPoint:Point):Point {
 //            return new Point(int(pixelPoint.x / SceneConfig.TILE_WIDTH), int(pixelPoint.y / SceneConfig.TILE_HEIGHT));
             return new Point(Math.ceil(pixelPoint.x / SceneInfo.TILE_WIDTH), Math.ceil(pixelPoint.y / SceneInfo.TILE_HEIGHT));
         }
@@ -41,20 +40,15 @@
 //            return new Point(pos.x * SceneConfig.ZONE_WIDTH, pos.y * SceneConfig.ZONE_HEIGHT);
 //        }
 		
-		/**
-		 * 角度 -> 0-8
-		 */
-        public static function transAngle2LogicAngle(angle:Number, logic:int=8):int
-		{
-            var logicAngle:Number = ZMath.getNearAngel((angle - 90), logic);
+        public static function transAngle2LogicAngle(p_angle:Number, p_logic:int=8):int {
+            var logicAngle:Number = ZMath.getNearAngel((p_angle - 90), p_logic);
 			
             return CharAngleType[("ANGEL_" + logicAngle)];
         }
         
-		public static function transLogicAngle2Angle(logicAngle:int, logic:int=8):Number
-		{
-            var angle:Number = (360 / logic);
-            return (logicAngle * angle) % 360;
+		public static function transLogicAngle2Angle(p_logicAngle:int, p_logic:int=8):Number {
+            var angle:Number = (360 / p_logic);
+            return (p_logicAngle * angle) % 360;
         }
     }
 }

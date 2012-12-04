@@ -13,9 +13,8 @@
 	 */
 	public class MapZone extends CCNode
 	{
-		public function MapZone(mapLayer:DisplayObjectContainer)
-		{
-			enableContainer(mapLayer);
+		public function MapZone(p_maplayer:DisplayObjectContainer) {
+			EnableContainer(p_maplayer);
 		}
 	}
 } 

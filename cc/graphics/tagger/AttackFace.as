@@ -51,31 +51,26 @@ package cc.graphics.tagger
 		 * @param value 伤害值
 		 * @param 
 		 */
-		public function AttackFace(type:String="", value:String="")
-		{
+		public function AttackFace(type:String="", value:String="") {
 			reset([type, value]);
 		}
 		
 		// 建立
 		public static function createAttackFace(attackType:String="", 
-												attackValue:String=""):AttackFace
-		{
+												attackValue:String=""):AttackFace {
 			return ScenePool.attackFacePool.createObj(AttackFace, attackType, attackValue) as AttackFace;
 		}
 		
 		// 释放并备用
-		public static function recycleAttackFace(af:AttackFace):void
-		{
+		public static function recycleAttackFace(af:AttackFace):void {
 			ScenePool.attackFacePool.disposeObj(af);
 		}
 		
-		public function get dir():int
-		{
+		public function get dir():int {
 			return _dir;
 		}
 		
-		public function dispose():void
-		{
+		public function dispose():void {
 			_type = '';
 			_value = '';
 			_dir = 4;
@@ -84,8 +79,7 @@ package cc.graphics.tagger
 			_bitmap = null;
 		}
 		
-		public function reset(value:Array):void
-		{
+		public function reset(value:Array):void {
 			_bitmap = new Bitmap;
 			addChild(_bitmap);
 			
