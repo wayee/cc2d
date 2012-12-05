@@ -41,11 +41,11 @@
 				
 				
                 while (node != null) {
-                    prev_bound = (node.data as Bounds);
+                    prev_bound = (node.Data as Bounds);
 					
 					// 如果 prev_bound 在 bounds 上面, 则继续搜索下一个 node
                     if (prev_bound.bottom < bounds.top){
-                        node = node.next;
+                        node = node.Next;
                     } 
 					else {
 						// prev_bound 在 bounds 的下面, 则 bounds 不和现有的矩形同行, 因此直接添加新矩形
@@ -67,8 +67,8 @@
                                 if (intsec_bound.equals(prev_bound)){
 									
 									// 删除当前的 node, 增加新的 bounds, 它会继续吞并其它 node
-                                    this.remove(node);				// 之后, beginLN = node.next
-                                    if (this.beginLN != null){		// node.next 非空, 则继续添加, 继续合并
+                                    this.remove(node);				// 之后, beginLN = node.Next
+                                    if (this.beginLN != null){		// node.Next 非空, 则继续添加, 继续合并
                                         this.addBounds(bounds);
                                     } else {
                                         this.add(new LNode(bounds), this.last);		// 否则添加到末尾
@@ -90,7 +90,7 @@
                         }
 						
 						// 不想交, 继续搜索下一个
-                        node = node.next;
+                        node = node.Next;
                     }
                 }
 
@@ -135,8 +135,8 @@
             var ret:Array = [];
             var _local2:LNode = this.first;
             while (_local2 != null) {
-                ret.push(_local2.data);
-                _local2 = _local2.next;
+                ret.push(_local2.Data);
+                _local2 = _local2.Next;
             }
             return (ret);
         }
@@ -151,24 +151,24 @@
 			// 成为唯一1个节点
             if (prev == null){
                 this.first = node;
-                this.first.pre = null;
-                this.first.next = null;
+                this.first.Pre = null;
+                this.first.Next = null;
                 this.last = node;
-                this.last.pre = null;
-                this.last.next = null;
+                this.last.Pre = null;
+                this.last.Next = null;
             } else {
 				// 添加到末尾
                 if (prev == this.last) {
-                    this.last.next = node;
-                    node.pre = this.last;
+                    this.last.Next = node;
+                    node.Pre = this.last;
                     this.last = node;
                 }
 				// 添加到中间
 				else {
-                    node.pre = prev;
-                    node.next = prev.next;
-                    node.pre.next = node;
-                    node.next.pre = node;
+                    node.Pre = prev;
+                    node.Next = prev.Next;
+                    node.Pre.Next = node;
+                    node.Next.Pre = node;
                 }
             }
         }
@@ -180,19 +180,19 @@
                     this.first = null;
                     this.last = null;
                 } else {
-                    this.first = node.next;
-                    this.first.pre = null;
+                    this.first = node.Next;
+                    this.first.Pre = null;
                 }
             } else {
                 if (node == this.last) {
-                    this.last = this.last.pre;
-                    this.last.next = null;
+                    this.last = this.last.Pre;
+                    this.last.Next = null;
                 } else {
-                    node.pre.next = node.next;
-                    node.next.pre = node.pre;
+                    node.Pre.Next = node.Next;
+                    node.Next.Pre = node.Pre;
                 }
             }
-            this.beginLN = node.next;
+            this.beginLN = node.Next;
         }
     }
 }

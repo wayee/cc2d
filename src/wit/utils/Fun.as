@@ -183,7 +183,7 @@
 				} else {
 					mc.gotoAndPlay(mc.currentFrame+1);
 				}
-				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.createListener(onEnterFrame, mc, onPlayFinish,date), false, 0, true);
+				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.CreateListener(onEnterFrame, mc, onPlayFinish,date), false, 0, true);
 				
 				function onEnterFrame(event:Event, mc:MovieClip, onPlayFinish:Function=null,date:Object = null):void
 				{
@@ -194,7 +194,7 @@
 						b = mc.totalFrames == mc.currentFrame;
 					}
 					if (b) {
-						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.getFunction(onEnterFrame));
+						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.GetFunction(onEnterFrame));
 						mc.stop();
 						
 						if (removeMc) { // 自动删除
@@ -219,12 +219,12 @@
 		{
 			if (mc != null && mc is MovieClip) {
 				
-				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.createListener(onEnterFrame, mc, onPlayFinish), false, 0, true);
+				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.CreateListener(onEnterFrame, mc, onPlayFinish), false, 0, true);
 				
 				function onEnterFrame(event:Event, mc:MovieClip, onPlayFinish:Function=null):void
 				{
 					if (mc.currentFrameLabel == targetFrame) {
-						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.getFunction(onEnterFrame));
+						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.GetFunction(onEnterFrame));
 						
 						if (stopMovie) mc.stop();
 						

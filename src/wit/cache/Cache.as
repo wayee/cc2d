@@ -46,7 +46,7 @@ package wit.cache
 			var unit:CacheUnit = _dict[key];
 			promote(unit);
 			
-			return unit.data;
+			return unit.Data;
 		}
 		
 		/**
@@ -57,11 +57,11 @@ package wit.cache
 			var unit:CacheUnit = _dict[key];
 			if (unit) {
 				if (unit == _head) {
-					_head = _head.pre;
+					_head = _head.Pre;
 				}
 				// 链表更新
-				unit.pre.next = unit.next;
-				unit.next.pre = unit.pre;
+				unit.Pre.Next = unit.Next;
+				unit.Next.Pre = unit.Pre;
 				
 				destroy(unit);
 				_length--;
@@ -83,22 +83,22 @@ package wit.cache
 			_dict[key] = node;
 			if (_length == 0) { // 第一个
 				_head = node;
-				_head.pre = node;
-				_head.next = node;
+				_head.Pre = node;
+				_head.Next = node;
 			} else { // 链表更新（我的上就是你；我的下就是你的下；我的上的下就是我；我的下的上就是我，哈哈，越说越糊涂）
-				node.pre = _head;
-				node.next = _head.next;
-				node.pre.next = node;
-				node.next.pre = node;
+				node.Pre = _head;
+				node.Next = _head.Next;
+				node.Pre.Next = node;
+				node.Next.Pre = node;
 				_head = node;
 			}
 			
 			_length++;
 			
 			if (_length > _maxSize) { // 达到最大，把我的下删除
-				node = _head.next;
-				node.pre.next = node.next;
-				node.next.pre = node.pre;
+				node = _head.Next;
+				node.Pre.Next = node.Next;
+				node.Next.Pre = node.Pre;
 				destroy(node);
 				_length--;
 			}
@@ -114,9 +114,9 @@ package wit.cache
 				return;
 			}
 			while (_length > index) {
-				node = _head.next;
-				node.pre.next = node.next;
-				node.next.pre = node.pre;
+				node = _head.Next;
+				node.Pre.Next = node.Next;
+				node.Next.Pre = node.Pre;
 				destroy(node);
 				_length--;
 			}
@@ -141,7 +141,7 @@ package wit.cache
 			var unit:CacheUnit;
 			var arr:Array = [];
 			for each (unit in _dict) {
-				arr.push(unit.id);
+				arr.push(unit.Id);
 			}
 			return arr;
 		}
@@ -154,7 +154,7 @@ package wit.cache
 			var unit:CacheUnit;
 			var arr:Array = [];
 			for each (unit in _dict) {
-				arr.push(unit.data);
+				arr.push(unit.Data);
 			}
 			return arr;
 		}
@@ -178,15 +178,15 @@ package wit.cache
 				return;
 			}
 			
-			if (unit.pre == _head) {
+			if (unit.Pre == _head) {
 				_head = unit;
 			} else {
-				unit.next.pre = unit.pre;
-				unit.pre.next = unit.next;
-				unit.pre = _head;
-				unit.next = _head.next;
-				_head.next.pre = unit;
-				_head.next = unit;
+				unit.Next.Pre = unit.Pre;
+				unit.Pre.Next = unit.Next;
+				unit.Pre = _head;
+				unit.Next = _head.Next;
+				_head.Next.Pre = unit;
+				_head.Next = unit;
 				_head = unit;
 			}
 		}
@@ -196,7 +196,7 @@ package wit.cache
 		 */
 		private function destroy(node:LNode):void
 		{
-			delete _dict[node.id];
+			delete _dict[node.Id];
 			(node as CacheUnit).dispose();
 			node = null;
 		}

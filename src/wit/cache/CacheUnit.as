@@ -16,19 +16,19 @@
         
 		public function dispose():void
 		{
-            if (data is BitmapData) {
-                (data as BitmapData).dispose();
+            if (Data is BitmapData) {
+                (Data as BitmapData).dispose();
             } else {
-                if (data is DisplayObject) {
-                    if (data.parent && !(data.parent is Loader)) {
-                        data.parent.removeChild(data);
+                if (Data is DisplayObject) {
+                    if (Data.parent && !(Data.parent is Loader)) {
+                        Data.parent.removeChild(Data);
                     }
-                    Fun.clearChildren(data as DisplayObject, true);
+                    Fun.clearChildren(Data as DisplayObject, true);
                 }
             }
-            data = null;
-            pre = null;
-            next = null;
+            Data = null;
+            Pre = null;
+            Next = null;
         }
     }
 }

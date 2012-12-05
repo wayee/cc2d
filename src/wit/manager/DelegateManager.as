@@ -68,7 +68,7 @@ package wit.manager
 			if (funDict[func] != null) {
 				var f:Function = funDict[func] as Function;
 				if (autoDelete) {
-					delFunction(func);
+					DelFunction(func);
 				}
 				return f;
 			} else {
