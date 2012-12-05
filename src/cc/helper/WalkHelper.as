@@ -8,7 +8,7 @@
 	import cc.utils.SceneUtil;
 	import cc.utils.Transformer;
 	import cc.vo.map.MapTile;
-	import cc.walk.AStar;
+	import cc.utils.AStar;
 	import cc.walk.Jump;
 	
 	import flash.geom.Point;
