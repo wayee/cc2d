@@ -8,49 +8,44 @@ package wit.utils
 	 */
 	public class LNode
 	{
-		private var _id:String;
-		private var _data:Object;
-		private var _pre:LNode;
-		private var _next:LNode;
+		private var id:String;
+		private var data:Object;
+		private var pre:LNode;
+		private var next:LNode;
 		
-		public function LNode(value:Object, id:String=null)
-		{
-			_data = value;
-			_id = id;
-			_next = null;
-			_pre = null;
-		}
-		
-		public function get pre():LNode
-		{
-			return _pre;
-		}
-		public function set pre(node:LNode):void
-		{
-			_pre = node;
+		public function LNode(value:Object, id:String=null) {
+			data = value;
+			id = id;
+			next = null;
+			pre = null;
 		}
 		
-		public function get next():LNode
-		{
-			return _next;
-		}
-		public function set next(node:LNode):void
-		{
-			_next = node;
+		public function get Pre():LNode {
+			return pre;
 		}
 		
-		public function get data():Object
-		{
-			return _data;
-		}
-		public function set data(value:Object):void
-		{
-			_data = value;
+		public function set Pre(node:LNode):void {
+			pre = node;
 		}
 		
-		public function get id():String
-		{
-			return _id;
+		public function get Next():LNode {
+			return next;
+		}
+		
+		public function set Next(node:LNode):void {
+			next = node;
+		}
+		
+		public function get Data():Object {
+			return data;
+		}
+		
+		public function set Data(value:Object):void {
+			data = value;
+		}
+		
+		public function get Id():String {
+			return id;
 		}
 	}
 }

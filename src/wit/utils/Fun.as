@@ -19,7 +19,7 @@
 	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	
-	import wit.handler.Delegate;
+	import wit.manager.DelegateManager;
 	import wit.handler.HandlerThread;
 	import wit.log.Log4J;
 	import wit.manager.HandlerManager;
@@ -183,7 +183,7 @@
 				} else {
 					mc.gotoAndPlay(mc.currentFrame+1);
 				}
-				mc.addEventListener(Event.ENTER_FRAME, Delegate.createListener(onEnterFrame, mc, onPlayFinish,date), false, 0, true);
+				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.createListener(onEnterFrame, mc, onPlayFinish,date), false, 0, true);
 				
 				function onEnterFrame(event:Event, mc:MovieClip, onPlayFinish:Function=null,date:Object = null):void
 				{
@@ -194,7 +194,7 @@
 						b = mc.totalFrames == mc.currentFrame;
 					}
 					if (b) {
-						mc.removeEventListener(Event.ENTER_FRAME, Delegate.getFunction(onEnterFrame));
+						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.getFunction(onEnterFrame));
 						mc.stop();
 						
 						if (removeMc) { // 自动删除
@@ -219,12 +219,12 @@
 		{
 			if (mc != null && mc is MovieClip) {
 				
-				mc.addEventListener(Event.ENTER_FRAME, Delegate.createListener(onEnterFrame, mc, onPlayFinish), false, 0, true);
+				mc.addEventListener(Event.ENTER_FRAME, DelegateManager.createListener(onEnterFrame, mc, onPlayFinish), false, 0, true);
 				
 				function onEnterFrame(event:Event, mc:MovieClip, onPlayFinish:Function=null):void
 				{
 					if (mc.currentFrameLabel == targetFrame) {
-						mc.removeEventListener(Event.ENTER_FRAME, Delegate.getFunction(onEnterFrame));
+						mc.removeEventListener(Event.ENTER_FRAME, DelegateManager.getFunction(onEnterFrame));
 						
 						if (stopMovie) mc.stop();
 						

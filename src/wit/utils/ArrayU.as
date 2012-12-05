@@ -6,7 +6,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class ArrayUtil
+	public class ArrayU
 	{
 		public static function Each(arr:Array, operation:Function):void {
 			for (var i:int=0; i<arr.length; i++) {
@@ -147,7 +147,7 @@ package wit.utils
 			return toString.call(value) == '[object Array]';
 		} 
 		
-		public function ArrayUtil() {    
+		public function ArrayU() {    
 			throw new Error("ArrayUtil class is static class only");    
 		}
 		

@@ -7,7 +7,7 @@ package wit.utils
 	 * @author flashyiyi
 	 * 
 	 */
-	public final class RotationUtil
+	public final class RotationU
 	{
 		/**
 		 * 旋转点
@@ -146,7 +146,7 @@ package wit.utils
 			return result;
 		}
 		
-		public function RotationUtil()
+		public function RotationU()
 		{    
 			throw new Error("RotationUtil class is static class only");    
 		}  

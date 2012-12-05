@@ -10,7 +10,7 @@ package wit.utils
 	 * @author flashyiyi
 	 * 
 	 */
-	public final class TransformUtil
+	public final class TransformU
 	{
 		/**
 		 * 自定义注册点缩放
@@ -89,7 +89,7 @@ package wit.utils
 			displayObj.transform.matrix = m;
 		}
 		
-		public function TransformUtil()
+		public function TransformU()
 		{    
 			throw new Error("TransformUtil class is static class only");    
 		}  

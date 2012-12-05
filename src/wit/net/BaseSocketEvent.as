@@ -11,7 +11,7 @@ package wit.net
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class CBaseSocketEvent extends Event
+	public class BaseSocketEvent extends Event
 	{
 		public static const SECURITY_ERROR:String 		= SecurityErrorEvent.SECURITY_ERROR;  
 		public static const IO_ERROR:String 			= IOErrorEvent.IO_ERROR;  
@@ -23,7 +23,7 @@ package wit.net
 		
 		private var _data:Object;  
 		
-		public function CBaseSocketEvent(type:String, data:Object = null) 
+		public function BaseSocketEvent(type:String, data:Object = null) 
 		{  
 			super(type, true);  
 			this._data = data;            
@@ -41,7 +41,7 @@ package wit.net
 		
 		override public function clone():Event
 		{  
-			return new CBaseSocketEvent(type, data);  
+			return new BaseSocketEvent(type, data);  
 		}  
 	}
 }

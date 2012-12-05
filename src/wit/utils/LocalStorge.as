@@ -14,36 +14,30 @@ package wit.utils
 	 */
 	public class LocalStorge
 	{
-		private var _storge:SharedObject;
+		private var storge:SharedObject;
 		
-		public function LocalStorge(name:String)
-		{
-			_storge = SharedObject.getLocal(name);
+		public function LocalStorge(name:String) {
+			storge = SharedObject.getLocal(name);
 		}
 		
-		public function get storge():SharedObject
-		{
-			return _storge;
+		public function get Storge():SharedObject {
+			return storge;
 		}
 		
-		public function get data():Object
-		{
-			return _storge.data;
+		public function get Data():Object {
+			return storge.data;
 		}
 		
-		public function flush():void
-		{
-			_storge.flush();
+		public function Flush():void {
+			storge.flush();
 		}
 		
-		public function clear():void
-		{
-			_storge.clear();
+		public function Clear():void {
+			storge.clear();
 		}
 		
-		public function hasKey(key:String):Boolean
-		{
-			if (_storge.data.hasOwnProperty(key))
+		public function HasKey(key:String):Boolean {
+			if (storge.data.hasOwnProperty(key))
 				return true;
 			return false;
 		}

@@ -12,7 +12,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class ObjectUtil
+	public class ObjectU
 	{
 		public static function newSibling(sourceObj:Object):*
 		{
@@ -119,7 +119,7 @@ package wit.utils
 			return ( typeof(value) == "function" || value is Function );
 		}
 		
-		public function ObjectUtil()
+		public function ObjectU()
 		{    
 			throw new Error("ObjectUtils class is static class only");    
 		}  

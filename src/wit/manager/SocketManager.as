@@ -30,7 +30,7 @@
 		{
             var socket:ZSocket = new ZSocket(fn, host, port, head_mask);
             _socketArr.push(socket);
-            Log4J.add("SocketManager.creatSocket::_socketArr.length:" + getSocketsNum());
+            Log4J.Info("SocketManager.creatSocket::_socketArr.length:" + getSocketsNum());
             return socket;
         }
 		
@@ -42,7 +42,7 @@
             var index:int = _socketArr.indexOf(socket);
             if (index != -1) {
                 _socketArr.splice(index, 1);
-                Log4J.add("SocketManager.deleteSocket::_socketArr.length:" + getSocketsNum());
+                Log4J.Info("SocketManager.deleteSocket::_socketArr.length:" + getSocketsNum());
             }
             socket.close();
         }

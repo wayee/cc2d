@@ -1,4 +1,4 @@
-package wit.handler
+package wit.manager
 {
 	import flash.utils.Dictionary;
 
@@ -9,7 +9,7 @@ package wit.handler
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class Delegate
+	public class DelegateManager
 	{
 		private static var funDict:Dictionary = new Dictionary;
 
@@ -21,7 +21,7 @@ package wit.handler
 		 * @return Function
 		 * 
 		 */
-		public static function create(func:Function, ...args):Function
+		public static function Create(func:Function, ...args):Function
 		{
 			return createWithArgs(func, args);
 		}
@@ -34,7 +34,7 @@ package wit.handler
 		 * @return Function
 		 * 
 		 */
-		public static function createListener(func:Function, ...args):Function
+		public static function CreateListener(func:Function, ...args):Function
 		{
 			return createWithArgs(func, args, true);
 		}
@@ -63,7 +63,7 @@ package wit.handler
 		 * @return Function
 		 * 
 		 */
-		public static function getFunction(func:Function, autoDelete:Boolean=true):Function
+		public static function GetFunction(func:Function, autoDelete:Boolean=true):Function
 		{
 			if (funDict[func] != null) {
 				var f:Function = funDict[func] as Function;
@@ -81,7 +81,7 @@ package wit.handler
 		 * @param func
 		 * 
 		 */		
-		public static function delFunction(func:Function):void
+		public static function DelFunction(func:Function):void
 		{
 			funDict[func] = null;
 			delete funDict[func];

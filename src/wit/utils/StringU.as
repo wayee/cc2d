@@ -9,7 +9,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class StringUtil
+	public class StringU
 	{
 		/**
 		 * Returns value is a string type value.
@@ -622,7 +622,7 @@ package wit.utils
 			return "{" + s + "}\n";
 		}
 		
-		public function StringUtil()
+		public function StringU()
 		{    
 			throw new Error("StringUtils class is static class only");    
 		}  

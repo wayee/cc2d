@@ -17,13 +17,13 @@ package wit.net
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class CBaseSocket extends EventDispatcher
+	public class BaseSocket extends EventDispatcher
 	{  
 		private var _host:String;  
 		private var _port:uint;  
 		private var _socket:Socket;  
 		
-		public function CBaseSocket(host:String, port:uint=80)
+		public function BaseSocket(host:String, port:uint=80)
 		{  
 			this._host = host;  
 			this._port = port;
@@ -72,7 +72,7 @@ package wit.net
 			bytes.compress();  
 			this._socket.writeBytes(bytes);  
 			this._socket.flush();  
-			this.dispatchEvent(new CBaseSocketEvent(CBaseSocketEvent.SENDING, params));             
+			this.dispatchEvent(new BaseSocketEvent(BaseSocketEvent.SENDING, params));             
 		}  
 		
 		private function received():void
@@ -83,9 +83,9 @@ package wit.net
 			}  
 			try{                  
 				bytes.uncompress();  
-				this.dispatchEvent(new CBaseSocketEvent(CBaseSocketEvent.RECEIVED, bytes.readObject()));  
+				this.dispatchEvent(new BaseSocketEvent(BaseSocketEvent.RECEIVED, bytes.readObject()));  
 			}catch (error:Error) {  
-				this.dispatchEvent(new CBaseSocketEvent(CBaseSocketEvent.DECODE_ERROR));  
+				this.dispatchEvent(new BaseSocketEvent(BaseSocketEvent.DECODE_ERROR));  
 			}  
 		}  
 		
@@ -93,12 +93,12 @@ package wit.net
 		{  
 			switch(event.type) {  
 				case Event.CLOSE:  
-					this.dispatchEvent(new CBaseSocketEvent(CBaseSocketEvent.CLOSE));  
+					this.dispatchEvent(new BaseSocketEvent(BaseSocketEvent.CLOSE));  
 					break;  
 				case Event.CONNECT:                   
 				case IOErrorEvent.IO_ERROR:  
 				case SecurityErrorEvent.SECURITY_ERROR:  
-					this.dispatchEvent(new CBaseSocketEvent(event.type));  
+					this.dispatchEvent(new BaseSocketEvent(event.type));  
 					break;  
 				case ProgressEvent.SOCKET_DATA:  
 					this.received();  

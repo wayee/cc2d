@@ -52,7 +52,7 @@
 		public static function creatNewSoundThread():SoundThread
 		{
 			var soundThread:SoundThread = (_soundThreadArr[_soundThreadArr.length] = new SoundThread());
-			Log4J.add("SoundManager.creatNewSoundThread::_soundThreadArr.length:" + getSoundThreadsNum());
+			Log4J.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:" + getSoundThreadsNum());
 			return soundThread;
 		}
 		
@@ -73,7 +73,7 @@
 				tmpSoundThread = soundThread;
 				if (!hasSoundThread(tmpSoundThread)){
 					_soundThreadArr.push(tmpSoundThread);
-					Log4J.add(("SoundManager.playSound::_soundThreadArr.length:" + getSoundThreadsNum()));
+					Log4J.Info(("SoundManager.playSound::_soundThreadArr.length:" + getSoundThreadsNum()));
 				}
 			} else {
 				tmpSoundThread = _defaultSoundThread;
@@ -131,7 +131,7 @@
 		{
 			removeAllSounds();
 			_soundThreadArr = [];
-			Log4J.add("SoundManager.creatNewSoundThread::_soundThreadArr.length:0");
+			Log4J.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:0");
 		}
 		
 		/**

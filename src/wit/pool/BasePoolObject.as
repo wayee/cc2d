@@ -2,12 +2,7 @@
 {
 	public class BasePoolObject implements IPoolObject
 	{
-		public function dispose():void
-		{
-		}
-		
-		public function reSet(value:Array):void
-		{
-		}
+		public function dispose():void {}
+		public function reset(value:Array):void	{}
 	}
 }
