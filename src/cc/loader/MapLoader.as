@@ -22,29 +22,13 @@
 	import wit.manager.LoaderManager;
 	import wit.utils.Fun;
 
-	/**
-	 * 地图加载器
-	 * <li> 地图配置信息加载
-	 * <li> 小地图加载
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
 	public class MapLoader
 	{
 		/**
-		 * 加载地图
-		 * <li>根据 GlobalConfig.decode 解密压缩包中的每个文件
-		 * 
-		 * @param mapPicId 地图图片ID
-		 * @param mapURL 配置文件URL(已经弃用，根据mapId获取)
-		 * @param targetScene 目标场景
-		 * @param completeHandler onComplete(mapConfig, MapTileInfo, MapSolidInfo)
-		 * @param updateHandler onUpdate
+		 * 根据 CCG.decode 解密压缩包中的每个文件
 		 */
 		public static function loadMapConfig(mapPicId:int, targetScene:CCScene, 
-											 completeHandler:Function=null, updateHandler:Function=null):void
-		{
+											 completeHandler:Function=null, updateHandler:Function=null):void {
 			// 加载完成
 			var newOnComplete:Function = function (event:Event):void {
 				var data:String;
@@ -55,9 +39,9 @@
 				}
 				
 				// 需要解密
-//				if (GlobalConfig.decode != null){
-//					// 获取第一个文件的内容, 通过  GlobalConfig.decode 来解密
-//					data = ZZip.extractFristTextFileContent(data, GlobalConfig.decode);	
+//				if (CCG.decode != null){
+//					// 获取第一个文件的内容, 通过  CCG.decode 来解密
+//					data = ZZip.extractFristTextFileContent(data, CCG.decode);	
 //					if (data == ""){
 //						return;
 //					}
@@ -131,7 +115,6 @@
 					completeHandler(mapConfig, mapTile, mapSolids);
 				}
 			}
-			
 			// 暂停小地图
 			SceneLoader.smallMapImgLoader.pauseAll();
 			SceneLoader.smallMapImgLoader.removeAll();
@@ -140,14 +123,7 @@
 			LoaderManager.load([loadData], SceneLoader.smallMapImgLoader);
 		}
 		
-		/**
-		 * 载入小地图
-		 * 
-		 * @event SceneEvent.PROCESS, SceneEventAction_process.LOAD_SMALL_MAP_COMPLETE 加载完成
-		 * 
-		 */
-		public static function loadSmallMap(scene:CCScene):void
-		{
+		public static function loadSmallMap(scene:CCScene):void {
 			var loadSmallMapComplete:Function = function (event:Event):void {
 				var loadItem:LoadingItem = (event.target as LoadingItem);
 				var smallMap:Bitmap = loadItem.content as Bitmap;
@@ -159,7 +135,6 @@
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
 			}
-				
 			Fun.clearChildren(scene.sceneSmallMapLayer, true);		// clearup
 			SceneLoader.smallMapImgLoader.pauseAll();
 			SceneLoader.smallMapImgLoader.removeAll();

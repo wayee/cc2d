@@ -21,12 +21,6 @@
 	import wit.manager.RslLoaderManager;
 	import wit.utils.HashMap;
 
-	/**
-	 * 场景资源缓存
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class SceneCache
 	{
         public static const UNINSTALL_DELAY_TIME:int = 120000;

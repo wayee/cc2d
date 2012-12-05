@@ -16,33 +16,19 @@
 	
 	import wit.event.EventDispatchCenter;
 
-	/**
-	 * 走路帮助类 
-	 */
 	public class WalkHelper
 	{
-		/**
-		 * 停止走路 
-		 * @param p_char 角色对象
-		 * @param b 是否站立
-		 */
-		public static function stopWalk(p_char:CCCharacter, b:Boolean=true):void
-		{
+		public static function stopWalk(p_char:CCCharacter, is_stand:Boolean=true):void {
 			p_char.Walkdata.clear();
 			if (p_char == p_char.scene.mainChar) {
 				p_char.scene.hideMouseChar();
 			}
 			
-			if (b) p_char.setStatus(CharStatusType.STAND);
+			if (is_stand) p_char.setStatus(CharStatusType.STAND);
 		}
 		
-		/**
-		 * 反转路径 
-		 * @param p_char
-		 */
-		public static function reviseWalkPath(p_char:CCCharacter):void
-		{
-			if (p_char == p_char.scene.mainChar) { // 主角
+		public static function reviseWalkPath(p_char:CCCharacter):void {
+			if (p_char == p_char.scene.mainChar) {
 				if (p_char.avatar.status == CharStatusType.WALK) { // 正在走路
 					if (p_char.Walkdata.walk_targetP != null) { // 目标点不为空
 						walk(p_char, p_char.Walkdata.walk_targetP, -1, 
@@ -57,16 +43,11 @@
 		}
 
 		/**
-		 * 走路 
-		 * @param p_char 角色对象
-		 * @param targetTilePoint 目标点, tx, ty
-		 * @param walkSpeed
 		 * @param error 当前位置到目标点可接受的误差值
 		 * @param walkVars 回调onWalkArrived, onWalkThrough, onWalkUnable
 		 */
 		public static function walk(p_char:CCCharacter, targetTilePoint:Point, 
-									walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void
-		{
+									walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void {
 			var sceneEvent:CCEvent;
 			
 			// 不可到达的点
@@ -181,19 +162,12 @@
 		}
 		
 		/**
-		 * 这个才是真正的计算好所有走路的数据，然后更新到SceneCharacter.Walkdata
-		 * 在WalkStep.step()及根据Walkdata来执行走路 
-		 * @param p_char 场景角色
+		 * WalkStep.step()根据Walkdata来执行走路 
 		 * @param walkPaths A* 计算后的路径数据 [[tx, ty], [tx, ty], ...]
-		 * @param targetTilePoint 目标, tx, ty
-		 * @param walkSpeed 走路速度
-		 * @param error 误差
-		 * @param walkVars 回调函数表 onWalkArrived/onWalkThrough
 		 */
 		public static function walk0(p_char:CCCharacter, walkPaths:Array, 
 									 targetTilePoint:Point=null, walkSpeed:Number=-1, 
-									 error:Number=0, walkVars:Object=null):void
-		{
+									 error:Number=0, walkVars:Object=null):void {
 			var sceneEvent:CCEvent;
 			
 			if (walkPaths.length < 1) {	// < 2表示包括现在位置， < 1则不包括
@@ -250,21 +224,25 @@
 			}
 		}
 		
-		public static function walk1(p_char:CCCharacter, pathByteData:ByteArray, targetTilePoint:Point=null, walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void
-		{
+		public static function walk1(p_char:CCCharacter, pathByteData:ByteArray, 
+									 targetTilePoint:Point=null, walkSpeed:Number=-1, 
+									 error:Number=0, walkVars:Object=null):void {
 //			var arr:Array = PathConverter.convertToPoint(pathByteData);
 //			walk0(p_char, arr, targetTilePoint, walkSpeed, error, walkVars);
 		}
 		
-		public static function jump(p_char:CCCharacter, p_pos:Point, p_speed:Number=-1, p_max_dis:Number=-1, p_vars:Object=null):void {
+		public static function jump(p_char:CCCharacter, p_pos:Point, p_speed:Number=-1, 
+									p_max_dis:Number=-1, p_vars:Object=null):void {
 			Jump.jump(p_char, p_pos, p_speed, p_max_dis, p_vars);
 		}
 		
-		public static function lineTo(p_char:CCCharacter, p_pos:Point, p_speed:Number, p_is_pet:Boolean=false, p_vars:Object=null):void {
+		public static function lineTo(p_char:CCCharacter, p_pos:Point, p_speed:Number, 
+									  p_is_pet:Boolean=false, p_vars:Object=null):void {
 			Jump.lineTo(p_char, p_pos, p_speed, p_is_pet, p_vars);
 		}
 		
-		public static function lineToPixel(p_char:CCCharacter, p_pos:Point, p_speed:Number, p_callback:Function=null):void {
+		public static function lineToPixel(p_char:CCCharacter, p_pos:Point, p_speed:Number, 
+										   p_callback:Function=null):void {
 			Jump.lineToPixel(p_char, p_pos, p_speed, p_callback);
 		}
 	}

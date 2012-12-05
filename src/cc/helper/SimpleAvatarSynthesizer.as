@@ -1,27 +1,24 @@
 ﻿package cc.helper
 {
+	import cc.CCCharacter;
+	import cc.define.CharType;
+	import cc.define.StaticData;
+	import cc.graphics.avatar.CCAvatarPart;
+	import cc.vo.avatar.AvatarParamData;
+	import cc.vo.avatar.AvatarPlayCondition;
+	
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
-	import cc.CCCharacter;
-	import cc.graphics.avatar.CCAvatarPart;
-	import cc.define.StaticData;
-	import cc.vo.avatar.AvatarParamData;
-	import cc.vo.avatar.AvatarPlayCondition;
 
 	/**
-	 * 纸娃娃合成器
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
+	 * 纸娃娃合成 
+	 */	
     public class SimpleAvatarSynthesizer
 	{
         public static function synthesisSimpleAvatar(id:*, callBack:Function, apdArr:Array, 
 													 frame:int=1, charStatus:String="stand", charLogicAngle:int=0, 
-													 maxBDWidth:Number=0x0200, maxBDHeight:Number=0x0200):void
-		{
+													 maxBDWidth:Number=0x0200, maxBDHeight:Number=0x0200):void {
             var totalNum:int = 0;
             var loadedNum:int = 0;
             var sc:CCCharacter = null;
@@ -53,7 +50,7 @@
             }
             totalNum = apdArr.length;
             loadedNum = 0;
-            sc = CCCharacter.createSceneCharacter(StaticData.CHARACTER_TYPE_PLAYER, null);
+            sc = CCCharacter.createSceneCharacter(CharType.PLAYER, null);
             for each (apd in apdArr) {
                 apd = apd.clone();
                 apd.vars = null;

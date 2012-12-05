@@ -7,11 +7,8 @@
 	import wit.utils.Fun;
 	
 	/**
-	 * 场景元素基类
-	 * <li>子类包含: SceneCharacter, MapTile, MapZone, SceneCamera 
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
+	 * 游戏对象基类
+	 * <li>子类包含: CCCharacter, MapTile, MapZone, CCCamera 
 	 */
 	public class CCNode
 	{

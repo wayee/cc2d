@@ -20,9 +20,6 @@
 	import wit.handler.HandlerHelper;
 	import wit.pool.IPoolObject;
 
-	/**
-	 * 角色外观
-	 */
 	public class CCAvatar implements IPoolObject
 	{
 		public var usable:Boolean = false;
@@ -31,45 +28,38 @@
 		public var logicAngle:int = 0;								// 逻辑方向, [0-7]
 		public var visible:Boolean = true;							// 可见性
 		public var updateNow:Boolean;								// 需要更新显示
-		private var _oldData:Object;								// {visible:true} 重绘区管理
 		public var playCondition:AvatarPlayCondition;				// 播放/循环方式 
+		
+		private var _oldData:Object;								// {visible:true} 重绘区管理
+		private var _isOnMount:Boolean = false;
 		
 		private var _hideAvatarPartTypes:Array;						// AvatarPartType 中枚举值, 被隐藏的部分, 可以不依赖于 avatarParts
 		public var avatarParts:Array;								// [AvatarPart], 每个部分
 		
-		// 原始参数
 		private var _bornAvatarParamData:AvatarParamData;			// 身体数据 -- 原始值
 //		private var _bornOnMountAvatarParamData:AvatarParamData;	// 骑马时的身体数据 -- 原始值
 //		private var _bornMountAvatarParamData:AvatarParamData;		// 马的数据 -- 原始值
 		
 		/**
-		 * Avatar 必须关联到一个  SceneCharacter 对象, 作为后者的表观(VIEW)
+		 * Avatar 必须关联到一个  CCCharacter 对象, 作为后者的表观(VIEW)
 		 */
-		public function CCAvatar(sceneChar:CCCharacter)
-		{
+		public function CCAvatar(sceneChar:CCCharacter) {
 			_hideAvatarPartTypes = [];
 			avatarParts = [];
 			super();
 			reset([sceneChar]);
 		}
 		
-		/**
-		 * 建立角色
-		 */
-		public static function createAvatar(sceneChar:CCCharacter):CCAvatar
-		{
+		public static function createAvatar(sceneChar:CCCharacter):CCAvatar {
 			return ScenePool.avatarPool.createObj(CCAvatar, sceneChar) as CCAvatar;
 		}
-		/**
-		 * 释放, 并循环使用
-		 */
-		public static function recycleAvatar(avatar:CCAvatar):void
-		{
+
+		public static function recycleAvatar(avatar:CCAvatar):void {
 			ScenePool.avatarPool.disposeObj(avatar);
 		}
 		
-		public function playTo(statusArg:String=null, logicAngleArg:int=-1, rotation:int=-1, avatarPlayCondition:AvatarPlayCondition=null):void
-		{
+		public function playTo(statusArg:String=null, logicAngleArg:int=-1, rotation:int=-1, 
+							   avatarPlayCondition:AvatarPlayCondition=null):void {
 			var part:CCAvatarPart;
 			var event:CCEvent;
 			var oldStatus:String = this.status;
@@ -108,11 +98,7 @@
 			}
 		}
 		
-		/**
-		 * 更新周期
-		 */
-		public function run(frame:int=-1):void
-		{
+		public function run(frame:int=-1):void {
 			// 更新 visible
 			if (_oldData.visible != visible) {
 				_oldData.visible = visible;
@@ -129,24 +115,14 @@
 			updateNow = false;
 		}
 		
-		/**
-		 * 绘图
-		 * <li> 每个部位, 进行绘制
-		 */
-		public function draw(bitmap:IBitmapDrawable):void
-		{
+		public function draw(bitmap:IBitmapDrawable):void {
 			var part:CCAvatarPart;
 			for each (part in avatarParts) {
 				part.draw(bitmap);
 			}
 		}
 		
-		/**
-		 * 命中测试, 检测:
-		 * 	<li> !MAGIC, !MAGIC_PASS 类型的命中, 部位根据像素来判断命中
-		 */
-		public function hitPoint(mousePoint:Point):Boolean
-		{
+		public function hitPoint(mousePoint:Point):Boolean {
 			var avatarPart:CCAvatarPart;
 			for each (avatarPart in avatarParts) {
 				if (avatarPart.type != AvatarPartType.MAGIC && avatarPart.type != AvatarPartType.MAGIC_PASS && avatarPart.hitPoint(mousePoint)) {
@@ -156,12 +132,7 @@
 			return false;
 		}
 		
-		/**
-		 * for each:
-		 * 	<li> clearMe
-		 */
-		public function clearMe():void
-		{
+		public function clearMe():void {
 			var part:CCAvatarPart;
 			for each (part in avatarParts) {
 				part.clearMe();
@@ -171,9 +142,8 @@
 		/**
 		 * 获取所有部件中最大播放时间的 
 		 * @return int 时间（毫秒）
-		 * 
 		 */
-		public function getMaxTimeFromPart():int
+		/*public function getMaxTimeFromPart():int
 		{
 			var time:int = 0;
 			
@@ -191,31 +161,9 @@
 			}
 			
 			return time;
-		}
-		
-		/*public function getTimeFromPart():int
-		{
-			var time:int = 0;
-			
-			var part:AvatarPart;
-			if (avatarParts && avatarParts.length > 0) {
-				for each (part in avatarParts) {
-					if (part.currentAvatarPartStatus && part.currentAvatarPartStatus.type == StaticData.STATUS_TYPE_SIT && 
-						part.type == AvatarPartType.BODY) {
-						time = part.currentAvatarPartStatus.delay * (part.currentAvatarPartStatus.frame-1);
-						break;
-					}
-				}
-			}
-			
-			return time;
 		}*/
 		
-		/**
-		 * 清理、重置
-		 */		
-		public function dispose():void
-		{
+		public function dispose():void {
 			usable = false;
 			removeAllAvatarParts(false);
 			sceneCharacter = null;
@@ -233,26 +181,21 @@
 //			_bornMountAvatarParamData = null;
 		}
 		
-		public function reset(value:Array):void
-		{
+		public function reset(value:Array):void {
 			sceneCharacter = value[0];
 			_oldData = {visible:true};
 			usable = true;
 		}
 		
-		/**
-		 * 设置 _bornAvatarParamData
-		 */
-		public function getBornAvatarParamData():AvatarParamData
-		{
+		public function getBornAvatarParamData():AvatarParamData {
 			return _bornAvatarParamData;
 		}
-		public function setBornAvatarParamData(avatarParamData:AvatarParamData):void
-		{
+		
+		public function setBornAvatarParamData(avatarParamData:AvatarParamData):void {
 			if (avatarParamData == null) {
 				return;
 			}
-			avatarParamData.id_noCheckValid = AvatarPartID.BORN;			// id
+			avatarParamData.Id_noCheckValid = AvatarPartID.BORN;			// id
 			avatarParamData.avatarPartType = AvatarPartType.BODY;			// type
 			avatarParamData.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.BODY);
 			avatarParamData.useType = 1;
@@ -261,11 +204,7 @@
 			this.updateDefaultAvatar();
 		}
 		
-		/**
-		 * 更新显示
-		 */
-		private function updateDefaultAvatar():void
-		{
+		private function updateDefaultAvatar():void {
 			// TODO load the avatar body
 			
 			// 如果 没有身体
@@ -294,10 +233,7 @@
 			}
 		}
 		
-		/**
-		 * 检查 avatarParts 中是否有特定类型
-		 */
-		public function hasTypeAvatarParts(partType:String):Boolean{
+		public function hasTypeAvatarParts(partType:String):Boolean {
 			var part:CCAvatarPart;
 			for each (part in avatarParts) {
 				if (part.type == partType) {
@@ -307,10 +243,7 @@
 			return false;
 		}
 		
-		/**
-		 * 检查 avatarParts 中是否有特定ID
-		 */
-		public function hasIDAvatarPart(partID:String):Boolean{
+		public function hasIDAvatarPart(partID:String):Boolean {
 			var part:CCAvatarPart;
 			for each (part in avatarParts) {
 				if (part.id == partID) {
@@ -320,29 +253,19 @@
 			return false;
 		}
 
-		/**
-		 * 加载部件数据 
-		 * @param param
-		 * 
-		 */
-		public function loadAvatarPart(param:AvatarParamData):void
-		{
+		public function loadAvatarPart(param:AvatarParamData):void {
 			AvatarPartLoader.loadAvatarPart(sceneCharacter, param);
 		}
 		
-		/**
-		 * 控制 部位 隐藏/显示
-		 */
-		public function showAvatarPart(part:CCAvatarPart):void
-		{
+		public function showAvatarPart(part:CCAvatarPart):void {
 			part.visible = true;
 		}
-		public function hideAvatarPart(part:CCAvatarPart):void
-		{
+		
+		public function hideAvatarPart(part:CCAvatarPart):void {
 			part.visible = true;
 		}
-		public function showAvatarPartsByType(partType:String):void
-		{
+		
+		public function showAvatarPartsByType(partType:String):void {
 			var part:CCAvatarPart;
 			var index:int = this._hideAvatarPartTypes.indexOf(partType);	 
 			if (index != -1) {
@@ -354,8 +277,8 @@
 				}
 			}
 		}
-		public function hideAvatarPartsByType(partType:String):void
-		{
+		
+		public function hideAvatarPartsByType(partType:String):void {
 			var part:CCAvatarPart;
 			if (this._hideAvatarPartTypes.indexOf(partType) == -1){
 				this._hideAvatarPartTypes.push(partType);
@@ -366,25 +289,22 @@
 				}
 			}
 		}
-		public function showAvatarPartByID(partID:String):void
-		{
+		
+		public function showAvatarPartByID(partID:String):void {
 			var part:CCAvatarPart = this.getAvatarPartByID(partID);
 			if (part != null) {
 				part.visible = true;
 			}
 		}
-		public function hideAvatarPartByID(partID:String):void
-		{
+		
+		public function hideAvatarPartByID(partID:String):void {
 			var part:CCAvatarPart = this.getAvatarPartByID(partID);
 			if (part != null) {
 				part.visible = false;
 			}
 		}
 
-		/**
-		 * 添加一个部位
-		 */
-		public function addAvatarPart(avatarPart:CCAvatarPart, removeExist:Boolean=false):void{
+		public function addAvatarPart(avatarPart:CCAvatarPart, removeExist:Boolean=false):void {
 			var part:CCAvatarPart;
 			
 			// 删除同类型
@@ -412,10 +332,7 @@
 			avatarPart.onAdd();
 		}
 		
-		/**
-		 * 删除
-		 */
-		public function removeAvatarPart(avatarPart:CCAvatarPart, byType:Boolean=false, update:Boolean=true):void{
+		public function removeAvatarPart(avatarPart:CCAvatarPart, byType:Boolean=false, update:Boolean=true):void {
 			var index:int;
 			if (byType) {
 				removeAvatarPartsByType(avatarPart.type);
@@ -433,14 +350,7 @@
 			}
 		}
 		
-		/**
-		 * 根据partID删除部件 
-		 * @param partID
-		 * @param update
-		 * 
-		 */
-		public function removeAvatarPartByID(partID:String, update:Boolean=true):void
-		{
+		public function removeAvatarPartByID(partID:String, update:Boolean=true):void {
 			var part:CCAvatarPart;
 			if (partID == null || partID == "") {
 				return;
@@ -458,8 +368,8 @@
 				updateDefaultAvatar();
 			}
 		}
-		public function removeAvatarPartsByType(partType:String, update:Boolean=true):void
-		{
+		
+		public function removeAvatarPartsByType(partType:String, update:Boolean=true):void {
 			var part:CCAvatarPart;
 			SceneCache.removeWaitingAvatar(this.sceneCharacter, null, partType);
 			for each (part in this.avatarParts) {
@@ -473,8 +383,8 @@
 				this.updateDefaultAvatar();
 			}
 		}
-		public function removeAllAvatarParts(update:Boolean=true):void
-		{
+		
+		public function removeAllAvatarParts(update:Boolean=true):void {
 			var part:CCAvatarPart;
 			SceneCache.removeWaitingAvatar(this.sceneCharacter);
 			for each (part in this.avatarParts) {
@@ -487,8 +397,7 @@
 			}
 		}
 		
-		public function getAvatarPartByID(id:String):CCAvatarPart
-		{
+		public function getAvatarPartByID(id:String):CCAvatarPart {
 			var part:CCAvatarPart;
 			for each (part in this.avatarParts) {
 				if (part.id == id) {
@@ -497,8 +406,8 @@
 			}
 			return null;
 		}
-		public function getAvatarPartsByType(type:String):Array
-		{
+		
+		public function getAvatarPartsByType(type:String):Array {
 			var part:CCAvatarPart;
 			var arr:Array = [];
 			for each (part in this.avatarParts) {

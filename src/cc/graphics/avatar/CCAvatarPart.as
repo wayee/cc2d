@@ -24,12 +24,6 @@
 	import wit.pool.IPoolObject;
 	import wit.utils.ZMath;
 
-	/**
-	 * 角色的部件
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
 	public class CCAvatarPart implements IPoolObject
 	{
 		private static const MOUSE_ON_GLOWFILTER:GlowFilter = new GlowFilter(0xFFFFFF, 0.7, 7, 7, 4, 1);
@@ -83,43 +77,23 @@
 		private var _callBackAttack:Boolean = false;
 		private var _enablePlay:Boolean = false;
 		
-		public function CCAvatarPart(partID:String, avatarPartType:String, depth:int=0, useType:int=0, avatarParamDataRes:Object=null, vars:Object=null)
-		{
+		public function CCAvatarPart(partID:String, avatarPartType:String, depth:int=0, 
+									 useType:int=0, avatarParamDataRes:Object=null, vars:Object=null) {
 			reset([partID, avatarPartType, depth, useType, avatarParamDataRes, vars]);
 		}
 		
-		/**
-		 * 创建角色部件 
-		 * @param partID
-		 * @param avatarPartType
-		 * @param depth
-		 * @param useType
-		 * @param avatarParamDataRes
-		 * @param vars
-		 * @return AvatarPart
-		 * 
-		 */
 		// avatarParamData.id, avatarParamData.avatarPartType, avatarParamData.depth, avatarParamData.useType, avatarParamDataRes, avatarParamData.vars
-		public static function createAvatarPart(partID:String, avatarPartType:String, depth:int=0, useType:int=0, avatarParamDataRes:Object=null, vars:Object=null):CCAvatarPart
-		{
+		public static function createAvatarPart(partID:String, avatarPartType:String, 
+												depth:int=0, useType:int=0, avatarParamDataRes:Object=null, 
+												vars:Object=null):CCAvatarPart {
 			return ScenePool.avatarPartPool.createObj(CCAvatarPart, partID, avatarPartType, depth, useType, avatarParamDataRes, vars) as CCAvatarPart;
 		}
 		
-		/**
-		 * 回收角色部件 
-		 * @param part
-		 * 
-		 */
-		public static function recycleAvatarPart(part:CCAvatarPart):void
-		{
+		public static function recycleAvatarPart(part:CCAvatarPart):void {
 			ScenePool.avatarPartPool.disposeObj(part);
 		}
 		
-		/**
-		 * 获取当前位图数据
-		 */
-		private function get sourceBitmapData():BitmapData
-		{
+		private function get sourceBitmapData():BitmapData {
 			var bitmapData:BitmapData;
 			if (_sourceBitmapDataObj != null) {
 				if (_currentLogicAngle == 0 || _currentLogicAngle >= 4) {
@@ -131,12 +105,8 @@
 			return bitmapData || new BitmapData(1, 1, true, 0);
 		}
 		
-		/**
-		 * 设置播放动作
-		 */
 		public function playTo(status:String=null, logicAngle:int=-1, rotation:int=-1, 
-							   playCondition:AvatarPlayCondition=null):void
-		{
+							   playCondition:AvatarPlayCondition=null):void {
 			var resName:String;
 			if (!avatar || !avatar.sceneCharacter) {
 				return;
@@ -328,22 +298,19 @@
 			}
 		}
 		
-		public function onAdd():void
-		{
+		public function onAdd():void {
 			if (_onAdd != null) {
 				_onAdd(avatar!=null ? avatar.sceneCharacter : null, this);
 			}
 		}
 		
-		public function onRemove():void
-		{
+		public function onRemove():void {
 			if (_onRemove != null) {
 				_onRemove(avatar!=null ? avatar.sceneCharacter : null, this);
 			}
 		}
 		
-		public function run(frame:int=-1):void
-		{
+		public function run(frame:int=-1):void {
 			var time_1:int;
 			var time_2:int;
 			var bb:Boolean;
@@ -576,11 +543,7 @@
 			}
 		}
 		
-		/**
-		 * 绘制, 并执行很多更新过程
-		 */
-		public function draw(iBitmap:IBitmapDrawable):void
-		{
+		public function draw(iBitmap:IBitmapDrawable):void {
 			var bitmapData:BitmapData;
 			var rect:Rectangle;
 			if (!needRender) {
@@ -658,11 +621,9 @@
 			}
 		}
 		
-		/**
-		 * 绘制像素
-		 */
-		private function copyToAvatarBD(iBitmap:IBitmapDrawable, src:BitmapData, sx:int, sy:int, width:int, height:int, left:int, top:int):void
-		{
+		private function copyToAvatarBD(iBitmap:IBitmapDrawable, src:BitmapData, 
+										sx:int, sy:int, width:int, height:int, 
+										left:int, top:int):void {
 			if (!src) {
 				return;
 			}
@@ -677,11 +638,7 @@
 			}
 		}
 		
-		/**
-		 * 根据像素位置判断命中
-		 */
-		public function hitPoint(pos:Point):Boolean
-		{
+		public function hitPoint(pos:Point):Boolean {
 			var colorPoint:uint;
 			var bitmapData:BitmapData = _inMaskDrawSourceBitmapData || _drawSourceBitmapData;
 			if (bitmapData != null) {
@@ -693,24 +650,17 @@
 			return false;
 		}
 		
-		public function clearMe():void
-		{
+		public function clearMe():void {
 			if (avatar.sceneCharacter.scene) {
 				avatar.sceneCharacter.scene.sceneAvatarLayer.removeBoundsArr.push(Bounds.fromRectangle(_oldData.oldCutRect));
 			}
 		}
 		
-		public function get currentAvatarPartStatus():AvatarPartStatus
-		{
+		public function get currentAvatarPartStatus():AvatarPartStatus {
 			return _currentAvatarPartStatus;
 		}
 		
-		/**
-		 * 释放资源 
-		 * 
-		 */
-		public function dispose():void
-		{
+		public function dispose():void {
 			var _local1:String;
 			usable = false;
 			avatarParamData = null;
@@ -767,13 +717,7 @@
 			isBlank = false;
 		}
 		
-		/**
-		 * 重置 
-		 * @param arr
-		 * 
-		 */
-		public function reset(arr:Array):void
-		{
+		public function reset(arr:Array):void {
 			id = arr[0];
 			type = (arr[1] || AvatarPartType.BODY);
 			depth = arr[2];

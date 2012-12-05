@@ -16,12 +16,6 @@
 	import wit.handler.HandlerHelper;
 	import wit.utils.ZMath;
 
-	/**
-	 * 法术助手
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class MagicHelper
 	{
 		/**
@@ -31,12 +25,10 @@
 		 * @param fromApd 触发对象的特效
 		 * @param toApd 施予对象的特效
 		 * @param passApd 过场特效
-		 * 
 		 */
         public static function showMagic_from1passNtoN(fromSceneChar:CCCharacter, 
 							   toArray:Array, fromApd:AvatarParamData=null, 
-							   toApd:AvatarParamData=null, passApd:AvatarParamData=null):void
-		{
+							   toApd:AvatarParamData=null, passApd:AvatarParamData=null):void {
             var hasRun:Boolean = false;
             var showAttack:Function = null;
             var toSceneChar:CCCharacter = null;
@@ -68,12 +60,10 @@
 		 * @param fromApd 触发对象的特效
 		 * @param toApd 施予对象的特效
 		 * @param passApd 过场特效
-		 * 
 		 */
         public static function showMagic_from1pass1toPointArea(fromSceneChar:CCCharacter, 
 								toPoint:Point, fromApd:AvatarParamData=null, 
-								toApd:AvatarParamData=null, passApd:AvatarParamData=null):void
-		{
+								toApd:AvatarParamData=null, passApd:AvatarParamData=null):void {
             var hasRun:Boolean = false;
             var showAttack:Function = null;
             showAttack = function():void
@@ -116,13 +106,11 @@
 		 * @param fromApd 触发对象的特效
 		 * @param toApd 施予对象的特效
 		 * @param passApd 过场特效
-		 * 
 		 */
 		public static function showMagic_from1passNtoRectArea(fromSceneChar:CCCharacter, 
 								toRectCenter:Point, toRectHalfWidth:int, toRectHalfHeight:int, 
 								showSpace:int=25, includeCenter:Boolean=true, fromApd:AvatarParamData=null, 
-								toApd:AvatarParamData=null, passApd:AvatarParamData=null):void
-		{
+								toApd:AvatarParamData=null, passApd:AvatarParamData=null):void {
             var hasRun:Boolean = false;
             var showAttack:Function = null;
             showAttack = function ():void
@@ -232,13 +220,11 @@
 		 * @param fromApd 触发对象的特效
 		 * @param toApd 施予对象的特效
 		 * @param passApd 过场特效
-		 * 
 		 */
 		public static function showMagic_from1pass1toRectArea(fromSceneChar:CCCharacter, 
 							  toRectCenter:Point, toRectHalfWidth:int, toRectHalfHeight:int, 
 							  showSpace:int=25, includeCenter:Boolean=true, fromApd:AvatarParamData=null, 
-							  toApd:AvatarParamData=null, passApd:AvatarParamData=null):void
-		{
+							  toApd:AvatarParamData=null, passApd:AvatarParamData=null):void {
             var hasRun:Boolean = false;
             var showAttack:Function = null;
             showAttack = function():void
@@ -360,11 +346,10 @@
 		 * @param fromApd 触发对象的特效
 		 * @param toApd 施予对象的特效
 		 * @param passApd 过场特效
-		 * 
 		 */		
         public static function showMagic(fromSceneChar:CCCharacter, toArray:Array, 
-										 fromApd:AvatarParamData=null, toApd:AvatarParamData=null, passApd:AvatarParamData=null):void
-		{
+										 fromApd:AvatarParamData=null, toApd:AvatarParamData=null, 
+										 passApd:AvatarParamData=null):void {
             var passAndHit:Function = function(sceneChar1:CCCharacter=null, part:CCAvatarPart=null):void{
                 var tmpSceneChar:CCCharacter;
                 if (passApd == null){
@@ -389,8 +374,8 @@
         }
 		
         private static function showTweenAvatarPart(fromSceneChar:CCCharacter, 
-													toSceneChar:CCCharacter, toApd:AvatarParamData, passApd:AvatarParamData):void
-		{
+													toSceneChar:CCCharacter, toApd:AvatarParamData, 
+													passApd:AvatarParamData):void {
             var scene:CCScene = null;
             var passSc:CCCharacter = null;
             var new_onPlayBeforeStart:Function = function (sceneChar1:CCCharacter=null, part:CCAvatarPart=null):void{
@@ -407,8 +392,8 @@
 		
         private static function tweenDandao(passSceneChar:CCCharacter, 
 											toSceneChar:CCCharacter, 
-											completeHandler:Function, objArr:Array=null, targetPoint:Point=null):void
-		{
+											completeHandler:Function, objArr:Array=null, 
+											targetPoint:Point=null):void {
             var firstScPoint:Point;
             var secondScPoint:Point;
             var distance:Number;
@@ -447,12 +432,10 @@
 		 * @param passSceneChar 过场对象
 		 * @param toSceneChar 目标对象
 		 * @param avatarParamData 特效数据
-		 * 
 		 */		
         private static function hitIt(scene:CCScene, passSceneChar:CCCharacter, 
 									  toSceneChar:CCCharacter, 
-									  avatarParamData:AvatarParamData):void
-		{
+									  avatarParamData:AvatarParamData):void {
             TweenLite.killTweensOf(passSceneChar);
             scene.removeCharacter(passSceneChar);
             if (!toSceneChar.usable) {

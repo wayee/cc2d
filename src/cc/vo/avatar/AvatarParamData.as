@@ -7,12 +7,6 @@
 	
 	import wit.handler.HandlerThread;
 
-	/**
-	 * 纸娃娃数据
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class AvatarParamData
 	{
         private var id:String;							// ID, AvatarPartID, AvatarPartID.xxx
@@ -38,11 +32,12 @@
         }
 		
 		/**
-		 * ID, 必须非空, 且非  AvatarPartID 中枚举的内容
+		 * 必须非空, 且非  AvatarPartID 中枚举的内容
 		 */
         public function get Id():String {
             return id;
         }
+		
         public function set Id(p_id:String):void {
             if ( !AvatarPartID.IsValidID(p_id) ) {
                 throw new Error("换装ID非法（原因：该ID为引擎换装ID关键字）");
@@ -53,7 +48,7 @@
 		/**
 		 * 设置 ID, 不检测有效性
 		 */
-        public function set id_noCheckValid(p_id:String):void {
+        public function set Id_noCheckValid(p_id:String):void {
             id = p_id;
         }
 		
@@ -208,7 +203,7 @@
 		
         public function clone():AvatarParamData {
             var data:AvatarParamData = new AvatarParamData(sourcePath, avatarPartType, depth, useType);
-            data.id_noCheckValid = Id;
+            data.Id_noCheckValid = Id;
             data.status = status;
             data.angle = angle;
             data.rotation = rotation;

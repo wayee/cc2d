@@ -1,12 +1,9 @@
 ﻿package cc.vo.avatar
 {
-	/**
-	 * 部位(身体/手) 的某个动作定义
-	 */
     public class AvatarPartStatus
 	{
-		public var resourceType:String; // swf | sprite sheet
-        public var type:String;			// see StaticData STATUS_TYPE_xxx
+		public var resourceType:String; // swf | sprite sheet 部位(身体/手) 的某个动作定义
+        public var type:String;			// see AvatarPartType
         public var frame:int;
         public var delay:int;
         public var repeat:int;

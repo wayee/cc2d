@@ -7,12 +7,6 @@
 	import wit.manager.LoaderManager;
 	import wit.utils.Fun;
 
-	/**
-	 * 场景加载器
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
 	public class SceneLoader
 	{
 		public static var smallMapImgLoader:BulkLoader = LoaderManager.creatNewLoader("smallMapImgLoader", function (event:Event):void {

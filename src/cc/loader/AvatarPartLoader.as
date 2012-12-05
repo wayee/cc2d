@@ -10,19 +10,12 @@
 	import wit.loader.RslLoader;
 	import wit.manager.RslLoaderManager;
 
-	/**
-	 * 部件加载
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class AvatarPartLoader
 	{
 		/**
 		 * 加载部件数据
 		 */
-        public static function loadAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData=null):void
-		{
+        public static function loadAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData=null):void {
             var apsRes:Object = null;
             var aps:AvatarPartStatus = null;
             var tryLoadCount:int = 0;

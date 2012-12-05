@@ -4,12 +4,6 @@ package cc.utils
 	
 	import flashx.textLayout.formats.Float;
 
-	/**
-	 * 战斗寻路相关
-	 *  
-	 * @author zl <datuhao@gmail.com>
-	 * 
-	 */
 	public class PathFind
 	{
 		private static const START_IDX:int = 1;

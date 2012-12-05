@@ -2,12 +2,6 @@
 {
 	import flash.display.BitmapData;
 
-	/**
-	 * 角色位图数据
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class AvatarImgData
 	{
         public var dir07654:BitmapData;			// 正像 angle => 0 4567  2: <-  6: ->

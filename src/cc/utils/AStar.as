@@ -1,17 +1,7 @@
 ﻿package cc.utils
 {
-	/**
-	 * 寻路
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class AStar
 	{
-        public function AStar():void
-		{
-        }
-		
 		/**
 		 * 寻径, map[ "x_y" ] = 0 表示可通过
 		 * @param map SceneCache.mapSolids

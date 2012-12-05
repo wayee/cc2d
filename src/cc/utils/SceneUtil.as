@@ -10,12 +10,6 @@
 	import cc.utils.Transformer;
 	import wit.utils.ZMath;
 
-	/**
-	 * 场景辅助工具
-	 *  
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class SceneUtil
 	{
 		/**
@@ -61,19 +55,10 @@
             return ret;
         }
 		
-		/**
-		 * 获取地图块对象
-		 * @param x int tile X
-		 * @param y int tile Y
-		 * @return MapTile地图块对象
-		 */
         public static function GetMapTile(x:int, y:int):MapTile {
             return SceneCache.mapTiles[x + "_" + y] as MapTile;
         }
 		
-		/**
-		 * 障碍
-		 */
         public static function IsSolid(x:int, y:int):Boolean {
             var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile == null || mapTile.isSolid) {
@@ -82,9 +67,6 @@
             return false;
         }
 		
-		/**
-		 * 孤立
-		 */
         public static function IsIsland(x:int, y:int):Boolean {
             var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile != null && mapTile.isIsland) {
@@ -93,9 +75,6 @@
             return false;
         }
 		
-		/**
-		 * 遮罩 
-		 */
         public static function IsMask(x:int, y:int):Boolean {
             var mapTile:MapTile = GetMapTile(x, y);
             if (mapTile != null && mapTile.isMask) {
@@ -104,24 +83,10 @@
             return false;
         }
 		
-		/**
-		 * 格子坐标转换为编号 [(0,0) => 1]
-		 * @param tile array [x, y]
-		 * @param mapGridX
-		 * @param mapGridY
-		 * @return int 编号
-		 */
 		public static function ConvertTileToId(tile:Array, mapGridX:int, mapGridY:int):int {
 			return (tile[1]-1) * mapGridX + tile[0];
 		}
 		
-		/**
-		 * 编号转格子坐标一维数据 [1 => (0,0)]
-		 * @param id int
-		 * @param mapGridX int
-		 * @param mapGridY int
-		 * @return array 格子坐标数组
-		 */
 		public static function ConvertIdToTile(id:int, mapGridX:int, mapGridY:int):Array {
 			var tile:Array;
 			var tx:int = int(id-1)%mapGridX + 1;
@@ -130,13 +95,6 @@
 			return [tx, ty];
 		}
 		
-		/**
-		 * 编号一维数组转格子坐标二维数组
-		 * @param ids
-		 * @param mapGridX
-		 * @param mapGridY
-		 * @return array 格子坐标数组
-		 */
 		public static function ConvertIdsToTile(ids:Array, mapGridX:int, mapGridY:int):Array {
 			var tiles:Array = new Array;
 			for each (var id:int in ids) {

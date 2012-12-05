@@ -1,11 +1,5 @@
 ﻿package cc.utils
 {
-	/**
-	 * 全局配置信息: 路径, fps
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
 	public class CCG
 	{
 		public static var frameRate:int = 24;						// 当前 fps

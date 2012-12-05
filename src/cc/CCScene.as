@@ -30,9 +30,6 @@
 	 * <br> 所有玩家能看到的对象都在场景中渲染
 	 * <br> 所以场景对象管理着所有这些对象
 	 * <br> 还包括场景自身的场景图的加载和卸载管理
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
 	 */
     public class CCScene extends Sprite
 	{
@@ -431,7 +428,7 @@
 		 */
 		public function setSelectedAvatarParamData(avatarParamData:AvatarParamData):void
 		{
-			avatarParamData.id_noCheckValid = AvatarPartID.SELECTED;
+			avatarParamData.Id_noCheckValid = AvatarPartID.SELECTED;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = (-(int.MAX_VALUE) + 1);
 			avatarParamData.useType = 0;
@@ -449,7 +446,7 @@
 		 */
 		public function setBlankAvatarParamData(avatarParamData:AvatarParamData):void
 		{
-			avatarParamData.id_noCheckValid = AvatarPartID.BLANK;
+			avatarParamData.Id_noCheckValid = AvatarPartID.BLANK;
 			avatarParamData.avatarPartType = AvatarPartType.BODY;
 			avatarParamData.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.BODY);
 			avatarParamData.useType = 0;
@@ -464,7 +461,7 @@
 		 */
 		public function setShadowAvatarParamData(avatarParamData:AvatarParamData):void
 		{
-			avatarParamData.id_noCheckValid = AvatarPartID.SHADOW;
+			avatarParamData.Id_noCheckValid = AvatarPartID.SHADOW;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = -(int.MAX_VALUE);
 			avatarParamData.useType = 0;
@@ -491,7 +488,7 @@
                 }
                 sceneCharacters.push(sceneChar);
                 renderCharacters.push(sceneChar);
-//                ZLog.add("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			
 			// 傀儡
@@ -501,7 +498,7 @@
                 }
                 _sceneDummies.push(sceneChar);
                 renderCharacters.push(sceneChar);
-//                ZLog.add("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			
             sceneChar.visible = ( sceneChar == mainChar || getCharVisible(sceneChar.type) );
@@ -546,7 +543,7 @@
                         sceneChar.clearMe();
                     }
                 }
-//                ZLog.add("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			// 傀儡
 			else {
@@ -564,7 +561,7 @@
                         sceneChar.clearMe();
                     }
                 }
-//                ZLog.add("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
         }
 		

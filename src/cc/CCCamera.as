@@ -4,12 +4,6 @@
 	import cc.utils.SceneUtil;
 	import cc.CCCharacter;
 
-	/**
-	 * 场景摄像机，继承BaseElement 
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class CCCamera extends CCNode
 	{
         private const LIMEN_RATIO:Number = 0.05;	// 阀值率
@@ -22,29 +16,20 @@
         private var _isLocked:Boolean = false;
         public var tileRangeXY:Point;							// 可见块范围
 
-        public function CCCamera(scene:CCScene)
-		{
+        public function CCCamera(scene:CCScene) {
             _scene = scene;
             updateRangeXY();
         }
 		
-		/**
-		 * 锁定, 不移动(run)
-		 */
-        public function lock():void
-		{
+        public function lock():void {
             _isLocked = true;
         }
-        public function unlock():void
-		{
+		
+        public function unlock():void {
             _isLocked = false;
         }
 		
-		/**
-		 * 更新范围的位置 
-		 */
-        public function updateRangeXY():void
-		{
+        public function updateRangeXY():void {
             tileRangeXY = SceneUtil.GetViewTileRangeXY(_scene);
             x_limen = _scene.sceneConfig.width * LIMEN_RATIO;
             y_limen = _scene.sceneConfig.height * LIMEN_RATIO;
@@ -55,30 +40,19 @@
 		 * TileX, TileY是地图中点的位置
 		 * tileRangXY是场景内地中点位置
 		 */
-        public function canSee(sceneChar:CCCharacter):Boolean
-		{
+        public function canSee(sceneChar:CCCharacter):Boolean {
             return sceneChar.TileX > (TileX - tileRangeXY.x) && 
 				sceneChar.TileX < (TileX + tileRangeXY.x) && 
 				sceneChar.TileY > (TileY - tileRangeXY.y) && 
 				sceneChar.TileY < (TileY + tileRangeXY.y);
         }
 		
-		/**
-		 * 锁定某个角色
-		 */
-        public function lookAt(sceneChar:CCCharacter, b:Boolean=false):void
-		{
+        public function lookAt(sceneChar:CCCharacter, b:Boolean=false):void {
             _followCharacter = sceneChar;
             run(b);
         }
 		
-		/**
-		 * 移动摄像机位置, 跟随玩家, 并保持在场景之内
-		 * 想象成拍电影的时候，摄影机跟着主角的过程
-		 * 100遍都你还是看不明白，可以转行了，不过你也可以坚持到1w遍
-		 */
-        public function run(b:Boolean=true):void
-		{
+        public function run(b:Boolean=true):void {
             if (_isLocked) {						// 锁定
                 return;
             }

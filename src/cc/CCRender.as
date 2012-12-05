@@ -5,27 +5,18 @@
 	
 	import cc.tools.SceneCache;
 
-	/**
-	 * 场景渲染器
-	 * <br> 监听每帧，进行一次渲染
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class CCRender
 	{
-        public static var nowTime:int;			// 当前时间点
+        public static var nowTime:int;				// 当前时间点
 
         private var _scene:CCScene;
         private var isRendering:Boolean = false;	// 是否绘制标志, 如果在加载中, 可以不绘制
 
-        public function CCRender(scene:CCScene)
-		{
+        public function CCRender(scene:CCScene) {
             _scene = scene;
         }
 		
-        public function startRender(renderNow:Boolean=false):void
-		{
+        public function startRender(renderNow:Boolean=false):void {
             if (renderNow) {
                 render();
             }
@@ -36,16 +27,14 @@
             }
         }
 		
-        public function stopRender():void
-		{
+        public function stopRender():void {
             if (isRendering) {
                 _scene.removeEventListener(Event.ENTER_FRAME, render);
                 isRendering = false;
             }
         }
 		
-        private function render(e:Event=null):void
-		{
+        private function render(e:Event=null):void {
             nowTime = getTimer();
             var charList:Array = _scene.sceneCharacters;
             

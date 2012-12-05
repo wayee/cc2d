@@ -14,7 +14,7 @@
 		 * 判断是否合法ID, 要求 非保留关键字
 		 */
         public static function IsValidID(id:String):Boolean {
-			if (id == null || id == "" || !IsDefaultKey(id)) {
+			if (id == null || id == "" || IsDefaultKey(id)) {
 				return false;
 			}
 			return true;

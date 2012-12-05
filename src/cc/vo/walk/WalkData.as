@@ -5,12 +5,6 @@
 	import cc.vo.map.MapTile;
 	import cc.walk.PathCutter;
 
-	/**
-	 * 走路信息
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class WalkData 
 	{
 		private static const J:Number = 450;
@@ -33,13 +27,10 @@
 		public var jump_vars:Object = null;			// 跳跃回调参数
 		public var isJumping:Boolean;
 		
-		public function get jump_speed():Number{
-			return ((J + (K / (this.walk_speed - (K / J)))));
+		public function get jump_speed():Number {
+			return (J + (K / (this.walk_speed - (K / J))));
 		}
 		
-		/**
-		 * 清空移动数据
-		 */
         public function clear():void {
             walk_pathArr = null;
             walk_targetP = null;

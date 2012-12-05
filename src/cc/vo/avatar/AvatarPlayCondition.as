@@ -1,19 +1,10 @@
 ﻿package cc.vo.avatar
 {
-	/**
-	 * 播放方式
-	 * 	<li> 是否初始为播放状态
-	 * 	<li> 是否停留在末尾
-	 * 	<li> 是否显示末尾
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class AvatarPlayCondition
 	{
-        private var playAtBegin:Boolean;
-        private var stayAtEnd:Boolean;
-        private var showEnd:Boolean;
+        private var playAtBegin:Boolean;		// 是否初始为播放状态
+        private var stayAtEnd:Boolean;			// 是否停留在末尾
+        private var showEnd:Boolean;			// 是否显示末尾
 
         public function AvatarPlayCondition(p_playAtBegin:Boolean=false, p_stayAtEnd:Boolean=false, 
 											p_showEnd:Boolean=false) {

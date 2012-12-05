@@ -10,12 +10,6 @@
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	/**
-	 * 角色附加对象助手 (HeadFace, AttackFace)
-	 * 
-	 * @author Andy Cai <huayicai@gmail.com>
-	 * 
-	 */
     public class TaggerHelper
 	{
         private static var xDis:Number = 100;
