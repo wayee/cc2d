@@ -44,6 +44,9 @@
         public var showIndex:int = 0;
         public var updateNow:Boolean;			// 需要更新
 		
+		public var specilizeX:Number = 0;
+		public var specilizeY:Number = 0;
+		
 		public var avatar:CCAvatar;				// 外观
         public var headFace:HeadFace;			// 在 SceneHeadLayer 中显示, 昵称/对话 等显示
         public var scene:CCScene;
@@ -64,8 +67,8 @@
 		 * pos:new Point()
 		 * }
 		 */		
-        protected var oldData:Object;				// 旧的状态数据
-        protected var walkData:WalkData;			// 移动数据
+        private var oldData:Object;				// 旧的状态数据
+        private var walkData:WalkData;			// 移动数据
 
 		/**
 		 * 场景对象 
@@ -345,80 +348,75 @@
             WalkHelper.walk1(this, pathByteData, targetTilePoint, walkSpeed, error, walkVars);
         }
 		
+		/**
+		 * 跳跃 
+		 */		
+		public function jump(p_pos:Point, p_speed:Number=-1, p_max_dis:Number=-1, p_vars:Object=null):void {
+			WalkHelper.jump(this, p_pos, p_speed, p_max_dis, p_vars);
+		}
+		public function lineTo(p_pos:Point, p_speed:Number, p_is_pet:Boolean=false, p_vars:Object=null):void {
+			WalkHelper.lineTo(this, p_pos, p_speed, p_is_pet, p_vars);
+		}
+		public function lineToPixel(p_pos:Point, p_speed:Number, p_callback:Function=null):void {
+			WalkHelper.lineToPixel(this, p_pos, p_speed, p_callback);
+		}
+		
 		///////////////////////////////////
 		// 角色部件接口
 		///////////////////////////////////
 		
-		public function setBornAvatarParamData(avatarParamData:AvatarParamData):void
-		{
+		public function setBornAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatar.setBornAvatarParamData(avatarParamData);
 		}
-		public function getBornAvatarParamData():AvatarParamData
-		{
+		public function getBornAvatarParamData():AvatarParamData {
 			return avatar.getBornAvatarParamData();
 		}
-		public function hasTypeAvatarParts(partType:String):Boolean
-		{
+		public function hasTypeAvatarParts(partType:String):Boolean {
 			return avatar.hasTypeAvatarParts(partType);
 		}
-		public function hasIDAvatarPart(partID:String):Boolean
-		{
+		public function hasIDAvatarPart(partID:String):Boolean {
 			return (avatar.hasIDAvatarPart(partID));
 		}
-		public function loadAvatarPart(avatarParamData:AvatarParamData=null):void
-		{
+		public function loadAvatarPart(avatarParamData:AvatarParamData=null):void {
 			avatar.loadAvatarPart(avatarParamData);
 		}
-		public function showAvatarPart(part:CCAvatarPart):void
-		{
+		public function showAvatarPart(part:CCAvatarPart):void {
 			avatar.showAvatarPart(part);
 		}
-		public function hideAvatarPart(part:CCAvatarPart):void
-		{
+		public function hideAvatarPart(part:CCAvatarPart):void {
 			avatar.hideAvatarPart(part);
 		}
-		public function showAvatarPartsByType(partType:String):void
-		{
+		public function showAvatarPartsByType(partType:String):void {
 			avatar.showAvatarPartsByType(partType);
 		}
-		public function hideAvatarPartsByType(partType:String):void
-		{
+		public function hideAvatarPartsByType(partType:String):void {
 			avatar.hideAvatarPartsByType(partType);
 		}
-		public function showAvatarPartByID(partID:String):void
-		{
+		public function showAvatarPartByID(partID:String):void {
 			avatar.showAvatarPartByID(partID);
 		}
-		public function hideAvatarPartByID(partID:String):void
-		{
+		public function hideAvatarPartByID(partID:String):void {
 			avatar.hideAvatarPartByID(partID);
 		}
-		public function addAvatarPart(part:CCAvatarPart, removeExist:Boolean=false):void
-		{
+		public function addAvatarPart(part:CCAvatarPart, removeExist:Boolean=false):void {
 			avatar.addAvatarPart(part, removeExist);
 		}
-		public function removeAvatarPart(part:CCAvatarPart, byType:Boolean=false, update:Boolean=true):void
-		{
+		public function removeAvatarPart(part:CCAvatarPart, byType:Boolean=false, update:Boolean=true):void {
 			avatar.removeAvatarPart(part, byType, update);
 		}
-		public function removeAllAvatarParts(update:Boolean=true):void
-		{
+		public function removeAllAvatarParts(update:Boolean=true):void {
 			avatar.removeAllAvatarParts(update);
 		}
-		public function removeAvatarPartsByType(partType:String, update:Boolean=true):void
-		{
+		public function removeAvatarPartsByType(partType:String, update:Boolean=true):void {
 			avatar.removeAvatarPartsByType(partType, update);
 		}
-		public function removeAvatarPartByID(partID:String, update:Boolean=true):void
-		{
+		public function removeAvatarPartByID(partID:String, update:Boolean=true):void {
 			avatar.removeAvatarPartByID(partID, update);
 		}
-		public function getAvatarPartsByType(partType:String):Array
-		{
+		public function getAvatarPartsByType(partType:String):Array {
 			return avatar.getAvatarPartsByType(partType);
 		}
-		public function getAvatarPartByID(partID:String):CCAvatarPart
-		{
+		public function getAvatarPartByID(partID:String):CCAvatarPart {
 			return avatar.getAvatarPartByID(partID);
 		}
 		
@@ -644,6 +642,10 @@
 		{
             return scene == null || scene.sceneCamera.canSee(this);
         }
+		
+		public function isJumping():Boolean {
+			return walkData.isJumping;
+		}
 		
         public function clearMe():void
 		{

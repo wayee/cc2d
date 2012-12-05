@@ -11,12 +11,12 @@
 	import cc.utils.SceneUtil;
 	import cc.vo.map.MapTile;
 	import cc.vo.map.SceneInfo;
-	import cc.vo.walk.WalkData;
 	
 	import flash.geom.Point;
 	
 	import wit.event.EventDispatchCenter;
 	import wit.utils.ZMath;
+	import cc.vo.walk.WalkData;
 
 	/**
 	 * 运动管理器

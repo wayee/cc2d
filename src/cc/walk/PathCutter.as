@@ -9,7 +9,7 @@
 	import wit.event.EventDispatchCenter;
 
 	/**
-	 * 莫非传说中的碰撞检测
+	 * 路径优化
 	 * 	<li> 引用: WalkData.walk_pathCutter
 	 */
     public class PathCutter 
@@ -93,7 +93,7 @@
             if (path.length < 2) {
                 return;
             }
-            var bytePath:ByteArray = PathConverter.convertToVector(path);
+            var bytePath:ByteArray = PathConverter.ConvertToVector(path);
             var event:CCEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.SEND_PATH, [sceneCharacter, bytePath]);
             EventDispatchCenter.getInstance().dispatchEvent(event);
         }
