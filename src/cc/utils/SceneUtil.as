@@ -86,26 +86,6 @@
             return false;
         }
 		
-		public static function ConvertTileToId(tile:Array, mapGridX:int, mapGridY:int):int {
-			return (tile[1]-1) * mapGridX + tile[0];
-		}
-		
-		public static function ConvertIdToTile(id:int, mapGridX:int, mapGridY:int):Array {
-			var tile:Array;
-			var tx:int = int(id-1)%mapGridX + 1;
-			var ty:int = int(id-1)/mapGridX + 1;
-
-			return [tx, ty];
-		}
-		
-		public static function ConvertIdsToTile(ids:Array, mapGridX:int, mapGridY:int):Array {
-			var tiles:Array = new Array;
-			for each (var id:int in ids) {
-				tiles.push(ConvertIdToTile(id, mapGridX, mapGridY));
-			}
-			return tiles;
-		}
-		
         public static function HasSolidBetween2MapTile(mapTile1:MapTile, mapTile2:MapTile):Boolean {
             var mapTile:MapTile;
             var pos1:Point = new Point(mapTile1.PixelX, mapTile1.PixelY);
@@ -197,7 +177,7 @@
             _local10 = 0;
             while (_local10 < _local12) {
                 _local7 = _local11[_local10];
-                _local8 = Transformer.transTilePoint2PixelPoint(_local7);
+                _local8 = Transformer.TransTilePoint2PixelPoint(_local7);
                 if (mapTile1 == null || mapTile1.TileX == _local7.x && mapTile1.TileY == _local7.y) {
                     return mapTile1;
                 }
@@ -246,7 +226,7 @@
             _local10 = 0;
             while (_local10 < _local12) {
                 _local7 = _local11[_local10];
-                _local8 = Transformer.transTilePoint2PixelPoint(_local7);
+                _local8 = Transformer.TransTilePoint2PixelPoint(_local7);
                 if (Point.distance(pxPoint, _local8) >= mapTile2){
                     return null;
                 }

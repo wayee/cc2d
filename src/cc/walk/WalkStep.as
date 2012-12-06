@@ -9,14 +9,15 @@
 	import cc.tools.SceneCache;
 	import cc.utils.CCG;
 	import cc.utils.SceneUtil;
+	import cc.utils.Transformer;
 	import cc.vo.map.MapTile;
 	import cc.vo.map.SceneInfo;
+	import cc.vo.walk.WalkData;
 	
 	import flash.geom.Point;
 	
 	import wit.event.EventDispatchCenter;
 	import wit.utils.ZMath;
-	import cc.vo.walk.WalkData;
 
 	/**
 	 * 运动管理器
@@ -44,7 +45,7 @@
         public static function step(sceneChar:CCCharacter):void
 		{
             var sceneEvent:CCEvent;
-            var passUnit:Array;
+            var passUnit:Point;
             var lastTime:int;
             var interval:Number;	// 时间间隔
             var mapTile:MapTile;
@@ -99,14 +100,14 @@
 				
 				// 如果是主对象, 发送消息: 经过
                 if (sceneChar == sceneChar.scene.mainChar) {
-//                    walkData.walk_pathCutter.walkNext(passUnit[0], passUnit[1]);
-                    sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.THROUGH, [sceneChar, SceneUtil.GetMapTile(passUnit[0], passUnit[1])]);
+//                    walkData.walk_pathCutter.walkNext(passUnit.x, passUnit.y);
+                    sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.THROUGH, [sceneChar, SceneUtil.GetMapTile(passUnit.x, passUnit.y)]);
                     EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
                 }
 				
 				// 回调函数, walkData.walk_vars.onWalkThrough( sceneChar, MapTile);
                 if (walkData.walk_vars != null && walkData.walk_vars.onWalkThrough != null) {
-                    walkData.walk_vars.onWalkThrough(sceneChar, SceneUtil.GetMapTile(passUnit[0], passUnit[1]));
+                    walkData.walk_vars.onWalkThrough(sceneChar, SceneUtil.GetMapTile(passUnit.x, passUnit.y));
                 }
             }
 			
@@ -178,14 +179,16 @@
 		 */
         private static function stepDistance(sceneChar:CCCharacter, distance:Number):Object
 		{
-            var pathUnit:Array;
+            var pathUnit:Point;
             var endPixel:Point;
             var next_distance:Number;
-            var passedUnit:Array;
+            var passedUnit:Point;
+			
             var resultObj:Object = {
                 standPixel:new Point(sceneChar.PixelX, sceneChar.PixelY),		// 当前坐标
                 throughTileArr:[]		// 已经经过的格子数组
             };
+			
             var walkData:WalkData = sceneChar.Walkdata;				// 移动数据
             var startPixel:Point = resultObj.standPixel;			// 当前坐标
             var want_distance:Number = distance;					// 移动距离
@@ -193,8 +196,8 @@
 			var tileWidth:int = SceneInfo.TILE_WIDTH;
 			var tileHeight:int = SceneInfo.TILE_HEIGHT;
 			
-            pathUnit = walkData.walk_pathArr[0];	// walk_pathArr = [ [tx,ty], [tx,ty], ... ]
-            endPixel = new Point((pathUnit[0] * tileWidth), (pathUnit[1] * tileHeight));		// 块坐标 -> 像素坐标
+            pathUnit = walkData.walk_pathArr[0] as Point;	// walk_pathArr = [ Point(tx,ty), ... ]
+            endPixel = Transformer.TransTilePoint2PixelPoint(pathUnit)		// 块坐标 -> 像素坐标
             next_distance = Point.distance(startPixel, endPixel);	// 到下一个格子的距离
 			
 			// 距离下一个格子的距离, 大于要移动的距离
@@ -215,8 +218,8 @@
                 passedUnit = walkData.walk_pathArr.shift();	// 删除一个路径单元
                 throughTileArray.push(passedUnit);						// 保存到 已经过路径 中
                 want_distance = (want_distance - tmpDistance);
-                startPixel.x = (passedUnit[0] * tileWidth);			// 移动到该格子的起始点
-                startPixel.y = (passedUnit[1] * tileHeight);
+                startPixel.x = (passedUnit.x * tileWidth);			// 移动到该格子的起始点
+                startPixel.y = (passedUnit.y * tileHeight);
                 return resultObj;			// 返回移动信息
             }
 			
@@ -225,8 +228,8 @@
             passedUnit = walkData.walk_pathArr.shift();
             throughTileArray.push(passedUnit);
             want_distance = (want_distance - tmpDistance);
-            startPixel.x = (passedUnit[0] * tileWidth);
-            startPixel.y = (passedUnit[1] * tileHeight);
+            startPixel.x = (passedUnit.x * tileWidth);
+            startPixel.y = (passedUnit.y * tileHeight);
             if (walkData.walk_pathArr.length == 0) {
                 return resultObj;
             }

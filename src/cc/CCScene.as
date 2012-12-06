@@ -280,9 +280,9 @@
                     }
                 }
 				
-                MapLoader.loadSmallMap(scene);			// 加载小地图
+                MapLoader.LoadSmallMap(scene);			// 加载地图缩略图
 //                sceneMapLayer.initMap();				// 设置背景图（整图显示），加载地图在 sceneMaplayer.run()
-				sceneMapLayer.initMapZones();			// 设置背景图（分割显示）
+				sceneMapLayer.InitMapZones();			// 设置背景图（分割显示）
 				sceneAvatarLayer.creatAllAvatarBD();	// 清空对象层
                 sceneInteractiveLayer.initRange();		// 重新设置事件接受区域
 				
@@ -314,7 +314,7 @@
             sceneRender.StopRender();			// 暂停渲染
             dispose();							// 释放
 			
-            MapLoader.loadMapConfig(mapPicId, this, newOnComplete, updateHandler);	// 加载当前地图的配置信息
+            MapLoader.LoadMapConfig(mapPicId, this, newOnComplete, updateHandler);	// 加载当前地图的配置信息
             scene = this;
         }
 		

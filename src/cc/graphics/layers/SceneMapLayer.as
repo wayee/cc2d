@@ -61,20 +61,17 @@
 		}
 		
 		/**
-		 * 初始化地图族, 建立每一个 mapZone 保存到  SceneCache.mapZones
 		 * @from Scene.switchScene
 		 */
-		public function initMapZones():void {
-			var map:Object;
+		public function InitMapZones():void {
+			var map:Object = {};
 			var zone_x:int;
 			var zone_y:int;
 			var zone:MapZone;
-			var _local7:Point;
-			map = {};
 			var zone_width:int = (this._scene.mapConfig.mapGridX / SceneInfo.ZONE_SCALE);		// 族宽度
 			var zone_height:int = (this._scene.mapConfig.mapGridY / SceneInfo.ZONE_SCALE);		// 族高度
-			zone_x = 0;
 			
+			zone_x = 0;
 			while (zone_x < zone_width) {
 				zone_y = 0;
 				while (zone_y < zone_height) {
@@ -100,7 +97,7 @@
 				return;
 			}
 			
-			// 跟随当前视区, 计算地图位置
+			// 跟随当前视野, 计算地图位置
 			this._currentCameraPos.x = this._scene.sceneCamera.PixelX;
 			this._currentCameraPos.y = this._scene.sceneCamera.PixelY;
 			
@@ -123,9 +120,9 @@
 			var currentZones:Object = {};
 			
 			// 根据当前视区, 取得当前左上角的 zone 对象
-			var tile_pos:Point = Transformer.transPixelPoint2TilePoint(new Point(this._scene.sceneCamera.PixelX, this._scene.sceneCamera.PixelY));
-			var zone_pos:Point = Transformer.transTilePoint2ZonePoint(tile_pos);
-			var zone:MapZone = SceneCache.mapZones[((zone_pos.x + "_") + zone_pos.y)];
+			var tile_pos:Point = Transformer.TransPixelPoint2TilePoint(new Point(this._scene.sceneCamera.PixelX, this._scene.sceneCamera.PixelY));
+			var zone_pos:Point = Transformer.TransTilePoint2ZonePoint(tile_pos);
+			var zone:MapZone = SceneCache.mapZones[(zone_pos.x + "_" + zone_pos.y)];
 			if (!zone) {
 				return;
 			}
@@ -154,11 +151,10 @@
 							SceneCache.currentMapZones[key] = null;		// 删除该位置
 							delete SceneCache.currentMapZones[key];
 						}
-						// 结果: currentZones[ key ] = _local1; 
+						// 结果: currentZones[ key ] = currentZone; 
 						
 						// 如果没有在等待队列中, 则添加到等待队列
 						if (this._waitingLoadDatas[key] == null) {		// 如果某个图片加载失败, 则会被重复添加
-							
 							// 计算 _loccurrentZoneone 的距离
 							distance = -(Math.round(ZMath.getDistanceSquare(currentZone.PixelX, currentZone.PixelY, zone.PixelX, zone.PixelY)));
 							loadData = this.addMapZone(currentZone, distance);		// 添加

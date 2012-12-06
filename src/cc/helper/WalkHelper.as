@@ -5,10 +5,10 @@
 	import cc.events.CCEvent;
 	import cc.events.CCEventActionWalk;
 	import cc.tools.SceneCache;
+	import cc.utils.AStar;
 	import cc.utils.SceneUtil;
 	import cc.utils.Transformer;
 	import cc.vo.map.MapTile;
-	import cc.utils.AStar;
 	import cc.walk.Jump;
 	
 	import flash.geom.Point;
@@ -141,13 +141,13 @@
 				walkPaths = walkPaths.reverse(); // 路径反转
 			}
 			
-			var tilePoint:Array;
-			var lastTilePoint:Array = walkPaths[walkPaths.length - 1];
+			var tilePoint:Point;
+			var lastTilePoint:Point = walkPaths[walkPaths.length - 1];
 			var pixelPoint:Point;
 			if (error != 0) {
 				for each (tilePoint in walkPaths) { // tilePoint[0] = tx, tilePoint[1] = ty
 					// 转换为像素点
-					pixelPoint = Transformer.transTilePoint2PixelPoint(new Point(tilePoint[0], tilePoint[1]));
+					pixelPoint = Transformer.TransTilePoint2PixelPoint(new Point(tilePoint.x, tilePoint.y));
 					// 两点直线距离小于误差，算达到目标
 					if (((pixelPoint.x - pixelP.x) * (pixelPoint.x - pixelP.x) + (pixelPoint.y - pixelP.y) * (pixelPoint.y - pixelP.y)) <= (error * error)) {
 						// 删除后面的路径
@@ -164,6 +164,7 @@
 		/**
 		 * WalkStep.step()根据Walkdata来执行走路 
 		 * @param walkPaths A* 计算后的路径数据 [[tx, ty], [tx, ty], ...]
+		 * @param walkPaths A* 计算后的路径数据 [Point(tx, ty), ...]
 		 */
 		public static function walk0(p_char:CCCharacter, walkPaths:Array, 
 									 targetTilePoint:Point=null, walkSpeed:Number=-1, 
@@ -191,12 +192,12 @@
 			}
 			
 			// 设置目标点
-			var lastPoint:Array;
+			var lastPoint:Point;
 			if (targetTilePoint != null) {
 				p_char.Walkdata.walk_targetP = targetTilePoint;
 			} else { // 没设定就使用走路路径的最后一点
-				lastPoint = pathData[pathData.length - 1];
-				p_char.Walkdata.walk_targetP = new Point(lastPoint[0], lastPoint[1]);
+				lastPoint = pathData[pathData.length - 1] as Point;
+				p_char.Walkdata.walk_targetP = new Point(lastPoint.x, lastPoint.y);
 			}
 			
 			p_char.Walkdata.walk_standDis = error;
@@ -212,10 +213,10 @@
 //			}
 			p_char.Walkdata.walk_pathArr = pathData;
 			
-			var lastPoint2:Array = pathData[pathData.length - 1];
-			var lastPointMapTile:MapTile = SceneCache.mapTiles[lastPoint2[0] + "_" + lastPoint2[1]];
+			var lastPoint2:Point = pathData[pathData.length - 1] as Point;
+			var lastPointMapTile:MapTile = SceneCache.mapTiles[lastPoint2.x + "_" + lastPoint2.y];
 			if (p_char.isMainChar()) {
-				p_char.scene.showMouseChar(lastPoint2[0], lastPoint2[1]);
+				p_char.scene.showMouseChar(lastPoint2.x, lastPoint2.y);
 				sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.READY, [p_char, lastPointMapTile, pathData]);
 				EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 			}

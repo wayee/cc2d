@@ -113,7 +113,7 @@
         }
 		
         public function faceToTile(p_x:Number, p_y:Number):void {
-            var pos:Point = Transformer.transTilePoint2PixelPoint(new Point(p_x, p_y));
+            var pos:Point = Transformer.TransTilePoint2PixelPoint(new Point(p_x, p_y));
             faceTo(pos.x, pos.y);
         }
 		
@@ -157,7 +157,7 @@
         }
 		
         public function setAngle(p_angle:Number):void {
-            var logicAngle:int = Transformer.transAngle2LogicAngle(p_angle);  // angle: 0-360
+            var logicAngle:int = Transformer.TransAngle2LogicAngle(p_angle);  // angle: 0-360
 			setLogicAngle(logicAngle);	// logic angle: 0-7	
         }
 		
