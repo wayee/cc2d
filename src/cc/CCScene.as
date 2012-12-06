@@ -40,38 +40,34 @@
         private static const MAX_AVATARBD_WIDTH:Number = SceneAvatarLayer.MAX_AVATARBD_WIDTH;
         private static const MAX_AVATARBD_HEIGHT:Number = SceneAvatarLayer.MAX_AVATARBD_HEIGHT;
 
-		// 基本组件
-        public var sceneConfig:SceneInfo;			// 场景定义
-        public var mapConfig:MapInfo;				// 地图定义
-        public var sceneCamera:CCCamera;			// 摄像机
-        public var sceneRender:CCRender;			// 渲染器, 自己建立侦听器负责定时渲染
+        public var sceneConfig:SceneInfo;							// 场景定义
+        public var mapConfig:MapInfo;								// 地图定义
+        public var sceneCamera:CCCamera;							// 摄像机
+        public var sceneRender:CCRender;							// 渲染器, 自己建立侦听器负责定时渲染
 		
-		// 对象维护. 按类型, 区分不同的场景对象
-        public var mainChar:CCCharacter;			// 主玩家
-        public var renderCharacters:Array;			// 可见的角色列表  = sceneCharacters + _sceneDummies
-        public var sceneCharacters:Array;			// 场景内角色列表
-        private var _sceneDummies:Array;			// 场景傀儡
-        private var _mouseChar:CCCharacter;		// 鼠标当前对象
+        public var mainChar:CCCharacter;							// 主玩家
+        public var renderCharacters:Array;							// 可见的角色列表  = CCCharacters + _sceneDummies
+        public var sceneCharacters:Array;							// 场景内角色列表
+        private var _sceneDummies:Array;							// 场景傀儡
+        private var _mouseChar:CCCharacter;							// 鼠标当前对象
 		
-		// 地图分层
-        public var sceneSmallMapLayer:SceneSmallMapLayer;		// 小地图层
-        public var sceneMapLayer:SceneSingleMapLayer;						// 背景层
-        public var sceneAvatarLayer:SceneAvatarLayer;			// 角色层
-		public var sceneHeadLayer:SceneHeadLayer;				// 昵称/称号层
-        public var sceneInteractiveLayer:SceneInteractiveLayer;	// 交互层
+        public var sceneSmallMapLayer:SceneSmallMapLayer;			// 小地图层
+        public var sceneMapLayer:SceneSingleMapLayer;				// 背景层
+        public var sceneAvatarLayer:SceneAvatarLayer;				// 角色层
+		public var sceneHeadLayer:SceneHeadLayer;					// 昵称/称号层
+        public var sceneInteractiveLayer:SceneInteractiveLayer;		// 交互层
 		public var sceneGrid:SceneGrid;
 		
-        private var _mask:Shape;								// 尺寸遮罩
-        private var _mouseOnCharacter:CCCharacter;			// 当前鼠标所在的角色
-        private var _selectedCharacter:CCCharacter;			// 当前选中的角色 
-		private var _selectedAvatarParamData:AvatarParamData;
-		public var blankAvatarParamData:AvatarParamData;
-		public var shadowAvatarParamData:AvatarParamData;		// 影子
+        private var _mask:Shape;									// 尺寸遮罩
+        private var _mouseOnCharacter:CCCharacter;					// 当前鼠标所在的角色
+        private var _selectedCharacter:CCCharacter;					// 当前选中的角色 
+		private var _selectedAvatarParamData:AvatarParamData;		// 选中角色的数据
+		public var blankAvatarParamData:AvatarParamData;			// 空对象（加载中显示的形象）
+		public var shadowAvatarParamData:AvatarParamData;			// 影子
 		
-		// 渲染标志, 可见性
-        private var _charVisible:Boolean = true;				// sceneCharacter对象全局可见标志
-        private var _charHeadVisible:Boolean = true;			// 昵称/称号层全局可见标志
-        private var _charAvatarVisible:Boolean = true;			// 角色全局可见标志
+        private var _charVisible:Boolean = true;					// 对象全局可见标志
+        private var _charHeadVisible:Boolean = true;				// 昵称/称号层全局可见标志
+        private var _charAvatarVisible:Boolean = true;				// 角色全局可见标志
 
 		/**
 		 * 初始化场景
@@ -86,11 +82,10 @@
 		 * @param _width width
 		 * @param _height height
 		 */
-        public function CCScene(_width:Number, _height:Number)
-		{
+        public function CCScene(_width:Number, _height:Number) {
 			super();
             
-            if ( !CCDirector.engineReady ) {
+            if ( !CCDirector.IsReady ) {
                 throw new Error("Scene::Engine must be initialized.");
             }
 			
@@ -139,8 +134,7 @@
 		 * <br>  设置场景可显示区域（遮罩）resize()
 		 * <br>  监听场景事件 enableInteractiveHandle()
 		 */
-		private function onAddToStage(event:Event):void
-		{
+		private function onAddToStage(event:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, onAddToStage);
 			
 			// 设置遮罩，resize中会根据场景尺寸重新设置遮罩的尺寸
@@ -164,8 +158,7 @@
 		 * <li> 除了玩家、英雄/宠物和坐骑外，其他默认显示
 		 * <li> PLAYER, MOUNT, PET 
 		 */
-        public function getCharVisible(charType:int):Boolean
-		{
+        public function getCharVisible(charType:int):Boolean {
             if ( charType != CharType.PLAYER && charType != CharType.PET 
 				&& charType != CharType.MOUNT ) {
                 return true;
@@ -173,8 +166,8 @@
 			
             return _charVisible;
         }
-		public function setCharVisible(b:Boolean=false):void
-		{
+		
+		public function setCharVisible(b:Boolean=false):void {
             var sceneChar:CCCharacter;
             _charVisible = b;
 			
@@ -188,19 +181,15 @@
             }
         }
 		
-		/**
-		 * 获取角色附加对象（昵称、血条和称号等）可见标志
-		 */
-		public function getCharHeadVisible(charType:int):Boolean
-		{
+		public function getCharHeadVisible(charType:int):Boolean {
 			if ( charType != CharType.PLAYER && charType != CharType.PET && charType != CharType.MOUNT ) {
 				return true;
 			}
 			
 			return _charHeadVisible;
 		}
-		public function setCharHeadVisible(b:Boolean=false):void
-		{
+		
+		public function setCharHeadVisible(b:Boolean=false):void {
 			var sceneChar:CCCharacter;
 			this._charHeadVisible = b;
 			for each (sceneChar in this.sceneCharacters) {
@@ -219,19 +208,15 @@
 			}
 		}
 		
-		/**
-		 * 获取角色可见标志
-		 */
-        public function getCharAvatarVisible(charType:int):Boolean
-		{
+        public function getCharAvatarVisible(charType:int):Boolean {
 			if ( charType != CharType.PLAYER && charType != CharType.PET && charType != CharType.MOUNT ) {
 				return true;
 			}
 			
             return _charAvatarVisible;
         }
-        public function setCharAvatarVisible(b:Boolean=false):void
-		{
+		
+        public function setCharAvatarVisible(b:Boolean=false):void {
             var sceneChar:CCCharacter;
             _charAvatarVisible = b;
 			
@@ -245,11 +230,7 @@
             }
         }
 		
-		/**
-		 * 重新设置尺寸
-		 */
-        public function resize(width:Number, height:Number):void
-		{
+        public function resize(width:Number, height:Number):void {
 			// 场景配置
             sceneConfig.width = width;
             sceneConfig.height = height;
@@ -272,11 +253,11 @@
 		 * 
 		 * @param mapId 地图ID
 		 * @param mapPicId 地图图片id
-		 * @param completehandler onComplete
-		 * @param updateHandler onUpdate
+		 * @param completehandler 加载完成回调
+		 * @param updateHandler 加载过程回调
 		 */
-        public function switchScene(mapId:int, mapPicId:int, completehandler:Function=null, updateHandler:Function=null):void
-		{
+        public function switchScene(mapId:int, mapPicId:int, completehandler:Function=null, 
+									updateHandler:Function=null):void {
             var scene:CCScene = null;
 			
 			// mapConf => mapConfig
@@ -320,7 +301,7 @@
 				 * scene.sceneMapLayer.run();			// 地图跟随，这里会加载地图
 				 * scene.sceneAvatarLayer.run();		// 绘制人物
 				 */
-				sceneRender.startRender(true);
+				sceneRender.StartRender(true);
 				
                 enableInteractiveHandle();
                 if (completehandler != null) {
@@ -329,7 +310,7 @@
             }
 			
             disableInteractiveHandle();			// 禁止交互
-            sceneRender.stopRender();			// 暂停渲染
+            sceneRender.StopRender();			// 暂停渲染
             dispose();							// 释放
 			
             MapLoader.loadMapConfig(mapPicId, this, newOnComplete, updateHandler);	// 加载当前地图的配置信息
@@ -340,44 +321,26 @@
 		 * 更新摄像机
 		 * <br> 移动摄像机位置, 跟随玩家, 并保持在场景之内
 		 */
-        public function updateCameraNow():void
-		{
+        public function updateCameraNow():void {
             sceneCamera.run(false);
         }
 		
-		/**
-		 * 显示场景网格 
-		 */
-		public function showGrid():void
-		{
+		public function showGrid():void {
 			MapInfo.showGrid = true;
 			sceneGrid.show(mapConfig.mapData.tiles, mapConfig.mapGridX, mapConfig.mapGridY, SceneInfo.TILE_WIDTH, SceneInfo.TILE_HEIGHT);
 		}
 		
-		public function fill( fillGrids:Array ):void
-		{
+		public function fill( fillGrids:Array ):void {
 			sceneGrid.fillTiles( fillGrids, mapConfig.mapGridX, mapConfig.mapGridY, SceneInfo.TILE_WIDTH, SceneInfo.TILE_HEIGHT );			
 		}
 		
-		/**
-		 * 隐藏网格 
-		 */		
-		public function hideGrid():void
-		{
+		public function hideGrid():void {
 			MapInfo.showGrid = false;
 			sceneGrid.hide();
 		}
 		
-		/**
-		 * 建立场景对象
-		 * 
-		 * @param type type
-		 * @param tx x
-		 * @param ty y
-		 * @param showIndex showIndex
-		 */
-        public function createSceneCharacter(type:int=1, tx:int=0, ty:int=0, showIndex:int=0):CCCharacter
-		{
+        public function createSceneCharacter(type:int=1, tx:int=0, ty:int=0, 
+											 showIndex:int=0):CCCharacter {
             var sceneChar:CCCharacter = CCCharacter.createSceneCharacter(type, this, tx, ty, showIndex);
             addCharacter(sceneChar);
 			
@@ -398,11 +361,7 @@
             return sceneChar;
         }
 		
-		/**
-		 * 设置主要角色
-		 */
-        public function setMainChar(sceneChar:CCCharacter):void
-		{
+        public function setMainChar(sceneChar:CCCharacter):void {
             mainChar = sceneChar;
 			if (mainChar != null) {
 				if (mainChar.UseContainer) {
@@ -412,22 +371,11 @@
 			}
         }
 		
-		/**
-		 * 设置鼠标角色
-		 */
-        public function setMouseChar(sceneChar:CCCharacter):void
-		{
+        public function setMouseChar(sceneChar:CCCharacter):void {
             _mouseChar = sceneChar;
         }
 		
-		/**
-		 * 设置选中数据
-		 *  
-		 * @param avatarParamData
-		 * 
-		 */
-		public function setSelectedAvatarParamData(avatarParamData:AvatarParamData):void
-		{
+		public function setSelectedAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.SELECTED;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = (-(int.MAX_VALUE) + 1);
@@ -439,13 +387,7 @@
 			setSelectedCharacter(sceneChar);
 		}
 		
-		/**
-		 * 设置空白数据 
-		 * @param avatarParamData
-		 * 
-		 */
-		public function setBlankAvatarParamData(avatarParamData:AvatarParamData):void
-		{
+		public function setBlankAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.BLANK;
 			avatarParamData.avatarPartType = AvatarPartType.BODY;
 			avatarParamData.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.BODY);
@@ -454,13 +396,7 @@
 			blankAvatarParamData = avatarParamData;
 		}
 		
-		/**
-		 * 设置阴影数据 
-		 * @param avatarParamData
-		 * 
-		 */
-		public function setShadowAvatarParamData(avatarParamData:AvatarParamData):void
-		{
+		public function setShadowAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.SHADOW;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = -(int.MAX_VALUE);
@@ -469,14 +405,7 @@
 			shadowAvatarParamData = avatarParamData;
 		}
 		
-		/**
-		 * 添加一个场景角色
-		 * <li> 添加到 sceneCharacters 或 _sceneDummies 中
-		 * <li> 添加到 renderCharacters 中
-		 * <li> 设置对象的  visible/updateNow 属性
-		 */
-        public function addCharacter(sceneChar:CCCharacter):void
-		{
+        public function addCharacter(sceneChar:CCCharacter):void {
             if (sceneChar == null) {
                 return;
             }
@@ -490,7 +419,6 @@
                 renderCharacters.push(sceneChar);
 //                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
-			
 			// 傀儡
 			else {
                 if (_sceneDummies.indexOf(sceneChar) != -1) {
@@ -505,15 +433,7 @@
             sceneChar.updateNow = true;
         }
 		
-		/**
-		 * 删除场景角色
-		 * <li> 从 TweenLite 中删除缓动
-		 * <li> 从 sceneCharacters/_sceneDummies 中删除
-		 * <li> 从 renderCharacters 中删除
-		 * @param recycle 是否循环使用
-		 */
-        public function removeCharacter(sceneChar:CCCharacter, recycle:Boolean=true):void
-		{
+        public function removeCharacter(sceneChar:CCCharacter, recycle:Boolean=true):void {
             var index:int;
             if (sceneChar == null) {
                 return;
@@ -565,26 +485,14 @@
             }
         }
 		
-		/**
-		 * 根据ID和Type来删除对象
-		 * @param ID,type ID/TYPE
-		 * @param recycle 是否循环使用
-		 */
-        public function removeCharacterByIDAndType(ID:int, type:int=1, recycle:Boolean=true):void
-		{
+        public function removeCharacterByIDAndType(ID:int, type:int=1, recycle:Boolean=true):void {
             var sceneChar:CCCharacter = getCharByID(ID, type);
             if (sceneChar != null) {
                 removeCharacter(sceneChar, recycle);
             }
         }
 		
-		/** 
-		 * 根据 ID/TYPE 获取单个对象
-		 * @param ID ID
-		 * @param type type
-		 */
-        public function getCharByID(ID:int, type:int=1):CCCharacter
-		{
+        public function getCharByID(ID:int, type:int=1):CCCharacter {
             var sceneChar:CCCharacter;
             for each (sceneChar in sceneCharacters) {
                 if (sceneChar.id == ID && sceneChar.type == type) {
@@ -594,11 +502,7 @@
             return null;
         }
 		
-		/**
-		 * 根据 TYPE 获取多个对象
-		 */
-        public function getCharsByType(type:int=1):Array
-		{
+        public function getCharsByType(type:int=1):Array {
             var sceneChar:CCCharacter;
             var arr:Array = [];
             for each (sceneChar in sceneCharacters) {
@@ -609,19 +513,15 @@
             return arr;
         }
 		
-		/**
-		 * 清理
-		 */
-        public function dispose():void
-		{
+        public function dispose():void {
             var sceneChar:CCCharacter;
 			
 			// TODO SceneCache
             SceneCache.mapImgCache.dispose();
-//            SceneCache.currentMapZones = {};
+            SceneCache.currentMapZones = {};
             SceneCache.mapTiles = {};
             SceneCache.mapSolids = {};
-//            SceneCache.mapZones = {};
+            SceneCache.mapZones = {};
             SceneCache.removeWaitingAvatar(null, null, null, [mainChar, _mouseChar]);
 			
 			// this & Scene
@@ -665,56 +565,35 @@
             }
         }
 		
-		/**
-		 * 派发场景件事 
-		 * @param event 事件实例
-		 */		
-        public function sceneDispatchEvent(event:Event):void
-		{
+        public function sceneDispatchEvent(event:Event):void {
             if (mapConfig != null) {
                 sceneInteractiveLayer.dispatchEvent(event);
             }
         }
         
-		/**
-		 * 监听场景事件 
-		 */		
-		public function enableInteractiveHandle():void
-		{
+		public function enableInteractiveHandle():void {
             sceneInteractiveLayer.enableInteractiveHandle();
         }
 		
-		/**
-		 * 禁止交互
-		 */
-        public function disableInteractiveHandle():void
-		{
+        public function disableInteractiveHandle():void {
             sceneInteractiveLayer.disableInteractiveHandle();
         }
 		
-		/**
-		 * 鼠标对象
-		 */
-        public function showMouseChar(tx:Number, ty:Number):void
-		{
+        public function showMouseChar(tx:Number, ty:Number):void {
             if (_mouseChar != null) {
                 _mouseChar.TileX = tx;
                 _mouseChar.TileY = ty;
                 _mouseChar.visible = true;
             }
         }
-        public function hideMouseChar():void
-		{
+		
+        public function hideMouseChar():void {
             if (_mouseChar != null) {
                 _mouseChar.visible = false;
             }
         }
 		
-		/**
-		 * 鼠标覆盖
-		 */
-        public function setMouseOnCharacter(sceneChar:CCCharacter):void
-		{
+        public function setMouseOnCharacter(sceneChar:CCCharacter):void {
             if (_mouseOnCharacter == sceneChar) {
                 return;
             }
@@ -731,21 +610,11 @@
             }
         }
 		
-		/**
-		 * 获取鼠标上的角色对象 
-		 * @return SceneCharacter
-		 * 
-		 */		
-        public function getMouseOnCharacter():CCCharacter
-		{
+        public function getMouseOnCharacter():CCCharacter {
             return _mouseOnCharacter;
         }
 		
-		/**
-		 * 选中对象
-		 */
-        public function setSelectedCharacter(sceneChar:CCCharacter):void
-		{
+        public function setSelectedCharacter(sceneChar:CCCharacter):void {
             if (_selectedCharacter == sceneChar) {
                 return;
             }
@@ -767,13 +636,7 @@
             }
         }
 		
-		/**
-		 * 获取选中的角色对象 
-		 * @return SceneCharacter
-		 * 
-		 */	
-        public function getSelectedCharacter():CCCharacter
-		{
+        public function getSelectedCharacter():CCCharacter {
             return _selectedCharacter;
         }
 		
@@ -781,8 +644,7 @@
 		 * 获得鼠标位置下的所有对象列表
 		 * @return array [[MapTile, ...], [ElfCharacter, ...]]
 		 */
-        public function getSceneObjectsUnderPoint(mousePos:Point):Array
-		{
+        public function getSceneObjectsUnderPoint(mousePos:Point):Array {
             var sceneChar:CCCharacter;
             var resultArray:Array = [];
             var tilePosX:int = floor((mousePos.x / TILE_WIDTH));
@@ -825,8 +687,7 @@
 		 * 获得鼠标位置下的所有对象列表
 		 * @return array [[MapTile, ...], [ElfCharacter, ...]]
 		 */
-		public function getSceneObjectsUnderPointEx(mousePos:Point):Array
-		{
+		public function getSceneObjectsUnderPointEx(mousePos:Point):Array {
 			var sceneChar:CCCharacter;
 			var resultArray:Array = [];
 			var tilePosX:int = floor((mousePos.x / TILE_WIDTH));

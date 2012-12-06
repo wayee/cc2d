@@ -9,44 +9,44 @@
 	{
         public static var nowTime:int;				// 当前时间点
 
-        private var _scene:CCScene;
+        private var scene:CCScene;
         private var isRendering:Boolean = false;	// 是否绘制标志, 如果在加载中, 可以不绘制
 
-        public function CCRender(scene:CCScene) {
-            _scene = scene;
+        public function CCRender(p_scene:CCScene) {
+            scene = p_scene;
         }
 		
-        public function startRender(renderNow:Boolean=false):void {
-            if (renderNow) {
+        public function StartRender(p_renderNow:Boolean=false):void {
+            if (p_renderNow) {
                 render();
             }
 			
             if ( !isRendering ) {
-                _scene.addEventListener(Event.ENTER_FRAME, render);
+                scene.addEventListener(Event.ENTER_FRAME, render);
                 isRendering = true;
             }
         }
 		
-        public function stopRender():void {
+        public function StopRender():void {
             if (isRendering) {
-                _scene.removeEventListener(Event.ENTER_FRAME, render);
+                scene.removeEventListener(Event.ENTER_FRAME, render);
                 isRendering = false;
             }
         }
 		
         private function render(e:Event=null):void {
             nowTime = getTimer();
-            var charList:Array = _scene.sceneCharacters;
+            var charList:Array = scene.sceneCharacters;
             
             var sceneChar:CCCharacter;
 			for each (sceneChar in charList) {
                 sceneChar.runWalk();				// 人物移动
             }
 			
-            _scene.sceneCamera.run();				// 相机跟随 
-            _scene.sceneMapLayer.run();				// 地图跟随
-            _scene.sceneAvatarLayer.run();			// 绘制人物
-			_scene.sceneHeadLayer.run();			// 绘制血条、昵称和称号等文本, 更新 Y 值
+            scene.sceneCamera.run();				// 相机跟随 
+            scene.sceneMapLayer.run();				// 地图跟随
+            scene.sceneAvatarLayer.run();			// 绘制人物
+			scene.sceneHeadLayer.run();			// 绘制血条、昵称和称号等文本, 更新 Y 值
 			
 			// 自定义资源回收处理
             SceneCache.checkUninstall();

@@ -125,6 +125,7 @@
 		public function hitPoint(mousePoint:Point):Boolean {
 			var avatarPart:CCAvatarPart;
 			for each (avatarPart in avatarParts) {
+				// not the magic or magic pass
 				if (avatarPart.type != AvatarPartType.MAGIC && avatarPart.type != AvatarPartType.MAGIC_PASS && avatarPart.hitPoint(mousePoint)) {
 					return true;
 				}

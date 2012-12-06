@@ -28,10 +28,6 @@
 		
 		private var useContainer:Boolean = false;						// 是否使用容器
 		
-		/**
-		 * 像素坐标x
-		 * <li> 设置 pixelX/y, tileX/y, showContainer.x/y
-		 */
 		public function get PixelX():Number {
 			return pixelX;
 		}
@@ -44,9 +40,6 @@
 			}
 		}
 		
-		/**
-		 * 像素坐标y
-		 */
 		public function get PixelY():Number {
 			return pixelY;
 		}
@@ -83,10 +76,6 @@
 			}
 		}
 		
-		/**
-		 * 是否使用容器 
-		 * @return bool
-		 */
 		public function get UseContainer():Boolean {
 			return useContainer;
 		}

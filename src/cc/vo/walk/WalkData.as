@@ -12,7 +12,7 @@
 		private static const crossY:Number = 350;
 		private static const K:Number = -41142.8571428571;
 		
-        public var walk_speed:Number = 140;			// 移动速度, 像素/秒
+        public var walk_speed:Number = 120;			// 移动速度, 像素/秒
         public var walk_pathArr:Array;				// 路径数组
         public var walk_targetP:Point;				// 目标点
         public var walk_lastTime:int = 0;			// 上次移动时间点

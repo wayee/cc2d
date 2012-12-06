@@ -6,13 +6,13 @@
 
     public class CCCamera extends CCNode
 	{
-        private const LIMEN_RATIO:Number = 0.05;	// 阀值率
+        private const LIMEN_RATIO:Number = 0.05;				// 阀值率
         private const TWEEN_SPEED:Number = 0.4;
 
         private var x_limen:int = 200;
         private var y_limen:int = 116;
         private var _scene:CCScene;								// 当前场景
-        private var _followCharacter:CCCharacter;			// 跟随的角色对象
+        private var _followCharacter:CCCharacter;				// 跟随的角色对象
         private var _isLocked:Boolean = false;
         public var tileRangeXY:Point;							// 可见块范围
 
