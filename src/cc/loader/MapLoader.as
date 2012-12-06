@@ -70,6 +70,7 @@
 				mapConfig.width = mapConfig.mapGridX * SceneInfo.TILE_WIDTH;			// 宽度
 				mapConfig.height = mapConfig.mapGridY * SceneInfo.TILE_HEIGHT;			// 高度
 				mapConfig.mapUrl = CCG.GetMapPath(dataObj.pic.toString()); 				// 地图路径
+				mapConfig.zoneMapDir = CCG.getZoneMapFolder(dataObj.pic.toString()); 		// 地图族路径
 				mapConfig.smallMapUrl = CCG.GetSmallMapPath(dataObj.pic.toString()); 	// 小地图路径
 				
 				// 覆盖物

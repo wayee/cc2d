@@ -43,10 +43,10 @@
                 sceneChar.runWalk();				// 人物移动
             }
 			
-            scene.sceneCamera.run();				// 相机跟随 
-            scene.sceneMapLayer.run();				// 地图跟随
-            scene.sceneAvatarLayer.run();			// 绘制人物
-			scene.sceneHeadLayer.run();			// 绘制血条、昵称和称号等文本, 更新 Y 值
+            scene.sceneCamera.Run();				// 相机跟随 
+            scene.sceneMapLayer.Run();				// 地图跟随
+            scene.sceneAvatarLayer.Run();			// 绘制人物
+			scene.sceneHeadLayer.Run();				// 绘制血条、昵称和称号等文本, 更新 Y 值
 			
 			// 自定义资源回收处理
             SceneCache.checkUninstall();

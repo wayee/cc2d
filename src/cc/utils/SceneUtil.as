@@ -13,20 +13,23 @@
     public class SceneUtil
 	{
 		/**
-		 * 块数量的中点位置
+		 * 可视范围内左右偏移中点位置的块数
 		 */
         public static function GetViewTileRangeXY(scene:CCScene):Point {
-            var pos:Point = new Point();
-            pos.x = Math.ceil((scene.sceneConfig.width/SceneInfo.TILE_WIDTH - 1) / 2) + 1;
-            pos.y = Math.ceil((scene.sceneConfig.height/SceneInfo.TILE_HEIGHT - 1) / 2) + 1;
-            return pos;
+            var range:Point = new Point();
+            range.x = Math.ceil((scene.sceneConfig.width/SceneInfo.TILE_WIDTH - 1) / 2) + 1;
+            range.y = Math.ceil((scene.sceneConfig.height/SceneInfo.TILE_HEIGHT - 1) / 2) + 1;
+            return range;
         }
 		
+		/**
+		 * 可视范围内左右偏移中点位置的块族数
+		 */
         public static function GetViewZoneRangeXY(scene:CCScene):Point {
-            var pos:Point = new Point();
-//            pos.x = Math.ceil((scene.sceneConfig.width/SceneConfig.ZONE_WIDTH - 1) / 2) + 1;
-//            pos.y = Math.ceil((scene.sceneConfig.height/SceneConfig.ZONE_HEIGHT - 1) / 2) + 1;
-            return pos;
+            var range:Point = new Point();
+            range.x = Math.ceil((scene.sceneConfig.width/SceneInfo.ZONE_WIDTH - 1) / 2) + 1;
+            range.y = Math.ceil((scene.sceneConfig.height/SceneInfo.ZONE_HEIGHT - 1) / 2) + 1;
+            return range;
         }
 		
 		/**
@@ -37,7 +40,7 @@
             var y:int;
             var ret:Array = [];
             if (width < 0 || height < 0) {
-                return ([pos]);
+                return [pos];
             }
             var left:int = pos.x - width;
             var right:int = pos.x + width;

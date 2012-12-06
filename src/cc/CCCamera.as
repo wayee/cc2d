@@ -1,8 +1,9 @@
 ﻿package cc
 {
-	import flash.geom.Point;
-	import cc.utils.SceneUtil;
 	import cc.CCCharacter;
+	import cc.utils.SceneUtil;
+	
+	import flash.geom.Point;
 
     public class CCCamera extends CCNode
 	{
@@ -11,28 +12,38 @@
 
         private var x_limen:int = 200;
         private var y_limen:int = 116;
-        private var _scene:CCScene;								// 当前场景
-        private var _followCharacter:CCCharacter;				// 跟随的角色对象
-        private var _isLocked:Boolean = false;
-        public var tileRangeXY:Point;							// 可见块范围
+        private var scene:CCScene;								// 当前场景
+        private var followCharacter:CCCharacter;				// 跟随的角色对象
+        private var isLocked:Boolean = false;
+        private var tileRangeXY:Point;							// 可见块范围
+		private var zoneRangeXY:Point;							// 可见族范围
 
-        public function CCCamera(scene:CCScene) {
-            _scene = scene;
+        public function CCCamera(p_scene:CCScene) {
+            scene = p_scene;
             updateRangeXY();
         }
 		
         public function lock():void {
-            _isLocked = true;
+            isLocked = true;
         }
 		
         public function unlock():void {
-            _isLocked = false;
+            isLocked = false;
         }
 		
+		public function get TileRangeXY():Point	{
+			return tileRangeXY;
+		}
+		
+		public function get ZoneRangeXY():Point {
+			return zoneRangeXY;
+		}
+		
         public function updateRangeXY():void {
-            tileRangeXY = SceneUtil.GetViewTileRangeXY(_scene);
-            x_limen = _scene.sceneConfig.width * LIMEN_RATIO;
-            y_limen = _scene.sceneConfig.height * LIMEN_RATIO;
+            tileRangeXY = SceneUtil.GetViewTileRangeXY(scene);
+			zoneRangeXY = SceneUtil.GetViewZoneRangeXY(scene);
+            x_limen = scene.sceneConfig.width * LIMEN_RATIO;
+            y_limen = scene.sceneConfig.height * LIMEN_RATIO;
         }
 		
 		/**
@@ -48,21 +59,21 @@
         }
 		
         public function lookAt(sceneChar:CCCharacter, b:Boolean=false):void {
-            _followCharacter = sceneChar;
-            run(b);
+            followCharacter = sceneChar;
+            Run(b);
         }
 		
-        public function run(b:Boolean=true):void {
-            if (_isLocked) {						// 锁定
+        public function Run(b:Boolean=true):void {
+            if (isLocked) {						// 锁定
                 return;
             }
-            if (_followCharacter == null) {			// 无跟随
+            if (followCharacter == null) {			// 无跟随
                 return;
             }
 
 			// 将 point 对象从显示对象的（本地）坐标转换为舞台（全局）坐标
-            var dstPoint:Point = new Point(_followCharacter.PixelX, _followCharacter.PixelY);
-            dstPoint = _scene.localToGlobal(dstPoint);		// scrollRect
+            var dstPoint:Point = new Point(followCharacter.PixelX, followCharacter.PixelY);
+            dstPoint = scene.localToGlobal(dstPoint);		// scrollRect
 			
 			var halfWidth:Number = 0;
 			var widthDif:Number = 0; 	// 宽度差值
@@ -71,9 +82,9 @@
 			var xLimenDif:Number = 0; 
 			
 			// 地图宽度 > 场景宽度
-            if (_scene.mapConfig.width > _scene.sceneConfig.width) {
-                halfWidth = _scene.sceneConfig.width * 0.5; // 场景宽度的一半
-                widthDif = _scene.sceneConfig.width - _scene.mapConfig.width; // 场景宽度-地图宽度
+            if (scene.mapConfig.width > scene.sceneConfig.width) {
+                halfWidth = scene.sceneConfig.width * 0.5; // 场景宽度的一半
+                widthDif = scene.sceneConfig.width - scene.mapConfig.width; // 场景宽度-地图宽度
                 
 				xDifAvatar = halfWidth - dstPoint.x;	// 场景宽度一半 - 角色全局坐标x
 				
@@ -84,28 +95,28 @@
                         xLimenDif = xDifAvatar + x_limen;
                     }
                 }
-                xResult = _scene.x + xLimenDif;
+                xResult = scene.x + xLimenDif;
                 if (xResult < widthDif) {
                     xResult = widthDif;
                 }
                 if (xResult > 0){
                     xResult = 0;
                 }
-                xDifAvatar = xResult - _scene.x;
+                xDifAvatar = xResult - scene.x;
                 if (xDifAvatar != 0) {
                     if (!b) {
-                        _scene.x = _scene.x + xDifAvatar;
+                        scene.x = scene.x + xDifAvatar;
                     } else {
-                        _scene.x = (_scene.x + (xDifAvatar * TWEEN_SPEED));
+                        scene.x = (scene.x + (xDifAvatar * TWEEN_SPEED));
                     }
                 }
-				// 场景 _scene.x 真有这么复杂
+				// 场景 scene.x 真有这么复杂
             } else {
 				// 场景比地图大，地图就直接显示在中间
-                halfWidth = _scene.mapConfig.width * 0.5;	// 地图宽度的一半
-                xResult = (_scene.sceneConfig.width - _scene.mapConfig.width) / 2;
-                if (_scene.x != xResult) {
-                    _scene.x = xResult;
+                halfWidth = scene.mapConfig.width * 0.5;	// 地图宽度的一半
+                xResult = (scene.sceneConfig.width - scene.mapConfig.width) / 2;
+                if (scene.x != xResult) {
+                    scene.x = xResult;
                 }
             }
 			
@@ -115,9 +126,9 @@
 			var yDifAvatar:Number = 0;
 			var yLimenDif:Number = 0; 
 			// 地图高度 > 场景高度
-            if (_scene.mapConfig.height > _scene.sceneConfig.height) {
-                halfHeight = _scene.sceneConfig.height * 0.5;
-                heightDif = _scene.sceneConfig.height - _scene.mapConfig.height;
+            if (scene.mapConfig.height > scene.sceneConfig.height) {
+                halfHeight = scene.sceneConfig.height * 0.5;
+                heightDif = scene.sceneConfig.height - scene.mapConfig.height;
 				
                 yDifAvatar = halfHeight - dstPoint.y; // 
 				
@@ -128,33 +139,33 @@
                         yLimenDif = (yDifAvatar + y_limen);
                     }
                 }
-                yResult = _scene.y + yLimenDif;
+                yResult = scene.y + yLimenDif;
                 if (yResult < heightDif) {
                     yResult = heightDif;
                 }
                 if (yResult > 0) {
                     yResult = 0;
                 }
-                yDifAvatar = yResult - _scene.y;
+                yDifAvatar = yResult - scene.y;
                 if (yDifAvatar != 0) {
                     if (!b){
-                        _scene.y = (_scene.y + yDifAvatar);
+                        scene.y = (scene.y + yDifAvatar);
                     } else {
-                        _scene.y = (_scene.y + (yDifAvatar * TWEEN_SPEED));
+                        scene.y = (scene.y + (yDifAvatar * TWEEN_SPEED));
                     }
                 }
             } else {
 				// 场景比地图大，地图就直接显示在中间
-                halfHeight = _scene.mapConfig.height * 0.5;
-                yResult = (_scene.sceneConfig.height - _scene.mapConfig.height) / 2;
-                if (_scene.y != yResult) {
-                    _scene.y = yResult;
+                halfHeight = scene.mapConfig.height * 0.5;
+                yResult = (scene.sceneConfig.height - scene.mapConfig.height) / 2;
+                if (scene.y != yResult) {
+                    scene.y = yResult;
                 }
             }
 			
 			// 地图或者场景的尺寸的一半做为 pixel坐标，方便计算角色位置是否在摄像机内，see canSee()
             var halfPoint:Point = new Point(halfWidth, halfHeight);
-            halfPoint = _scene.globalToLocal(halfPoint);
+            halfPoint = scene.globalToLocal(halfPoint);
             PixelX = halfPoint.x;		// 必须是 PixelX 公开接口
             PixelY = halfPoint.y;
         }

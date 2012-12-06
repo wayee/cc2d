@@ -7,7 +7,7 @@
 	import cc.graphics.layers.SceneGrid;
 	import cc.graphics.layers.SceneHeadLayer;
 	import cc.graphics.layers.SceneInteractiveLayer;
-	import cc.graphics.layers.SceneSingleMapLayer;
+	import cc.graphics.layers.SceneMapLayer;
 	import cc.graphics.layers.SceneSmallMapLayer;
 	import cc.loader.MapLoader;
 	import cc.tools.SceneCache;
@@ -52,7 +52,8 @@
         private var _mouseChar:CCCharacter;							// 鼠标当前对象
 		
         public var sceneSmallMapLayer:SceneSmallMapLayer;			// 小地图层
-        public var sceneMapLayer:SceneSingleMapLayer;				// 背景层
+//        public var sceneMapLayer:SceneSingleMapLayer;				// 背景层
+        public var sceneMapLayer:SceneMapLayer;						// 背景层
         public var sceneAvatarLayer:SceneAvatarLayer;				// 角色层
 		public var sceneHeadLayer:SceneHeadLayer;					// 昵称/称号层
         public var sceneInteractiveLayer:SceneInteractiveLayer;		// 交互层
@@ -101,8 +102,8 @@
             addChild(sceneSmallMapLayer);
 			
 			// 地图
-            sceneMapLayer = new SceneSingleMapLayer(this);
-            addChild(sceneMapLayer as Sprite);
+            sceneMapLayer = new SceneMapLayer(this);
+            addChild(sceneMapLayer);
 			
 			// 网格 
 			sceneGrid = new SceneGrid();
@@ -280,8 +281,8 @@
                 }
 				
                 MapLoader.loadSmallMap(scene);			// 加载小地图
-                sceneMapLayer.initMap();				// 设置背景图（整图显示），加载地图在 sceneMaplayer.run()
-//				sceneMapLayer.initMapZones();			// 设置背景图（分割显示）
+//                sceneMapLayer.initMap();				// 设置背景图（整图显示），加载地图在 sceneMaplayer.run()
+				sceneMapLayer.initMapZones();			// 设置背景图（分割显示）
 				sceneAvatarLayer.creatAllAvatarBD();	// 清空对象层
                 sceneInteractiveLayer.initRange();		// 重新设置事件接受区域
 				
@@ -322,7 +323,7 @@
 		 * <br> 移动摄像机位置, 跟随玩家, 并保持在场景之内
 		 */
         public function updateCameraNow():void {
-            sceneCamera.run(false);
+            sceneCamera.Run(false);
         }
 		
 		public function showGrid():void {

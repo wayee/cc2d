@@ -320,7 +320,7 @@
 		/**
 		 * 绘制
 		 */
-        public function run():void
+        public function Run():void
 		{
             var char:CCCharacter;
             var dirty_bound_list:Array;

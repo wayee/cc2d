@@ -70,5 +70,9 @@
 		public static function GetSharePath(id:String, ext:String = 'swf'):String {
 			return getResourcePath(sharePath + '/' + id, ext, versionShare);
 		}
+		
+		public static function getZoneMapFolder(url:String="", pattern:String="$"):String {
+			return resourcePath+'/'+mapPath+'/'+url+'/';
+		}
 	}
 }

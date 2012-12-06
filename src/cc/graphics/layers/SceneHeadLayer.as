@@ -43,7 +43,7 @@
 		 * <br> 角色头上的东东
 		 * <li>对话浮动文字
 		 */
-		public function run():void
+		public function Run():void
 		{
 			var sceneChar:CCCharacter;
 			var mouseRect:Rectangle;

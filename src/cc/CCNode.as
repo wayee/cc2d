@@ -19,7 +19,7 @@
 		
 		// 尺寸, 这里的块是个可变的概念, 可以为一个 TILE, 或者为1个ZONE
 		public var tileWidth:Number = SceneInfo.TILE_WIDTH;				// 块尺寸
-		public var titleHeight:Number = SceneInfo.TILE_HEIGHT;
+		public var tileHeight:Number = SceneInfo.TILE_HEIGHT;
 		
 		protected var tileX:int = 0;									// 块坐标
 		protected var tileY:int = 0;
@@ -46,7 +46,7 @@
 		
 		public function set PixelY(value:Number):void {
 			pixelY = value;
-			tileY = Math.ceil(pixelY / titleHeight);
+			tileY = Math.ceil(pixelY / tileHeight);
 			if (showContainer != null && showContainer.y != pixelY) {
 				showContainer.y = pixelY;
 			}
@@ -70,7 +70,7 @@
 		
 		public function set TileY(value:int):void {
 			tileY = value;
-			pixelY = tileY * titleHeight;
+			pixelY = tileY * tileHeight;
 			if (showContainer != null && showContainer.y != pixelY) {
 				showContainer.y = pixelY;
 			}

@@ -34,7 +34,7 @@
             var tilePos:Point = p_pos;
             var speed:Number = p_speed;
             var maxDis:int = p_max_dis;
-            var vars = p_vars;
+            var vars:Object = p_vars;
 			
             if (sceneChar.isJumping()) {
                 return;
@@ -173,7 +173,7 @@
             var tilePos:Point = p_pos;
             var speed:Number = p_speed;
             var $isPetJump:Boolean = p_is_pet;
-            var vars = p_vars;
+            var vars:Object = p_vars;
             sceneChar.Walkdata.clear();
             if (speed == 0){
                 return;
@@ -253,7 +253,7 @@
             var sceneChar:CCCharacter = p_char;
             var pixelPos:Point = p_pos;
             var speed:Number = p_speed;
-            var $onComplete = callback;
+            var onComplete:Function = callback;
             sceneChar.Walkdata.clear();
             if (speed == 0){
                 return;
@@ -280,8 +280,8 @@
                 onComplete:function ():void{
                     sceneChar.Walkdata.clear();
                     sceneChar.setXY(p1.x, p1.y);
-                    if ($onComplete != null){
-                        HandlerHelper.execute($onComplete);
+                    if (onComplete != null){
+                        HandlerHelper.execute(onComplete);
                     }
                 }
             });
