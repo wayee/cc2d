@@ -31,16 +31,16 @@
 		/**
 		 * 地图 
 		 */		
-        public static var transports:Object = {};			// 可通过块区域: [ mapid_x_y ] = 可通过标志
-        public static var mapZones:Object = {};				// [ x_y ] = MapZone, 在 SceneMapLayer.initMapZones 中初始化
-        public static var currentMapZones:Object = {};		// 当前可见范围内的 MapZone
+        public static var Transports:Object = {};			// 可通过块区域: [ mapid_x_y ] = 可通过标志
+        public static var MapZones:Object = {};				// [ x_y ] = MapZone, 在 SceneMapLayer.initMapZones 中初始化
+        public static var InViewMapZones:Object = {};		// 当前可见范围内的 MapZone
 		
-        public static var mapImgCache:Cache = CacheManager.creatNewCache("mapImgCache");	// [url] = Bitmap
+        public static var MapImgCache:Cache = CacheManager.creatNewCache("mapImgCache");	// [url] = Bitmap
         
-		public static var mapTiles:Object = {};				// [ x_y ] = MapTile, x = tx, y = ty
-        public static var mapSolids:Object = {};			// [ x_y ] = isSolid
-        public static var mapSolids2:Object = {};			// [ x_y ] = Cell
-        public static var mapNodes:Array = [];
+		public static var MapTiles:Object = {};				// [ x_y ] = MapTile, x = tx, y = ty
+        public static var MapSolids:Object = {};			// [ x_y ] = isSolid
+        public static var MapSolids2:Object = {};			// [ x_y ] = Cell
+        public static var MapNodes:Array = [];
 
 		/**
 		 * 角色 
@@ -61,7 +61,7 @@
 		
 		public static var spCollections:Dictionary = new Dictionary;	// 角色形象单帧数据集合
 		
-		public static var currentMapCharacters:Object = {};		// {mapId:[SceneCharacter, ...], ...}
+		public static var currentMapCharacters:Object = {};		// {mapId:[CCCharacter, ...], ...}
 		
 		/**
 		 * 法术 

@@ -32,8 +32,7 @@
         private var _fristMouseDownTime:int = -1;
         private var _fristMouseDownPos:Point = null;
 
-        public function SceneInteractiveLayer(scene:CCScene)
-		{
+        public function SceneInteractiveLayer(scene:CCScene) {
             _scene = scene;
             doubleClickEnabled = false;
         }
@@ -41,39 +40,26 @@
 		/**
 		 * 绘制遮罩接收鼠标消息, 同地图一样尺寸
 		 */
-        public function initRange():void
-		{
+        public function InitRange():void {
             DrawHelper.drawRect(this, new Point(0, 0), new Point(_scene.mapConfig.width, _scene.mapConfig.height), 
 				new StyleData(0, 0, 0, 0, 0), true);
         }
 		
-		/**
-		 * 开启鼠标侦听
-		 */
-        public function enableInteractiveHandle():void
-		{
+        public function EnableInteractiveHandle():void {
             addEventListener(MouseEvent.MOUSE_DOWN, mouseHandle);
             addEventListener(MouseEvent.MOUSE_MOVE, mouseHandle);
             addEventListener(MouseEvent.MOUSE_OUT, mouseHandle);
 			if (stage) stage.addEventListener(MouseEvent.MOUSE_UP, mouseHandle);
         }
 		
-		/**
-		 * 关闭鼠标侦听
-		 */
-        public function disableInteractiveHandle():void
-		{
+        public function DisableInteractiveHandle():void {
             removeEventListener(MouseEvent.MOUSE_DOWN, mouseHandle);
             removeEventListener(MouseEvent.MOUSE_MOVE, mouseHandle);
             removeEventListener(MouseEvent.MOUSE_OUT, mouseHandle);
 			if (stage) stage.removeEventListener(MouseEvent.MOUSE_UP, mouseHandle);
         }
 		
-		/**
-		 * 鼠标事件侦听
-		 */
-        private function mouseHandle(event:MouseEvent):void
-		{
+        private function mouseHandle(event:MouseEvent):void {
             var sceneCharList:Array;
             var sceneEvent:CCEvent;
             var sceneChar:CCCharacter;
@@ -98,7 +84,7 @@
                     }
                     break;
                 case MouseEvent.MOUSE_DOWN:
-                    sceneCharList = _scene.getSceneObjectsUnderPoint(mousePos); // [MapTile, [SceneCharacter, ...]]
+                    sceneCharList = _scene.getSceneObjectsUnderPoint(mousePos); // [MapTile, [CCCharacter, ...]]
                     mapTile = sceneCharList[0];
                     if (mapTile != null){
                         if (sceneCharList.length > 1){
@@ -142,12 +128,11 @@
 		
 		/**
 		 * 鼠标命中测试
-		 * @param charList 多个对象列表 [SceneCharacter, ...]
+		 * @param charList 多个对象列表 [CCCharacter, ...]
 		 * @param mousePos 鼠标点击位置
 		 * @return 返回被点击的对象
 		 */	
-        private function getHitSceneCharacter(charList:Array, mousePos:Point):CCCharacter
-		{
+        private function getHitSceneCharacter(charList:Array, mousePos:Point):CCCharacter {
             var sceneChar:CCCharacter;
             for each (sceneChar in charList) {
                 if (sceneChar.hitPoint(mousePos)) {

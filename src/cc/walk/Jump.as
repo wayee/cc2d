@@ -41,8 +41,8 @@
             }
 			
             sceneChar.Walkdata.clear();
-            var fromTile:MapTile = SceneCache.mapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
-            mapTile = SceneCache.mapTiles[((tilePos.x + "_") + tilePos.y)];
+            var fromTile:MapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
+            mapTile = SceneCache.MapTiles[((tilePos.x + "_") + tilePos.y)];
             if (mapTile == null){
                 return;
             }
@@ -128,7 +128,7 @@
                         sceneChar.showAvatarPartsByType(AvatarPartType.WEAPON);
                         sceneChar.Walkdata.clear();
                         sceneChar.setXY(sceneChar.PixelX, sceneChar.PixelY);
-                        mapTile = SceneCache.mapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
+                        mapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
                         if (sceneChar == sceneChar.scene.mainChar){
                             evt = new CCEvent(CCEvent.WALK, CCEventActionWalk.JUMP_ARRIVED, [sceneChar, mapTile]);
                             EventDispatchCenter.getInstance().dispatchEvent(evt);
@@ -178,8 +178,8 @@
             if (speed == 0){
                 return;
             }
-            var fromTile:MapTile = SceneCache.mapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
-            mapTile = SceneCache.mapTiles[((tilePos.x + "_") + tilePos.y)];
+            var fromTile:MapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
+            mapTile = SceneCache.MapTiles[((tilePos.x + "_") + tilePos.y)];
             if ((((fromTile == null)) || ((mapTile == null)))){
                 return;
             }
@@ -223,7 +223,7 @@
                                 sceneChar.visible = true;
                             };
                         };
-                        mapTile = SceneCache.mapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
+                        mapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
                         if (((!((vars == null))) && (!((vars.onLineArrived == null))))){
                             vars.onLineArrived(sceneChar, mapTile);
                         };

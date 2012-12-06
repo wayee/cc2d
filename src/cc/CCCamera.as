@@ -20,14 +20,14 @@
 
         public function CCCamera(p_scene:CCScene) {
             scene = p_scene;
-            updateRangeXY();
+            UpdateRangeXY();
         }
 		
-        public function lock():void {
+        public function Lock():void {
             isLocked = true;
         }
 		
-        public function unlock():void {
+        public function Unlock():void {
             isLocked = false;
         }
 		
@@ -39,7 +39,7 @@
 			return zoneRangeXY;
 		}
 		
-        public function updateRangeXY():void {
+        public function UpdateRangeXY():void {
             tileRangeXY = SceneUtil.GetViewTileRangeXY(scene);
 			zoneRangeXY = SceneUtil.GetViewZoneRangeXY(scene);
             x_limen = scene.sceneConfig.width * LIMEN_RATIO;
@@ -51,14 +51,14 @@
 		 * TileX, TileY是地图中点的位置
 		 * tileRangXY是场景内地中点位置
 		 */
-        public function canSee(sceneChar:CCCharacter):Boolean {
+        public function CanSee(sceneChar:CCCharacter):Boolean {
             return sceneChar.TileX > (TileX - tileRangeXY.x) && 
 				sceneChar.TileX < (TileX + tileRangeXY.x) && 
 				sceneChar.TileY > (TileY - tileRangeXY.y) && 
 				sceneChar.TileY < (TileY + tileRangeXY.y);
         }
 		
-        public function lookAt(sceneChar:CCCharacter, b:Boolean=false):void {
+        public function LookAt(sceneChar:CCCharacter, b:Boolean=false):void {
             followCharacter = sceneChar;
             Run(b);
         }

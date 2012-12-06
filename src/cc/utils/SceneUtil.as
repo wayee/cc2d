@@ -59,7 +59,7 @@
         }
 		
         public static function GetMapTile(x:int, y:int):MapTile {
-            return SceneCache.mapTiles[x + "_" + y] as MapTile;
+            return SceneCache.MapTiles[x + "_" + y] as MapTile;
         }
 		
         public static function IsSolid(x:int, y:int):Boolean {
@@ -101,7 +101,7 @@
             if (Math.abs(mapTile1.TileX - pos2Ele.TileX) <= 1 && Math.abs(mapTile1.TileY - pos2Ele.TileY) <= 1) {
                 return false;
             }
-            mapTile = SceneCache.mapTiles[pos2Ele.TileX + "_" + pos2Ele.TileY];
+            mapTile = SceneCache.MapTiles[pos2Ele.TileX + "_" + pos2Ele.TileY];
             if (mapTile.isSolid) {
                 return true;
             }
@@ -134,7 +134,7 @@
             if (Math.abs(mapTile1.TileX - pos2Ele.TileX) <= 1 && Math.abs(mapTile1.TileY - pos2Ele.TileY) <= 1) {
                 return mapTile1;
             }
-            mapTile = SceneCache.mapTiles[pos2Ele.TileX + "_" + pos2Ele.TileY];
+            mapTile = SceneCache.MapTiles[pos2Ele.TileX + "_" + pos2Ele.TileY];
             if (!mapTile.isSolid) {
                 return (mapTile);
             }
@@ -181,7 +181,7 @@
                 if (mapTile1 == null || mapTile1.TileX == _local7.x && mapTile1.TileY == _local7.y) {
                     return mapTile1;
                 }
-                _local9 = SceneCache.mapTiles[_local7.x + "_" + _local7.y];
+                _local9 = SceneCache.MapTiles[_local7.x + "_" + _local7.y];
                 if (_local9 == null) {
                 } else {
                     if (!_local9.isSolid) {
@@ -230,7 +230,7 @@
                 if (Point.distance(pxPoint, _local8) >= mapTile2){
                     return null;
                 }
-                _local9 = SceneCache.mapTiles[_local7.x + "_" + _local7.y];
+                _local9 = SceneCache.MapTiles[_local7.x + "_" + _local7.y];
                 if (_local9 == null){
                 } else {
                     if (!_local9.isSolid){

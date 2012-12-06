@@ -86,7 +86,7 @@
 				// 地图位置信息
 				var tileInfo:Array = String(dataObj.tiles).split(',');
 				var len:int = tileInfo.length;
-				var transports:Object = SceneCache.transports;			// [ mapId_x_y ] != undefined => 传送点
+				var transports:Object = SceneCache.Transports;			// [ mapId_x_y ] != undefined => 传送点
 				var mapId:int = mapConfig.mapID;
 				var mapTile:Object = {};		// [ x_y ] = MapTile
 				var mapSolids:Object = {};		// [ x_y ] = isSolid

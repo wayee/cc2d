@@ -24,7 +24,7 @@ package cc
 				obj[tps[0] + '_' + tps[1] + '_' + tps[2]] = 1;	// [ mapId_x_y ] = 可通行标志
 			}
 			
-			SceneCache.transports = obj;
+			SceneCache.Transports = obj;
 		}
 	}
 }

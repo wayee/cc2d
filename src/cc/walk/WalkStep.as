@@ -135,7 +135,7 @@
 				
 				// 主对象, 发送消息: 到达
                 if (sceneChar == sceneChar.scene.mainChar) {
-					var obj:Object = SceneCache.mapTiles;
+					var obj:Object = SceneCache.MapTiles;
                     mapTile = SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY);
                     sceneChar.scene.hideMouseChar();
 //					ZLog.add('WalkStep.step: SceneEventAction_walk.ARRIVED');

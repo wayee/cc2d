@@ -92,8 +92,8 @@
         }
 
         public function get isInMask():Boolean {
-            return ( SceneCache.mapTiles[TileX + "_" + TileY] != null && 
-				(SceneCache.mapTiles[TileX + "_" + TileY] as MapTile).isMask );
+            return ( SceneCache.MapTiles[TileX + "_" + TileY] != null && 
+				(SceneCache.MapTiles[TileX + "_" + TileY] as MapTile).isMask );
         }
 		
         public function get Walkdata():WalkData {
@@ -477,7 +477,7 @@
         }
 		
         public function inViewDistance():Boolean {
-            return scene == null || scene.sceneCamera.canSee(this);
+            return scene == null || scene.sceneCamera.CanSee(this);
         }
 		
 		public function isJumping():Boolean {

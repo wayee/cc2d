@@ -51,7 +51,7 @@
 			var sceneEvent:CCEvent;
 			
 			// 不可到达的点
-			var mapTile:MapTile = SceneCache.mapTiles[targetTilePoint.x + "_" + targetTilePoint.y];
+			var mapTile:MapTile = SceneCache.MapTiles[targetTilePoint.x + "_" + targetTilePoint.y];
 			if (mapTile == null) {
 				if (p_char.isMainChar()) {
 					p_char.scene.hideMouseChar();
@@ -88,7 +88,7 @@
 					p_char.faceToTile(targetTilePoint.x, targetTilePoint.y); // 面向目标点
 					if (p_char == p_char.scene.mainChar) {
 						p_char.scene.hideMouseChar();
-						mapTile = SceneCache.mapTiles[p_char.TileX + "_" + p_char.TileY];
+						mapTile = SceneCache.MapTiles[p_char.TileX + "_" + p_char.TileY];
 						sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [p_char, mapTile]);
 						EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 					}
@@ -100,7 +100,7 @@
 			}
 			
 			// 角色当前位置是不可到达
-			var currentPosTile:MapTile = SceneCache.mapTiles[p_char.TileX + "_" + p_char.TileY];
+			var currentPosTile:MapTile = SceneCache.MapTiles[p_char.TileX + "_" + p_char.TileY];
 			mapTile = SceneUtil.GetRoundMapTile(currentPosTile, mapTile);
 			if (mapTile == null) {
 				p_char.faceToTile(targetTilePoint.x, targetTilePoint.y);
@@ -119,9 +119,9 @@
 			var walkPaths:Array = [];
 			var isIsland:Boolean = mapTile.isIsland;
 			if (isIsland) { // 目标点是孤立的
-				walkPaths = AStar.search(SceneCache.mapSolids, mapTile.TileX, mapTile.TileY, p_char.TileX, p_char.TileY);
+				walkPaths = AStar.search(SceneCache.MapSolids, mapTile.TileX, mapTile.TileY, p_char.TileX, p_char.TileY);
 			} else {
-				walkPaths = AStar.search(SceneCache.mapSolids, p_char.TileX, p_char.TileY, mapTile.TileX, mapTile.TileY);
+				walkPaths = AStar.search(SceneCache.MapSolids, p_char.TileX, p_char.TileY, mapTile.TileX, mapTile.TileY);
 			}
 			
 			if (walkPaths == null || walkPaths.length < 2) { // 目标点就在当前位置
@@ -214,7 +214,7 @@
 			p_char.Walkdata.walk_pathArr = pathData;
 			
 			var lastPoint2:Point = pathData[pathData.length - 1] as Point;
-			var lastPointMapTile:MapTile = SceneCache.mapTiles[lastPoint2.x + "_" + lastPoint2.y];
+			var lastPointMapTile:MapTile = SceneCache.MapTiles[lastPoint2.x + "_" + lastPoint2.y];
 			if (p_char.isMainChar()) {
 				p_char.scene.showMouseChar(lastPoint2.x, lastPoint2.y);
 				sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.READY, [p_char, lastPointMapTile, pathData]);

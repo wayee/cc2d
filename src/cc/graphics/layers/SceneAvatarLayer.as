@@ -69,9 +69,7 @@
             return this._avatarBDDict[y + "_" + x];
         }
 		
-		// 释放资源
-        public function dispose():void
-		{
+        public function Dispose():void {
             this.removeAllAvatarBD();
 			
             this.removeBoundsArr = [];

@@ -16,7 +16,7 @@
             mouseChildren = false;
         }
         
-		public function dispose():void {
+		public function Dispose():void {
             Fun.clearChildren(this, false, false);
         }
     }

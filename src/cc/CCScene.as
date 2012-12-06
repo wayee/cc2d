@@ -243,7 +243,7 @@
             _mask.height = sceneConfig.height;
 			
 			// 更新摄像机，很想知道这时候摄像机做了些什么事吧？
-            sceneCamera.updateRangeXY();
+            sceneCamera.UpdateRangeXY();
             updateCameraNow();
         }
 		
@@ -269,8 +269,8 @@
                 var slipcovers:Object;
                 var sceneChar:CCCharacter;
                 mapConfig = mapConf;
-                SceneCache.mapTiles = mapTileInfo;		// 保存到 场景缓存
-                SceneCache.mapSolids = mapSolids;
+                SceneCache.MapTiles = mapTileInfo;		// 保存到 场景缓存
+                SceneCache.MapSolids = mapSolids;
                 if (mapConfig.slipcovers != null && mapConfig.slipcovers.length > 0) {		// 覆盖物信息
                     for each (slipcovers in mapConfig.slipcovers) {
                         sceneChar = createSceneCharacter(CharType.DUMMY);		// 建立傀儡
@@ -284,12 +284,12 @@
 //                sceneMapLayer.initMap();				// 设置背景图（整图显示），加载地图在 sceneMaplayer.run()
 				sceneMapLayer.InitMapZones();			// 设置背景图（分割显示）
 				sceneAvatarLayer.creatAllAvatarBD();	// 清空对象层
-                sceneInteractiveLayer.initRange();		// 重新设置事件接受区域
+                sceneInteractiveLayer.InitRange();		// 重新设置事件接受区域
 				
                 if (mainChar) {
                     mainChar.stopWalk(false);			// 停止走动
                     mainChar.updateNow = true;
-                    sceneCamera.lookAt(mainChar);
+                    sceneCamera.LookAt(mainChar);
                 }
 				
                 if (_mouseChar) {
@@ -518,19 +518,19 @@
             var sceneChar:CCCharacter;
 			
 			// TODO SceneCache
-            SceneCache.mapImgCache.dispose();
-            SceneCache.currentMapZones = {};
-            SceneCache.mapTiles = {};
-            SceneCache.mapSolids = {};
-            SceneCache.mapZones = {};
+            SceneCache.MapImgCache.dispose();
+            SceneCache.InViewMapZones = {};
+            SceneCache.MapTiles = {};
+            SceneCache.MapSolids = {};
+            SceneCache.MapZones = {};
             SceneCache.removeWaitingAvatar(null, null, null, [mainChar, _mouseChar]);
 			
 			// this & Scene
             mapConfig = null;
-            sceneSmallMapLayer.dispose();
-            sceneMapLayer.dispose();
-            sceneAvatarLayer.dispose();
-            sceneHeadLayer.dispose();
+            sceneSmallMapLayer.Dispose();
+            sceneMapLayer.Dispose();
+            sceneAvatarLayer.Dispose();
+            sceneHeadLayer.Dispose();
 			
             var len:int;
             while (renderCharacters.length > len) {
@@ -551,7 +551,7 @@
             _selectedCharacter = null;
 			
 			// TODO sceneCamera.lookAt
-            sceneCamera.lookAt(null);
+            sceneCamera.LookAt(null);
             
 			if (mainChar) {
                 mainChar.stopWalk();
@@ -573,11 +573,11 @@
         }
         
 		public function enableInteractiveHandle():void {
-            sceneInteractiveLayer.enableInteractiveHandle();
+            sceneInteractiveLayer.EnableInteractiveHandle();
         }
 		
         public function disableInteractiveHandle():void {
-            sceneInteractiveLayer.disableInteractiveHandle();
+            sceneInteractiveLayer.DisableInteractiveHandle();
         }
 		
         public function showMouseChar(tx:Number, ty:Number):void {
@@ -661,7 +661,7 @@
 			if (!bm) {
                 return resultArray;
             }
-            resultArray.push(SceneCache.mapTiles[tilePosX + "_" + tilePosY]);
+            resultArray.push(SceneCache.MapTiles[tilePosX + "_" + tilePosY]);
 			
             var sceneCharList:Array;
             var color:uint = bm.getPixel32(mousePos.x - (dH * MAX_AVATARBD_WIDTH), mousePos.y - (dV * MAX_AVATARBD_HEIGHT));
@@ -698,7 +698,7 @@
 			if (tilePosX < 0 || tilePosY < 0 || tilePosX >= mapConfig.mapGridX || tilePosY >= mapConfig.mapGridY) {
 				return resultArray;
 			}
-			resultArray.push(SceneCache.mapTiles[tilePosX + "_" + tilePosY]);
+			resultArray.push(SceneCache.MapTiles[tilePosX + "_" + tilePosY]);
 			
 			var mx:Number;
 			var my:Number;
