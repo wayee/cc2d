@@ -41,7 +41,7 @@
             }
 			
 			// 是主玩家, 或者该类型可见
-            var containerVisible:Boolean = sceneChar == sceneChar.scene.mainChar || sceneChar.scene.getCharVisible(sceneChar.type);
+            var containerVisible:Boolean = sceneChar == sceneChar.scene.mainChar || sceneChar.scene.GetCharVisible(sceneChar.type);
 			
 			// 把  container 添加到 sceneHeadLayer 中
             sceneChar.EnableContainer(sceneChar.scene.sceneHeadLayer, containerVisible);	
@@ -50,7 +50,7 @@
             if (sceneChar.headFace == null) {
                 headFace = HeadFace.createHeadFace(nickName, nickNameColor, customTitle, leftIcon, topIcon);
                 sceneChar.headFace = headFace;
-                if (sceneChar.scene.getCharHeadVisible(sceneChar.type)){
+                if (sceneChar.scene.GetCharHeadVisible(sceneChar.type)){
                     sceneChar.showContainer.ShowHeadFaceContainer();	// 显示/隐藏
                 } else {
                     sceneChar.showContainer.HideHeadFaceContainer();
@@ -83,7 +83,7 @@
             }
 			
 			// 可见性标志
-            var containerVisible:* = (((sceneChar == sceneChar.scene.mainChar)) || (sceneChar.scene.getCharVisible(sceneChar.type)));
+            var containerVisible:* = (((sceneChar == sceneChar.scene.mainChar)) || (sceneChar.scene.GetCharVisible(sceneChar.type)));
             sceneChar.EnableContainer(sceneChar.scene.sceneHeadLayer, containerVisible);
 			
 			// 建立  attackFace
@@ -111,7 +111,7 @@
             attackFace.y = from.y;
 			
 			// 显示/隐藏
-            if (sceneChar.scene.getCharAvatarVisible(sceneChar.type)){
+            if (sceneChar.scene.GetCharAvatarVisible(sceneChar.type)){
                 sceneChar.showContainer.ShowAttackFaceContainer();
             } else {
                 sceneChar.showContainer.HideAttackFaceContainer();
@@ -140,9 +140,9 @@
             if (!sceneChar.usable) {
                 return;
             }
-            var isVisible:Boolean = sceneChar == sceneChar.scene.mainChar || sceneChar.scene.getCharVisible(sceneChar.type);
+            var isVisible:Boolean = sceneChar == sceneChar.scene.mainChar || sceneChar.scene.GetCharVisible(sceneChar.type);
             sceneChar.EnableContainer(sceneChar.scene.sceneHeadLayer, isVisible);
-            if (sceneChar.scene.getCharAvatarVisible(sceneChar.type)) {
+            if (sceneChar.scene.GetCharAvatarVisible(sceneChar.type)) {
                 sceneChar.showContainer.ShowCustomFaceContainer();
             } else {
                 sceneChar.showContainer.HideCustomFaceContainer();

@@ -481,7 +481,7 @@
         }
 		
 		public function isJumping():Boolean {
-			return walkData.isJumping;
+			return Walkdata.isJumping;
 		}
 		
         public function clearMe():void {
@@ -509,6 +509,8 @@
             isMouseOn = false;
             restStatus = RestType.COMMON;
             walkData = null;
+			specilizeX = 0;
+			specilizeY = 0;
             showIndex = 0;
             showAttack = null;
             visible = true;
@@ -530,14 +532,15 @@
             avatar = CCAvatar.createAvatar(this);
 			
             if (scene != null) {
-                avatar.visible = (this == scene.mainChar) || scene.getCharAvatarVisible(type);
+                avatar.visible = (this == scene.mainChar) || scene.GetCharAvatarVisible(type);
             }
             oldData = {
                 visible:true,
                 inViewDistance:false,
                 isMouseOn:false,
                 isSelected:false,
-                pos:new Point()
+                pos:new Point(),
+				spPos:new Point()
             }
             usable = true;
         }
@@ -550,14 +553,22 @@
 			// 更新 pos
             var px:Number = Math.round(pixelX);
             var py:Number = Math.round(pixelY);
-			
 			var pos:Point = oldData['pos'] as Point;
-			
             if (pos.x != px || pos.y != py) {
 				pos.x = px;
 				pos.y = py;
                 updateNow = true;
             }
+			
+			// 更新 spPos
+			px = Math.round(specilizeX);
+			py = Math.round(specilizeY);
+			var spPos:Point = oldData['spPos'] as Point;
+			if (spPos.x != px || spPos.y != py) {
+				spPos.x = px;
+				spPos.y = py;
+				updateNow = true;
+			}
 			
 			// 更新 isMouseOn
             if (oldData['isMouseOn'] != isMouseOn) {

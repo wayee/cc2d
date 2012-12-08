@@ -42,6 +42,10 @@
                 walk_pathCutter.clear();
             }
             walk_vars = null;
+			
+			jump_targetP = null;
+			jump_vars = null;
+			isJumping = false;
         }
     }
 }

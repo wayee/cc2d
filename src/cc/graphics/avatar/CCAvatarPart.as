@@ -4,6 +4,7 @@
 	import cc.define.AvatarPartType;
 	import cc.define.CharStatusType;
 	import cc.define.CharType;
+	import cc.define.RestType;
 	import cc.graphics.layers.SceneAvatarLayer;
 	import cc.tools.SceneCache;
 	import cc.tools.ScenePool;
@@ -73,6 +74,7 @@
 		private var _only1LogicAngle:Boolean = false;
 		private var _autoRecycle:Boolean = false;
 		private var _autoToStand:Boolean = false;
+		private var _useSpecilizeXY:Boolean = true;
 		private var _drawMouseOn:Boolean = true;
 		private var _callBackAttack:Boolean = false;
 		private var _enablePlay:Boolean = false;
@@ -197,6 +199,11 @@
 			// 如果是躯体
 			if (type == AvatarPartType.BODY) {
 				_autoToStand = true;
+			}
+			
+			// 如果是 马匹
+			if (type == AvatarPartType.MOUNT || avatar.sceneCharacter.type == CharType.MOUNT) {
+				_useSpecilizeXY = false;
 			}
 			
 			// 如果资源xml中只定义了一个角度
@@ -399,8 +406,14 @@
 				{
 					// 计算 cutRect, 为当前部位的矩形范围
 					
-					px = Math.round(this.avatar.sceneCharacter.PixelX);
-					py = Math.round(this.avatar.sceneCharacter.PixelY);
+					// 如果: 使用特殊坐标 && (跳跃中 || 双人打坐???)
+					if (_useSpecilizeXY && avatar.sceneCharacter.isJumping() || avatar.sceneCharacter.restStatus == RestType.DOUBLE_SIT) {
+						px = Math.round(this.avatar.sceneCharacter.specilizeX);
+						py = Math.round(this.avatar.sceneCharacter.specilizeY);
+					} else {
+						px = Math.round(this.avatar.sceneCharacter.PixelX);
+						py = Math.round(this.avatar.sceneCharacter.PixelY);
+					}
 					
 					cutRect.width = _currentAvatarPartStatus.width;
 					cutRect.height = _currentAvatarPartStatus.height;
@@ -709,6 +722,7 @@
 			_only1Frame = false;
 			_autoRecycle = false;
 			_autoToStand = false;
+			_useSpecilizeXY = true;
 			_drawMouseOn = true;
 			_callBackAttack = false;
 			_only1LogicAngle = false;

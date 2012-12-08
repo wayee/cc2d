@@ -10,8 +10,8 @@ package
 	import cc.define.CharType;
 	import cc.events.CCEvent;
 	import cc.events.CCEventActionInteractive;
-	import cc.helper.WalkHelper;
 	import cc.utils.CCG;
+	import cc.utils.PathFind;
 	import cc.utils.SceneUtil;
 	import cc.utils.Transformer;
 	import cc.vo.avatar.AvatarParamData;
@@ -19,9 +19,8 @@ package
 	
 	import flash.geom.Point;
 	
-	import wit.log.Log4J;
 	import wit.manager.EventManager;
-	import cc.utils.PathFind;
+	import wit.utils.NumberU;
 
 	public class GameApp extends CCApplication
 	{
@@ -32,7 +31,7 @@ package
 		}
 		
 		public function Startup():void {
-			CCDirector.Init('res', 30);
+			CCDirector.Init('res/', 30);
 			
 			if (scene == null) {
 				scene = new CCScene(1200, 650);
@@ -50,14 +49,14 @@ package
 		public function EnterScene():void {
 			// TODO: 先清理上一个场景的资源 
 			
-			var shadowApd:AvatarParamData = new AvatarParamData(CCG.GetSharePath('shadow'));
+			var shadowApd:AvatarParamData = new AvatarParamData(CCG.GetResPath('share/shadow.swf'));
 			scene.setShadowAvatarParamData(shadowApd);
 			
-			var blankApd:AvatarParamData = new AvatarParamData(CCG.GetSharePath('blank'));
+			var blankApd:AvatarParamData = new AvatarParamData(CCG.GetResPath('share/blank.swf'));
 			scene.setBlankAvatarParamData(blankApd);
 			
 			var mouseChar:CCCharacter = scene.createSceneCharacter(CharType.DUMMY, 0, 0);
-			mouseChar.loadAvatarPart(new AvatarParamData(CCG.GetSharePath('mousechar'), AvatarPartType.MAGIC));
+			mouseChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('share/mousechar.swf'), AvatarPartType.MAGIC));
 			scene.setMouseChar(mouseChar);
 			scene.hideMouseChar();
 			
@@ -66,7 +65,7 @@ package
 			
 			if (mainChar == null) {
 				mainChar = scene.createSceneCharacter(CharType.PLAYER, 66, 60);
-				mainChar.loadAvatarPart(new AvatarParamData(CCG.GetHeroPath('3')));
+				mainChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('hero/hero3.swf')));
 				
 				scene.setMainChar(mainChar);
 				
@@ -74,6 +73,16 @@ package
 				mainChar.setHeadFaceCustomTitleHtmlText('胡莱西游');
 				mainChar.setHeadFaceTalkText('你好，真名！');
 				mainChar.setHeadFaceBar(80, 100);
+			}
+			
+			var tx:int, ty:int, npc:CCCharacter;
+			for (var i:int=0; i<40; i++) {
+				tx = NumberU.randRange(40, 100);
+				ty = NumberU.randRange(30, 80);
+				
+				npc = scene.createSceneCharacter(CharType.NPC_FRIEND, tx, ty);
+				npc.loadAvatarPart(new AvatarParamData(CCG.GetResPath('hero/hero3.swf')));
+				npc.setHeadFaceNickName('');
 			}
 			
 			// 清理上一场景的走路信息
@@ -94,20 +103,26 @@ package
 			//
 		}
 		
+		private function jumpTo(tx:Number, ty:Number):void {
+			if (mainChar != null) {
+				mainChar.jump(new Point(tx, ty), 120);
+			}
+		}
+		
 		private function moveTo(tx:Number, ty:Number):void {
 			var currentX:int = mainChar.TileX;
 			var currentY:int = mainChar.TileY;
 			
-			var startPos:int = SceneUtil.ConvertTileToId([currentX, currentY], scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);
-			var endPos:int   = SceneUtil.ConvertTileToId([tx, ty], scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);	
+			var startPos:int = Transformer.TransTilePoint2Id(new Point(currentX, currentY), scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);
+			var endPos:int   = Transformer.TransTilePoint2Id(new Point(tx, ty), scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);	
 			
 			var paths:Array = PathFind.getRealPath(startPos, endPos, scene.mapConfig.mapData, true);
 			
-			var path:Array = SceneUtil.ConvertIdsToTile(paths, scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);
+			var path:Array = Transformer.TransIds2TilePoints(paths, scene.mapConfig.mapGridX, scene.mapConfig.mapGridY);
 			
-			Log4J.Debug('first point: ' + path[0][0] + path[0][1]);
+//			Log4J.Debug('first point: ' + path[0][0] + path[0][1]);
 			if (mainChar != null) {
-				WalkHelper.walk0(mainChar, path, null, -1, 0, {'onWalkThrough':null});
+				mainChar.walk0(path, null, -1, 0, {'onWalkThrough':null});
 			}
 		}
 		
@@ -141,10 +156,11 @@ package
 					}
 				} else {
 					if (m) {
-						target = Transformer.transPixelPoint2TilePoint(m);
+						target = Transformer.TransPixelPoint2TilePoint(m);
 						if (mainChar != null) {
-							Log4J.Debug("click point (pixelX: " + m.x + " pixelY: " + m.y + " tileX: " + target.x + " tileY: " + target.y + ') in the scene.');
+//							Log4J.Debug("click point (pixelX: " + m.x + " pixelY: " + m.y + " tileX: " + target.x + " tileY: " + target.y + ') in the scene.');
 							moveTo(target.x, target.y);
+//							jumpTo(target.x, target.y);
 						}
 					}
 				}

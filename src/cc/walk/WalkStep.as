@@ -4,6 +4,7 @@
 	import cc.CCRender;
 	import cc.define.CharAngleType;
 	import cc.define.CharStatusType;
+	import cc.define.CharType;
 	import cc.events.CCEvent;
 	import cc.events.CCEventActionWalk;
 	import cc.tools.SceneCache;
@@ -53,7 +54,7 @@
 			// 如果是死亡, 则清空数据
             if (sceneChar.getStatus() == CharStatusType.DEATH) {
                 if (sceneChar == sceneChar.scene.mainChar) {	// 如果是主玩家
-                    sceneChar.scene.hideMouseChar();			// 隐藏鼠标对象
+                    sceneChar.scene.HideMouseChar();			// 隐藏鼠标对象
                 }
                 sceneChar.Walkdata.clear();						// 清空数据
                 return;
@@ -62,7 +63,8 @@
 			
 			// 如果没有路径, 则结束移动
             if (walkData.walk_pathArr == null || walkData.walk_pathArr.length == 0) {
-                if (sceneChar.getStatus() == CharStatusType.WALK) {
+                if (sceneChar.getStatus() == CharStatusType.WALK && sceneChar.type != CharType.MOUNT && 
+					sceneChar.type != CharType.NPC_FRIEND) {
                     sceneChar.playTo(CharStatusType.STAND);	// 如果是移动中, 并且不是 MOUNT/NPC_FRIEND 则设置为站立
                 }
                 return;
@@ -137,7 +139,7 @@
                 if (sceneChar == sceneChar.scene.mainChar) {
 					var obj:Object = SceneCache.MapTiles;
                     mapTile = SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY);
-                    sceneChar.scene.hideMouseChar();
+                    sceneChar.scene.HideMouseChar();
 //					ZLog.add('WalkStep.step: SceneEventAction_walk.ARRIVED');
                     sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [sceneChar, mapTile]);
                     EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);

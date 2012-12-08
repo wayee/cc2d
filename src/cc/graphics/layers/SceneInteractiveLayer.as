@@ -69,14 +69,14 @@
 			
             switch (event.type) {
                 case MouseEvent.MOUSE_MOVE:
-                    sceneCharList = _scene.getSceneObjectsUnderPoint(mousePos);		// 获得当前位置所有对象
+                    sceneCharList = _scene.GetSceneObjectsUnderPoint(mousePos);		// 获得当前位置所有对象
                     mapTile = sceneCharList[0];	// 获得第一个对象
 					
                     if (mapTile != null){
                         if (sceneCharList.length > 1) {
                             sceneChar = getHitSceneCharacter(sceneCharList[1], mousePos);
                         } else { // NPC HeadFace
-							sceneCharList = _scene.getSceneObjectsUnderPointEx(mousePos);
+							sceneCharList = _scene.GetSceneObjectsUnderPointEx(mousePos);
 							sceneChar = sceneCharList[1][0] as CCCharacter;
 						}
                         sceneEvent = new CCEvent(CCEvent.INTERACTIVE, CCEventActionInteractive.MOUSE_MOVE, [event, sceneChar, mapTile]);
@@ -84,13 +84,13 @@
                     }
                     break;
                 case MouseEvent.MOUSE_DOWN:
-                    sceneCharList = _scene.getSceneObjectsUnderPoint(mousePos); // [MapTile, [CCCharacter, ...]]
+                    sceneCharList = _scene.GetSceneObjectsUnderPoint(mousePos); // [MapTile, [CCCharacter, ...]]
                     mapTile = sceneCharList[0];
                     if (mapTile != null){
                         if (sceneCharList.length > 1){
                             sceneChar = getHitSceneCharacter(sceneCharList[1], mousePos);
                         }else { // NPC HeadFace
-							sceneCharList = _scene.getSceneObjectsUnderPointEx(mousePos);
+							sceneCharList = _scene.GetSceneObjectsUnderPointEx(mousePos);
 							sceneChar = sceneCharList[1][0] as CCCharacter;
 						}
                         curTime = getTimer();

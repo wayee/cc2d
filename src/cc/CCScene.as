@@ -147,34 +147,34 @@
 			}
 			
 			// 扩展宽度，同时遮罩的大小也修改为场景的大小
-			resize(sceneConfig.width, sceneConfig.height);
+			Resize(sceneConfig.width, sceneConfig.height);
 			
 			// 设置遮罩和监听场景事件(SceneInteractiveLayer负责)
 			// 事件接受的区域: sceneConfig.width, sceneConfig.height
-			enableInteractiveHandle();
+			EnableInteractiveHandle();
 		}
 		
 		/**
 		 * 获取对象可见标志
-		 * <li> 除了玩家、英雄/宠物和坐骑外，其他默认显示
-		 * <li> PLAYER, MOUNT, PET 
+		 * <li> 除了主角、其他玩家、英雄/宠物和坐骑外，其他默认显示
+		 * <li> PLAYER, MOUNT, PET, NPC_FRIEND 
 		 */
-        public function getCharVisible(charType:int):Boolean {
-            if ( charType != CharType.PLAYER && charType != CharType.PET 
-				&& charType != CharType.MOUNT ) {
+        public function GetCharVisible(charType:int):Boolean {
+            if ( charType != CharType.PLAYER && charType != CharType.PET &&
+				charType != CharType.MOUNT && charType != CharType.NPC_FRIEND ) {
                 return true;
             }
 			
             return _charVisible;
         }
 		
-		public function setCharVisible(b:Boolean=false):void {
+		public function SetCharVisible(b:Boolean=false):void {
             var sceneChar:CCCharacter;
             _charVisible = b;
 			
             for each (sceneChar in sceneCharacters) {
-                if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT
-					&& sceneChar.type != CharType.PET) || sceneChar == mainChar ) {
+                if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT && 
+					sceneChar.type != CharType.PET && sceneChar.type != CharType.NPC_FRIEND) || sceneChar == mainChar ) {
                 	//
 				} else {
                     sceneChar.visible = _charVisible;
@@ -182,20 +182,21 @@
             }
         }
 		
-		public function getCharHeadVisible(charType:int):Boolean {
-			if ( charType != CharType.PLAYER && charType != CharType.PET && charType != CharType.MOUNT ) {
+		public function GetCharHeadVisible(charType:int):Boolean {
+			if ( charType != CharType.PLAYER && charType != CharType.PET && 
+				charType != CharType.MOUNT && charType != CharType.NPC_FRIEND ) {
 				return true;
 			}
 			
 			return _charHeadVisible;
 		}
 		
-		public function setCharHeadVisible(b:Boolean=false):void {
+		public function SetCharHeadVisible(b:Boolean=false):void {
 			var sceneChar:CCCharacter;
 			this._charHeadVisible = b;
 			for each (sceneChar in this.sceneCharacters) {
-				if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT
-					&& sceneChar.type != CharType.PET) || sceneChar == mainChar ) {
+				if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT && 
+					sceneChar.type != CharType.PET && sceneChar.type != CharType.NPC_FRIEND) || sceneChar == mainChar ) {
 					//
 				} else {
 					if (sceneChar.UseContainer) {
@@ -209,21 +210,22 @@
 			}
 		}
 		
-        public function getCharAvatarVisible(charType:int):Boolean {
-			if ( charType != CharType.PLAYER && charType != CharType.PET && charType != CharType.MOUNT ) {
+        public function GetCharAvatarVisible(charType:int):Boolean {
+			if ( charType != CharType.PLAYER && charType != CharType.PET && 
+				charType != CharType.MOUNT && charType != CharType.NPC_FRIEND) {
 				return true;
 			}
 			
             return _charAvatarVisible;
         }
 		
-        public function setCharAvatarVisible(b:Boolean=false):void {
+        public function SetCharAvatarVisible(b:Boolean=false):void {
             var sceneChar:CCCharacter;
             _charAvatarVisible = b;
 			
             for each (sceneChar in sceneCharacters) {
-				if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT
-					&& sceneChar.type != CharType.PET) || sceneChar == mainChar ) {
+				if ( (sceneChar.type != CharType.PLAYER && sceneChar.type != CharType.MOUNT && 
+					sceneChar.type != CharType.PET && sceneChar.type != CharType.NPC_FRIEND) || sceneChar == mainChar ) {
                 	//
 				} else {
                     sceneChar.avatar.visible = _charAvatarVisible;
@@ -231,7 +233,7 @@
             }
         }
 		
-        public function resize(width:Number, height:Number):void {
+        public function Resize(width:Number, height:Number):void {
 			// 场景配置
             sceneConfig.width = width;
             sceneConfig.height = height;
@@ -244,7 +246,7 @@
 			
 			// 更新摄像机，很想知道这时候摄像机做了些什么事吧？
             sceneCamera.UpdateRangeXY();
-            updateCameraNow();
+            UpdateCameraNow();
         }
 		
 		/**
@@ -257,7 +259,7 @@
 		 * @param completehandler 加载完成回调
 		 * @param updateHandler 加载过程回调
 		 */
-        public function switchScene(mapId:int, mapPicId:int, completehandler:Function=null, 
+        public function SwitchScene(mapId:int, mapPicId:int, completehandler:Function=null, 
 									updateHandler:Function=null):void {
             var scene:CCScene = null;
 			
@@ -273,7 +275,7 @@
                 SceneCache.MapSolids = mapSolids;
                 if (mapConfig.slipcovers != null && mapConfig.slipcovers.length > 0) {		// 覆盖物信息
                     for each (slipcovers in mapConfig.slipcovers) {
-                        sceneChar = createSceneCharacter(CharType.DUMMY);		// 建立傀儡
+                        sceneChar = CreateSceneCharacter(CharType.DUMMY);		// 建立傀儡
                         sceneChar.PixelX = slipcovers.pixel_x;
                         sceneChar.PixelY = slipcovers.pixel_y;
 						sceneChar.loadAvatarPart(new AvatarParamData(slipcovers.sourcePath));
@@ -304,15 +306,15 @@
 				 */
 				sceneRender.StartRender(true);
 				
-                enableInteractiveHandle();
+                EnableInteractiveHandle();
                 if (completehandler != null) {
                     completehandler();
                 }
             }
 			
-            disableInteractiveHandle();			// 禁止交互
+            DisableInteractiveHandle();			// 禁止交互
             sceneRender.StopRender();			// 暂停渲染
-            dispose();							// 释放
+            Dispose();							// 释放
 			
             MapLoader.LoadMapConfig(mapPicId, this, newOnComplete, updateHandler);	// 加载当前地图的配置信息
             scene = this;
@@ -322,28 +324,28 @@
 		 * 更新摄像机
 		 * <br> 移动摄像机位置, 跟随玩家, 并保持在场景之内
 		 */
-        public function updateCameraNow():void {
+        public function UpdateCameraNow():void {
             sceneCamera.Run(false);
         }
 		
-		public function showGrid():void {
+		public function ShowGrid():void {
 			MapInfo.showGrid = true;
 			sceneGrid.show(mapConfig.mapData.tiles, mapConfig.mapGridX, mapConfig.mapGridY, SceneInfo.TILE_WIDTH, SceneInfo.TILE_HEIGHT);
 		}
 		
-		public function fill( fillGrids:Array ):void {
+		public function Fill( fillGrids:Array ):void {
 			sceneGrid.fillTiles( fillGrids, mapConfig.mapGridX, mapConfig.mapGridY, SceneInfo.TILE_WIDTH, SceneInfo.TILE_HEIGHT );			
 		}
 		
-		public function hideGrid():void {
+		public function HideGrid():void {
 			MapInfo.showGrid = false;
 			sceneGrid.hide();
 		}
 		
-        public function createSceneCharacter(type:int=1, tx:int=0, ty:int=0, 
+        public function CreateSceneCharacter(type:int=1, tx:int=0, ty:int=0, 
 											 showIndex:int=0):CCCharacter {
             var sceneChar:CCCharacter = CCCharacter.createSceneCharacter(type, this, tx, ty, showIndex);
-            addCharacter(sceneChar);
+            AddCharacter(sceneChar);
 			
 			// 非傀儡和掉落包
             if (sceneChar.type != CharType.DUMMY && sceneChar.type != CharType.BAG) {
@@ -362,7 +364,7 @@
             return sceneChar;
         }
 		
-        public function setMainChar(sceneChar:CCCharacter):void {
+        public function SetMainChar(sceneChar:CCCharacter):void {
             mainChar = sceneChar;
 			if (mainChar != null) {
 				if (mainChar.UseContainer) {
@@ -372,23 +374,23 @@
 			}
         }
 		
-        public function setMouseChar(sceneChar:CCCharacter):void {
+        public function SetMouseChar(sceneChar:CCCharacter):void {
             _mouseChar = sceneChar;
         }
 		
-		public function setSelectedAvatarParamData(avatarParamData:AvatarParamData):void {
+		public function SetSelectedAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.SELECTED;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = (-(int.MAX_VALUE) + 1);
 			avatarParamData.useType = 0;
 			avatarParamData.clearSameType = false;
 			var sceneChar:CCCharacter = this._selectedCharacter;
-			setSelectedCharacter(null);
+			SetSelectedCharacter(null);
 			_selectedAvatarParamData = avatarParamData;
-			setSelectedCharacter(sceneChar);
+			SetSelectedCharacter(sceneChar);
 		}
 		
-		public function setBlankAvatarParamData(avatarParamData:AvatarParamData):void {
+		public function SetBlankAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.BLANK;
 			avatarParamData.avatarPartType = AvatarPartType.BODY;
 			avatarParamData.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.BODY);
@@ -397,7 +399,7 @@
 			blankAvatarParamData = avatarParamData;
 		}
 		
-		public function setShadowAvatarParamData(avatarParamData:AvatarParamData):void {
+		public function SetShadowAvatarParamData(avatarParamData:AvatarParamData):void {
 			avatarParamData.Id_noCheckValid = AvatarPartID.SHADOW;
 			avatarParamData.avatarPartType = AvatarPartType.MAGIC;
 			avatarParamData.depth = -(int.MAX_VALUE);
@@ -406,7 +408,7 @@
 			shadowAvatarParamData = avatarParamData;
 		}
 		
-        public function addCharacter(sceneChar:CCCharacter):void {
+        public function AddCharacter(sceneChar:CCCharacter):void {
             if (sceneChar == null) {
                 return;
             }
@@ -430,11 +432,11 @@
 //                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			
-            sceneChar.visible = ( sceneChar == mainChar || getCharVisible(sceneChar.type) );
+            sceneChar.visible = ( sceneChar == mainChar || GetCharVisible(sceneChar.type) );
             sceneChar.updateNow = true;
         }
 		
-        public function removeCharacter(sceneChar:CCCharacter, recycle:Boolean=true):void {
+        public function RemoveCharacter(sceneChar:CCCharacter, recycle:Boolean=true):void {
             var index:int;
             if (sceneChar == null) {
                 return;
@@ -452,10 +454,10 @@
                     TweenLite.killTweensOf(sceneChar);
 					
                     if (_mouseOnCharacter == sceneChar) {
-                        setMouseOnCharacter(null);
+                        SetMouseOnCharacter(null);
                     }
                     if (_selectedCharacter == sceneChar) {
-                        setSelectedCharacter(null);
+                        SetSelectedCharacter(null);
                     }
 					
                     if (recycle) {
@@ -486,14 +488,14 @@
             }
         }
 		
-        public function removeCharacterByIDAndType(ID:int, type:int=1, recycle:Boolean=true):void {
-            var sceneChar:CCCharacter = getCharByID(ID, type);
+        public function RemoveCharacterByIDAndType(ID:int, type:int=1, recycle:Boolean=true):void {
+            var sceneChar:CCCharacter = GetCharByID(ID, type);
             if (sceneChar != null) {
-                removeCharacter(sceneChar, recycle);
+                RemoveCharacter(sceneChar, recycle);
             }
         }
 		
-        public function getCharByID(ID:int, type:int=1):CCCharacter {
+        public function GetCharByID(ID:int, type:int=1):CCCharacter {
             var sceneChar:CCCharacter;
             for each (sceneChar in sceneCharacters) {
                 if (sceneChar.id == ID && sceneChar.type == type) {
@@ -503,7 +505,7 @@
             return null;
         }
 		
-        public function getCharsByType(type:int=1):Array {
+        public function GetCharsByType(type:int=1):Array {
             var sceneChar:CCCharacter;
             var arr:Array = [];
             for each (sceneChar in sceneCharacters) {
@@ -514,7 +516,7 @@
             return arr;
         }
 		
-        public function dispose():void {
+        public function Dispose():void {
             var sceneChar:CCCharacter;
 			
 			// TODO SceneCache
@@ -536,14 +538,14 @@
             while (renderCharacters.length > len) {
                 sceneChar = renderCharacters[len];
                 if (sceneChar != mainChar && sceneChar != _mouseChar) {
-                    removeCharacter(sceneChar);
+                    RemoveCharacter(sceneChar);
                 } else {
                     len++;
                 }
             }
-            hideMouseChar();
-            setMouseOnCharacter(null);
-            setSelectedCharacter(null);
+            HideMouseChar();
+            SetMouseOnCharacter(null);
+            SetSelectedCharacter(null);
             renderCharacters = [];
             sceneCharacters = [];
             _sceneDummies = [];
@@ -555,32 +557,32 @@
             
 			if (mainChar) {
                 mainChar.stopWalk();
-                addCharacter(mainChar);
+                AddCharacter(mainChar);
 				if (mainChar.showContainer) {
 					sceneHeadLayer.addChild(mainChar.showContainer);
 				}
             }
 			
             if (_mouseChar) {
-                addCharacter(_mouseChar);
+                AddCharacter(_mouseChar);
             }
         }
 		
-        public function sceneDispatchEvent(event:Event):void {
+        public function SceneDispatchEvent(event:Event):void {
             if (mapConfig != null) {
                 sceneInteractiveLayer.dispatchEvent(event);
             }
         }
         
-		public function enableInteractiveHandle():void {
+		public function EnableInteractiveHandle():void {
             sceneInteractiveLayer.EnableInteractiveHandle();
         }
 		
-        public function disableInteractiveHandle():void {
+        public function DisableInteractiveHandle():void {
             sceneInteractiveLayer.DisableInteractiveHandle();
         }
 		
-        public function showMouseChar(tx:Number, ty:Number):void {
+        public function ShowMouseChar(tx:Number, ty:Number):void {
             if (_mouseChar != null) {
                 _mouseChar.TileX = tx;
                 _mouseChar.TileY = ty;
@@ -588,13 +590,13 @@
             }
         }
 		
-        public function hideMouseChar():void {
+        public function HideMouseChar():void {
             if (_mouseChar != null) {
                 _mouseChar.visible = false;
             }
         }
 		
-        public function setMouseOnCharacter(sceneChar:CCCharacter):void {
+        public function SetMouseOnCharacter(sceneChar:CCCharacter):void {
             if (_mouseOnCharacter == sceneChar) {
                 return;
             }
@@ -611,11 +613,11 @@
             }
         }
 		
-        public function getMouseOnCharacter():CCCharacter {
+        public function GetMouseOnCharacter():CCCharacter {
             return _mouseOnCharacter;
         }
 		
-        public function setSelectedCharacter(sceneChar:CCCharacter):void {
+        public function SetSelectedCharacter(sceneChar:CCCharacter):void {
             if (_selectedCharacter == sceneChar) {
                 return;
             }
@@ -637,7 +639,7 @@
             }
         }
 		
-        public function getSelectedCharacter():CCCharacter {
+        public function GetSelectedCharacter():CCCharacter {
             return _selectedCharacter;
         }
 		
@@ -645,7 +647,7 @@
 		 * 获得鼠标位置下的所有对象列表
 		 * @return array [[MapTile, ...], [ElfCharacter, ...]]
 		 */
-        public function getSceneObjectsUnderPoint(mousePos:Point):Array {
+        public function GetSceneObjectsUnderPoint(mousePos:Point):Array {
             var sceneChar:CCCharacter;
             var resultArray:Array = [];
             var tilePosX:int = floor((mousePos.x / TILE_WIDTH));
@@ -688,7 +690,7 @@
 		 * 获得鼠标位置下的所有对象列表
 		 * @return array [[MapTile, ...], [ElfCharacter, ...]]
 		 */
-		public function getSceneObjectsUnderPointEx(mousePos:Point):Array {
+		public function GetSceneObjectsUnderPointEx(mousePos:Point):Array {
 			var sceneChar:CCCharacter;
 			var resultArray:Array = [];
 			var tilePosX:int = floor((mousePos.x / TILE_WIDTH));

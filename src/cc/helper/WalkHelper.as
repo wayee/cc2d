@@ -21,7 +21,7 @@
 		public static function stopWalk(p_char:CCCharacter, is_stand:Boolean=true):void {
 			p_char.Walkdata.clear();
 			if (p_char == p_char.scene.mainChar) {
-				p_char.scene.hideMouseChar();
+				p_char.scene.HideMouseChar();
 			}
 			
 			if (is_stand) p_char.setStatus(CharStatusType.STAND);
@@ -50,11 +50,15 @@
 									walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void {
 			var sceneEvent:CCEvent;
 			
+			if ( p_char.isJumping() ) {
+				return;
+			}
+			
 			// 不可到达的点
 			var mapTile:MapTile = SceneCache.MapTiles[targetTilePoint.x + "_" + targetTilePoint.y];
 			if (mapTile == null) {
 				if (p_char.isMainChar()) {
-					p_char.scene.hideMouseChar();
+					p_char.scene.HideMouseChar();
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
@@ -68,7 +72,7 @@
 			// 已经到达目标点
 			if (p_char.TileX == targetTilePoint.x && p_char.TileY == targetTilePoint.y) {
 				if (p_char == p_char.scene.mainChar) {
-					p_char.scene.hideMouseChar();
+					p_char.scene.HideMouseChar();
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
@@ -87,7 +91,7 @@
 				if (distance <= (error * error)) { // 距离小于一个“误差值”，可以算到达目标
 					p_char.faceToTile(targetTilePoint.x, targetTilePoint.y); // 面向目标点
 					if (p_char == p_char.scene.mainChar) {
-						p_char.scene.hideMouseChar();
+						p_char.scene.HideMouseChar();
 						mapTile = SceneCache.MapTiles[p_char.TileX + "_" + p_char.TileY];
 						sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [p_char, mapTile]);
 						EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
@@ -105,7 +109,7 @@
 			if (mapTile == null) {
 				p_char.faceToTile(targetTilePoint.x, targetTilePoint.y);
 				if (p_char == p_char.scene.mainChar) {
-					p_char.scene.hideMouseChar();
+					p_char.scene.HideMouseChar();
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
@@ -127,7 +131,7 @@
 			if (walkPaths == null || walkPaths.length < 2) { // 目标点就在当前位置
 				p_char.faceToTile(targetTilePoint.x, targetTilePoint.y);
 				if (p_char == p_char.scene.mainChar) {
-					p_char.scene.hideMouseChar();
+					p_char.scene.HideMouseChar();
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
@@ -216,7 +220,7 @@
 			var lastPoint2:Point = pathData[pathData.length - 1] as Point;
 			var lastPointMapTile:MapTile = SceneCache.MapTiles[lastPoint2.x + "_" + lastPoint2.y];
 			if (p_char.isMainChar()) {
-				p_char.scene.showMouseChar(lastPoint2.x, lastPoint2.y);
+				p_char.scene.ShowMouseChar(lastPoint2.x, lastPoint2.y);
 				sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.READY, [p_char, lastPointMapTile, pathData]);
 				EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 			}

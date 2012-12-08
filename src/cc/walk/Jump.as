@@ -49,7 +49,7 @@
 			
             if ( sceneChar.TileX == tilePos.x && sceneChar.TileY == tilePos.y ) {
                 if (sceneChar == sceneChar.scene.mainChar) {
-                    sceneChar.scene.hideMouseChar();
+                    sceneChar.scene.HideMouseChar();
                     evt = new CCEvent(CCEvent.WALK, CCEventActionWalk.JUMP_ARRIVED, [sceneChar, mapTile]);
                     EventDispatchCenter.getInstance().dispatchEvent(evt);
                 }
@@ -75,7 +75,7 @@
                 return;
             }
             if (sceneChar == sceneChar.scene.mainChar){
-                sceneChar.scene.showMouseChar(tilePos.x, tilePos.y);
+                sceneChar.scene.ShowMouseChar(tilePos.x, tilePos.y);
                 mapTile = SceneUtil.GetLineMapTile(fromTile, mapTile, maxDis);
                 p1 = new Point(mapTile.PixelX, mapTile.PixelY);
                 distance = Point.distance(p0, p1);
@@ -120,7 +120,7 @@
                     }
                     if (sceneChar.getStatus() == CharStatusType.DEATH){
                         if (sceneChar == sceneChar.scene.mainChar){
-                            sceneChar.scene.hideMouseChar();
+                            sceneChar.scene.HideMouseChar();
                         }
                         if (hasSolid){
                             sceneChar.showAvatarPartsByType(AvatarPartType.MOUNT);
@@ -143,7 +143,7 @@
 				
                 onComplete:function ():void{
                     if (sceneChar == sceneChar.scene.mainChar){
-                        sceneChar.scene.hideMouseChar();
+                        sceneChar.scene.HideMouseChar();
                     }
                     if (hasSolid){
                         sceneChar.showAvatarPartsByType(AvatarPartType.MOUNT);

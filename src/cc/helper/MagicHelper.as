@@ -71,14 +71,14 @@
                 var scene:CCScene = null;
                 var new_onPlayComplete:Function = function(sceneChar1:CCCharacter=null, part:CCAvatarPart=null):void
 				{
-                    scene.removeCharacter(sceneChar1);
+                    scene.RemoveCharacter(sceneChar1);
                 };
                 if (hasRun) {
                     return;
                 }
                 hasRun = true;
                 scene = fromSceneChar.scene;
-                var toSceneChar:CCCharacter = scene.createSceneCharacter(CharType.DUMMY);
+                var toSceneChar:CCCharacter = scene.CreateSceneCharacter(CharType.DUMMY);
                 toSceneChar.setXY(toPoint.x, toPoint.y);
                 toApd = toApd || new AvatarParamData();
                 toApd.extendCallBack(null, null, null, new_onPlayComplete);
@@ -122,7 +122,7 @@
                 var i:int = 0;
                 var j:int = 0;
                 var new_onPlayComplete:Function = function(sceneChar1:CCCharacter=null, part:CCAvatarPart=null):void{
-                    scene.removeCharacter(sceneChar1);
+                    scene.RemoveCharacter(sceneChar1);
                 }
                 if (hasRun){
                     return;
@@ -138,7 +138,7 @@
                             pixelX = toRectCenter.x;
                             pixelY = toRectCenter.y;
                             if (includeCenter) {
-                                toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                 toSceneChar.setXY(pixelX, pixelY);
                                 toArr.push(toSceneChar);
                             }
@@ -146,45 +146,45 @@
                             if (i == 0 && j != 0) {
                                 pixelX = toRectCenter.x;
                                 pixelY = (toRectCenter.y + j);
-                                toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                 toSceneChar.setXY(pixelX, pixelY);
                                 toArr.push(toSceneChar);
                                 pixelX = toRectCenter.x;
                                 pixelY = (toRectCenter.y - j);
-                                toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                 toSceneChar.setXY(pixelX, pixelY);
                                 toArr.push(toSceneChar);
                             } else {
                                 if (i != 0 && j == 0) {
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = toRectCenter.y;
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = toRectCenter.y;
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                 } else {
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = (toRectCenter.y + j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = (toRectCenter.y - j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = (toRectCenter.y + j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = (toRectCenter.y - j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                 }
@@ -239,7 +239,7 @@
                 var j:int = 0;
                 var new_onPlayComplete:Function = function(sceneChar1:CCCharacter=null, part:CCAvatarPart=null):void
 				{
-                    scene.removeCharacter(sceneChar1);
+                    scene.RemoveCharacter(sceneChar1);
                 };
                 if (hasRun) {
                     return;
@@ -254,51 +254,51 @@
                         if (i == 0 && j == 0) {
                             pixelX = toRectCenter.x;
                             pixelY = toRectCenter.y;
-                            centerSc = scene.createSceneCharacter(CharType.DUMMY);
+                            centerSc = scene.CreateSceneCharacter(CharType.DUMMY);
                             centerSc.setXY(pixelX, pixelY);
                         } else {
                             if (i == 0 && j != 0) {
                                 pixelX = toRectCenter.x;
                                 pixelY = (toRectCenter.y + j);
-                                toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                 toSceneChar.setXY(pixelX, pixelY);
                                 toArr.push(toSceneChar);
                                 pixelX = toRectCenter.x;
                                 pixelY = (toRectCenter.y - j);
-                                toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                 toSceneChar.setXY(pixelX, pixelY);
                                 toArr.push(toSceneChar);
                             } else {
                                 if (i != 0 && j == 0) {
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = toRectCenter.y;
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = toRectCenter.y;
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                 } else {
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = (toRectCenter.y + j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x + i);
                                     pixelY = (toRectCenter.y - j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = (toRectCenter.y + j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                     pixelX = (toRectCenter.x - i);
                                     pixelY = (toRectCenter.y - j);
-                                    toSceneChar = scene.createSceneCharacter(CharType.DUMMY);
+                                    toSceneChar = scene.CreateSceneCharacter(CharType.DUMMY);
                                     toSceneChar.setXY(pixelX, pixelY);
                                     toArr.push(toSceneChar);
                                 }
@@ -383,7 +383,7 @@
                 tweenDandao(passSc, toSceneChar, hitIt, [scene, passSc, toSceneChar, toApd]);
             };
             scene = fromSceneChar.scene;
-            passSc = scene.createSceneCharacter(CharType.DUMMY);
+            passSc = scene.CreateSceneCharacter(CharType.DUMMY);
             passSc.setXY(fromSceneChar.PixelX, fromSceneChar.PixelY);
             passApd = passApd || new AvatarParamData();
             passApd.extendCallBack(new_onPlayBeforeStart);
@@ -437,7 +437,7 @@
 									  toSceneChar:CCCharacter, 
 									  avatarParamData:AvatarParamData):void {
             TweenLite.killTweensOf(passSceneChar);
-            scene.removeCharacter(passSceneChar);
+            scene.RemoveCharacter(passSceneChar);
             if (!toSceneChar.usable) {
                 if (avatarParamData != null){
                     avatarParamData.executeCallBack(toSceneChar);

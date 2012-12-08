@@ -215,14 +215,14 @@
 						mapZone.showContainer.name = (event.currentTarget as LoaderInfo).url;		// url 作为 name
 						waitingLoadData[key] = null;		// 删除任务
 						delete waitingLoadData[key];
-						Log4J.Info("加载地图完成" + filePath);
+						Log4J.Info("Loaded map image " + filePath + ' OK!');
 					};
 					
 					// 加载错误
 					var itemLoadError:Function = function (event:Event):void {
 						loadData.userData.retry++;		// 增加重试次数
 						if (loadData.userData.retry > 3){
-							Log4J.Info(("尝试加载地图" + filePath) + "3次均失败，已经放弃加载");
+							Log4J.Fatal(("尝试加载地图" + filePath) + "3次均失败，已经放弃加载");
 							waitingLoadData[key] = null;								// 放弃加载
 							delete waitingLoadData[key];
 						} else {
