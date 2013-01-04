@@ -215,7 +215,7 @@
 						mapZone.showContainer.name = (event.currentTarget as LoaderInfo).url;		// url 作为 name
 						waitingLoadData[key] = null;		// 删除任务
 						delete waitingLoadData[key];
-						Log4J.Info("Loaded map image " + filePath + ' OK!');
+//						Log4J.Info("Loaded map image " + filePath + ' OK!');
 					};
 					
 					// 加载错误

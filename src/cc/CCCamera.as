@@ -83,34 +83,33 @@
 			
 			// 地图宽度 > 场景宽度
             if (scene.mapConfig.width > scene.sceneConfig.width) {
-                halfWidth = scene.sceneConfig.width * 0.5; // 场景宽度的一半
-                widthDif = scene.sceneConfig.width - scene.mapConfig.width; // 场景宽度-地图宽度
+                halfWidth = scene.sceneConfig.width * 0.5; 						// 场景宽度的一半
+                widthDif = scene.sceneConfig.width - scene.mapConfig.width; 	// 场景宽度-地图宽度
                 
-				xDifAvatar = halfWidth - dstPoint.x;	// 场景宽度一半 - 角色全局坐标x
+				xDifAvatar = halfWidth - dstPoint.x;							// 场景宽度一半 - 角色全局坐标x
 				
-                if (xDifAvatar > x_limen) {
-                    xLimenDif = xDifAvatar - x_limen;
+                if (xDifAvatar > x_limen) {										// 主角在屏幕左侧，而且超过阀值
+                    xLimenDif = xDifAvatar - x_limen;							// 正数
                 } else {
                     if (xDifAvatar < -x_limen){
-                        xLimenDif = xDifAvatar + x_limen;
+                        xLimenDif = xDifAvatar + x_limen;						// 负数
                     }
                 }
-                xResult = scene.x + xLimenDif;
-                if (xResult < widthDif) {
+                xResult = scene.x + xLimenDif;									// 场景CCScene新的 x 位置
+                if (xResult < widthDif) {										// 已经到达地图右边界了
                     xResult = widthDif;
                 }
-                if (xResult > 0){
+                if (xResult > 0){												// 已经到达地图左边界了
                     xResult = 0;
                 }
-                xDifAvatar = xResult - scene.x;
+                xDifAvatar = xResult - scene.x;									// 新的偏移值
                 if (xDifAvatar != 0) {
                     if (!b) {
                         scene.x = scene.x + xDifAvatar;
                     } else {
-                        scene.x = (scene.x + (xDifAvatar * TWEEN_SPEED));
+                        scene.x = (scene.x + (xDifAvatar * TWEEN_SPEED));		// 地图移动缓冲处理
                     }
                 }
-				// 场景 scene.x 真有这么复杂
             } else {
 				// 场景比地图大，地图就直接显示在中间
                 halfWidth = scene.mapConfig.width * 0.5;	// 地图宽度的一半
