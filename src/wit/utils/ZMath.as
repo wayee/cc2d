@@ -1,5 +1,7 @@
 ﻿package wit.utils
 {
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.geom.Point;
 
 	/**
@@ -43,6 +45,32 @@
             
 			return target;
         }
+		
+		public static function getOffsetRange(w:Number, h:Number, rotation:Number):Point
+		{
+			var offsetX:Number = 0;
+			var offsetY:Number = 0;
+			
+			if (rotation < 0) rotation = rotation % 360 + 360;
+			if (rotation > 360) rotation = rotation % 360;
+			
+			var radian:Number = rotation * Math.PI / 180; // 弧度
+			
+			if (rotation >= 0 && rotation <= 90) {
+				offsetX = Math.sin(radian) * h;
+			} else if (rotation > 90 && rotation <= 180) {
+				offsetX = Math.abs(Math.sin(radian)) * h + Math.abs(Math.cos(radian)) * w;
+				offsetY = Math.cos(radian) * h;
+			} else if (rotation > 180 && rotation <= 270) {
+				offsetX = Math.cos(radian) * w;
+				var c:Number = w / Math.abs(Math.tan(radian));
+				offsetY = w / Math.abs(Math.sin(radian)) + (h-c) * Math.abs(Math.cos(radian));
+			} else if (rotation > 270 && rotation <= 360) {
+				offsetY = Math.sin(radian) * w;
+			}
+			
+			return new Point(Math.abs(offsetX), Math.abs(offsetY));
+		}
 		
 		/**
 		 * 返回两点间的角度, 角度值

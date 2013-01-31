@@ -1,8 +1,9 @@
 ﻿package wit.manager
 {
-	import wit.log.Log4J;
 	import wit.handler.HandlerHelper;
+	import wit.handler.HandlerPool;
 	import wit.handler.HandlerThread;
+	import wit.log.Log4J;
 
 	/**
 	 * 线程管理器
@@ -90,6 +91,22 @@
 		{
             return HandlerHelper.execute(fn, params);
         }
+		
+		/**
+		 * 从对象池中获取 HandlerThread，执行完后并 recycle 
+		 */
+		public static function executeThread(callback:Function, args:Array, delay:Number):void	// delay: 等待时间(毫秒)
+		{
+			var thread:HandlerThread = HandlerPool.getThread();
+			var completeHandler:Function = function():void
+			{
+				HandlerPool.recycleThread(thread);
+				if (callback != null)
+					callback.apply(null, args);
+			};
+			
+			push(completeHandler, null, delay, true, true, thread);
+		}
 		
 		/**
 		 * 获取默认的线程 

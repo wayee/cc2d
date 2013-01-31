@@ -18,8 +18,14 @@
         public var angle:int = -1;
         public var rotation:int = -1;
         public var clearSameType:Boolean = false;		// 唯一，清空其它相同类型
-        public var vars:Object = null;
         public var useType:int = 0;						// 1:setBornAvatarParamData, 2:setBornMountAvatarParamData|setBornOnMountAvatarParamData
+		
+		// new properties
+		public var offsetX:Number = 0;
+		public var offsetY:Number = 0;
+		public var scaleX:Number = 1;
+		public var scaleY:Number = 1;
+		public var playCallBack:AvatarPlayCallBack = null;
 
         public function AvatarParamData(path:String="", partType:String="body", 
 										_depth:int=0, useType:int=0) {
@@ -84,79 +90,79 @@
             var onPlayComplete_old:Function = null;
             var onAdd_old:Function = null;
             var onRemove_old:Function = null;
-            vars = vars || {};
+            playCallBack = playCallBack || new AvatarPlayCallBack;
 			
 			// 清除老函数, 直接添加
             if (clearOld) {
-                vars.onPlayBeforeStart = new_onPlayBeforeStart;
-                vars.onPlayStart = new_onPlayStart;
-                vars.onPlayUpdate = new_onPlayUpdate;
-                vars.onPlayComplete = new_onPlayComplete;
-                vars.onAdd = new_onAdd;
-                vars.onRemove = new_onRemove;
+                playCallBack.onPlayBeforeStart = new_onPlayBeforeStart;
+                playCallBack.onPlayStart = new_onPlayStart;
+                playCallBack.onPlayUpdate = new_onPlayUpdate;
+                playCallBack.onPlayComplete = new_onPlayComplete;
+                playCallBack.onAdd = new_onAdd;
+                playCallBack.onRemove = new_onRemove;
             } else {
 				// 添加  new_onPlayBeforeStart
                 if (new_onPlayBeforeStart != null) {
-                    if (vars.onPlayBeforeStart == null) {
-                        vars.onPlayBeforeStart = new_onPlayBeforeStart;
+                    if (playCallBack.onPlayBeforeStart == null) {
+                        playCallBack.onPlayBeforeStart = new_onPlayBeforeStart;
                     } else {
-                        onPlayBeforeStart_old = vars.onPlayBeforeStart;
-                        vars.onPlayBeforeStart = function(sceneChar:CCCharacter=null, part:CCAvatarPart=null):void {
+                        onPlayBeforeStart_old = playCallBack.onPlayBeforeStart;
+                        playCallBack.onPlayBeforeStart = function(sceneChar:CCCharacter=null, part:CCAvatarPart=null):void {
                             onPlayBeforeStart_old(sceneChar, part);		// 合并2个，这样不会造成闭包容量太大？
                             new_onPlayBeforeStart(sceneChar, part);
                         };
                     }
                 }
                 if (new_onPlayStart != null) {
-                    if (vars.onPlayStart == null) {
-                        vars.onPlayStart = new_onPlayStart;
+                    if (playCallBack.onPlayStart == null) {
+                        playCallBack.onPlayStart = new_onPlayStart;
                     } else {
-                        onPlayStart_old = vars.onPlayStart;
-                        vars.onPlayStart = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
+                        onPlayStart_old = playCallBack.onPlayStart;
+                        playCallBack.onPlayStart = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
                             onPlayStart_old(sceneChar, part);
                             new_onPlayStart(sceneChar, part);
                         }
                     }
                 }
                 if (new_onPlayUpdate != null) {
-                    if (vars.onPlayUpdate == null) {
-                        vars.onPlayUpdate = new_onPlayUpdate;
+                    if (playCallBack.onPlayUpdate == null) {
+                        playCallBack.onPlayUpdate = new_onPlayUpdate;
                     } else {
-                        onPlayUpdate_old = vars.onPlayUpdate;
-                        vars.onPlayUpdate = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
+                        onPlayUpdate_old = playCallBack.onPlayUpdate;
+                        playCallBack.onPlayUpdate = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
                             onPlayUpdate_old(sceneChar, part);
                             new_onPlayUpdate(sceneChar, part);
                         }
                     }
                 }
                 if (new_onPlayComplete != null) {
-                    if (vars.onPlayComplete == null) {
-                        vars.onPlayComplete = new_onPlayComplete;
+                    if (playCallBack.onPlayComplete == null) {
+                        playCallBack.onPlayComplete = new_onPlayComplete;
                     } else {
-                        onPlayComplete_old = vars.onPlayComplete;
-                        vars.onPlayComplete = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
+                        onPlayComplete_old = playCallBack.onPlayComplete;
+                        playCallBack.onPlayComplete = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
                             onPlayComplete_old(sceneChar, part);
                             new_onPlayComplete(sceneChar, part);
                         }
                     }
                 }
                 if (new_onAdd != null) {
-                    if (vars.onAdd == null) {
-                        vars.onAdd = new_onAdd;
+                    if (playCallBack.onAdd == null) {
+                        playCallBack.onAdd = new_onAdd;
                     } else {
-                        onAdd_old = vars.onAdd;
-                        vars.onAdd = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
+                        onAdd_old = playCallBack.onAdd;
+                        playCallBack.onAdd = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
                             onAdd_old(sceneChar, part);
                             new_onAdd(sceneChar, part);
                         }
                     }
                 }
                 if (new_onRemove != null) {
-                    if (vars.onRemove == null) {
-                        vars.onRemove = new_onRemove;
+                    if (playCallBack.onRemove == null) {
+                        playCallBack.onRemove = new_onRemove;
                     } else {
-                        onRemove_old = vars.onRemove;
-                        vars.onRemove = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
+                        onRemove_old = playCallBack.onRemove;
+                        playCallBack.onRemove = function (sceneChar:CCCharacter=null, part:CCAvatarPart=null):void{
                             onRemove_old(sceneChar, part);
                             new_onRemove(sceneChar, part);
                         }
@@ -177,27 +183,27 @@
 										execOnAdd:Boolean=true, execOnRemove:Boolean=true, 
 										delayOnPlayBeforeStart:int=0, delayOnPlayStart:int=0, delayOnPlayUpdate:int=0, 
 										delayPlayComplete:int=0, delayOnAdd:int=0, delayOnRemove:int=0):void {
-            if (vars == null) {
+            if (playCallBack == null) {
                 return;
             }
             var handler:HandlerThread = new HandlerThread();
-            if (execPlayBeforeStart && vars.onPlayBeforeStart != null) {
-                handler.push(vars.onPlayBeforeStart, [sceneChar, part], delayOnPlayBeforeStart);
+            if (execPlayBeforeStart && playCallBack.onPlayBeforeStart != null) {
+                handler.push(playCallBack.onPlayBeforeStart, [sceneChar, part], delayOnPlayBeforeStart);
             }
-            if (execPlayStart && vars.onPlayStart != null) {
-                handler.push(vars.onPlayStart, [sceneChar, part], delayOnPlayStart);
+            if (execPlayStart && playCallBack.onPlayStart != null) {
+                handler.push(playCallBack.onPlayStart, [sceneChar, part], delayOnPlayStart);
             }
-            if (execPlayUpdate && vars.onPlayUpdate != null) {
-                handler.push(vars.onPlayUpdate, [sceneChar, part], delayOnPlayUpdate);
+            if (execPlayUpdate && playCallBack.onPlayUpdate != null) {
+                handler.push(playCallBack.onPlayUpdate, [sceneChar, part], delayOnPlayUpdate);
             }
-            if (execPlayComplete && vars.onPlayComplete != null) {
-                handler.push(vars.onPlayComplete, [sceneChar, part], delayPlayComplete);
+            if (execPlayComplete && playCallBack.onPlayComplete != null) {
+                handler.push(playCallBack.onPlayComplete, [sceneChar, part], delayPlayComplete);
             }
-            if (execOnAdd && vars.onAdd != null) {
-                handler.push(vars.onAdd, [sceneChar, part], delayOnAdd);
+            if (execOnAdd && playCallBack.onAdd != null) {
+                handler.push(playCallBack.onAdd, [sceneChar, part], delayOnAdd);
             }
-            if (execOnRemove && vars.onRemove != null) {
-                handler.push(vars.onRemove, [sceneChar, part], delayOnRemove);
+            if (execOnRemove && playCallBack.onRemove != null) {
+                handler.push(playCallBack.onRemove, [sceneChar, part], delayOnRemove);
             }
         }
 		
@@ -208,15 +214,12 @@
             data.angle = angle;
             data.rotation = rotation;
             data.clearSameType = clearSameType;
-            if (vars != null) {
-                data.vars = {
-                    onPlayBeforeStart:vars.onPlayBeforeStart,
-                    onPlayStart:vars.onPlayStart,
-                    onPlayUpdate:vars.onPlayUpdate,
-                    onPlayComplete:vars.onPlayComplete,
-                    onAdd:vars.onAdd,
-                    onRemove:vars.onRemove
-                }
+			data.offsetX = offsetX;
+			data.offsetY = offsetY;
+			data.scaleX = scaleX;
+			data.scaleY = scaleY;
+            if (playCallBack != null) {
+				data.playCallBack = this.playCallBack.clone();
             }
             return data;
         }

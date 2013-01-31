@@ -4,22 +4,23 @@
 	import cc.define.CharStatusType;
 	import cc.events.CCEvent;
 	import cc.events.CCEventActionWalk;
+	import cc.move.Jump;
 	import cc.tools.SceneCache;
 	import cc.utils.AStar;
 	import cc.utils.SceneUtil;
 	import cc.utils.Transformer;
 	import cc.vo.map.MapTile;
-	import cc.walk.Jump;
+	import cc.vo.move.MoveCallBack;
 	
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
 	import wit.event.EventDispatchCenter;
 
-	public class WalkHelper
+	public class MoveHelper
 	{
 		public static function stopWalk(p_char:CCCharacter, is_stand:Boolean=true):void {
-			p_char.Walkdata.clear();
+			p_char.moveData.clear();
 			if (p_char == p_char.scene.mainChar) {
 				p_char.scene.HideMouseChar();
 			}
@@ -30,15 +31,15 @@
 		public static function reviseWalkPath(p_char:CCCharacter):void {
 			if (p_char == p_char.scene.mainChar) {
 				if (p_char.avatar.status == CharStatusType.WALK) { // 正在走路
-					if (p_char.Walkdata.walk_targetP != null) { // 目标点不为空
-						walk(p_char, p_char.Walkdata.walk_targetP, -1, 
-							p_char.Walkdata.walk_standDis, p_char.Walkdata.walk_vars);
+					if (p_char.moveData.walk_targetP != null) { // 目标点不为空
+						walk(p_char, p_char.moveData.walk_targetP, -1, 
+							p_char.moveData.walk_standDis, p_char.moveData.walk_MoveCallBack);
 					} else {
-						p_char.Walkdata.clear();
+						p_char.moveData.clear();
 					}
 				}
 			} else {
-				p_char.Walkdata.clear();
+				p_char.moveData.clear();
 			}
 		}
 
@@ -47,7 +48,7 @@
 		 * @param walkVars 回调onWalkArrived, onWalkThrough, onWalkUnable
 		 */
 		public static function walk(p_char:CCCharacter, targetTilePoint:Point, 
-									walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void {
+									walkSpeed:Number=-1, error:Number=0, moveCallBack:MoveCallBack=null):void {
 			var sceneEvent:CCEvent;
 			
 			if ( p_char.isJumping() ) {
@@ -62,12 +63,12 @@
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
-				if (walkVars != null && walkVars.onWalkUnable != null) { // “不可到达”回调
-					walkVars.onWalkUnable(p_char, mapTile);
+				if (moveCallBack != null && moveCallBack.onMoveUnable != null) { // “不可到达”回调
+					moveCallBack.onMoveUnable(p_char, mapTile);
 				}
 				return;
 			}
-			p_char.Walkdata.clear();
+			p_char.moveData.clear();
 			
 			// 已经到达目标点
 			if (p_char.TileX == targetTilePoint.x && p_char.TileY == targetTilePoint.y) {
@@ -76,8 +77,8 @@
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
-				if (walkVars != null && walkVars.onWalkArrived != null) { // “到达”回调
-					walkVars.onWalkArrived(p_char, mapTile);
+				if (moveCallBack != null && moveCallBack.onMoveArrived != null) { // “到达”回调
+					moveCallBack.onMoveArrived(p_char, mapTile);
 				}
 				return;
 			}
@@ -96,8 +97,8 @@
 						sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.ARRIVED, [p_char, mapTile]);
 						EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 					}
-					if (walkVars != null && walkVars.onWalkArrived != null) {
-						walkVars.onWalkArrived(p_char, mapTile);
+					if (moveCallBack != null && moveCallBack.onMoveArrived != null) {
+						moveCallBack.onMoveArrived(p_char, mapTile);
 					}
 					return;
 				}
@@ -113,8 +114,8 @@
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
-				if (walkVars != null && walkVars.onWalkUnable != null) {
-					walkVars.onWalkUnable(p_char, mapTile);
+				if (moveCallBack != null && moveCallBack.onMoveUnable != null) {
+					moveCallBack.onMoveUnable(p_char, mapTile);
 				}
 				return;
 			}
@@ -135,8 +136,8 @@
 					sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.UNABLE, [p_char, mapTile]);
 					EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 				}
-				if (walkVars != null && walkVars.onWalkUnable != null) {
-					walkVars.onWalkUnable(p_char, mapTile);
+				if (moveCallBack != null && moveCallBack.onMoveUnable != null) {
+					moveCallBack.onMoveUnable(p_char, mapTile);
 				}
 				return;
 			}
@@ -162,32 +163,32 @@
 			} else {
 				tilePoint = lastTilePoint; // tilePoint没有使用，意欲何为
 			}
-			walk0(p_char, walkPaths, targetTilePoint, walkSpeed, error, walkVars);
+			walk0(p_char, walkPaths, targetTilePoint, walkSpeed, error, moveCallBack);
 		}
 		
 		/**
-		 * WalkStep.step()根据Walkdata来执行走路 
+		 * WalkStep.step()根据moveData来执行走路 
 		 * @param walkPaths A* 计算后的路径数据 [[tx, ty], [tx, ty], ...]
 		 * @param walkPaths A* 计算后的路径数据 [Point(tx, ty), ...]
 		 */
 		public static function walk0(p_char:CCCharacter, walkPaths:Array, 
 									 targetTilePoint:Point=null, walkSpeed:Number=-1, 
-									 error:Number=0, walkVars:Object=null):void {
+									 error:Number=0, moveCallBack:MoveCallBack=null):void {
 			var sceneEvent:CCEvent;
 			
 			if (walkPaths.length < 1) {	// < 2表示包括现在位置， < 1则不包括
 				return;
 			}
 			var pathData:Array = walkPaths;
-			p_char.Walkdata.clear();
+			p_char.moveData.clear();
 			
 			if (p_char == p_char.scene.mainChar) {
 				// 移动优化
-//				if (p_char.Walkdata.walk_pathCutter == null){
-//					p_char.Walkdata.walk_pathCutter = new PathCutter(p_char);
+//				if (p_char.moveData.walk_pathCutter == null){
+//					p_char.moveData.walk_pathCutter = new PathCutter(p_char);
 //				}
-//				p_char.Walkdata.walk_pathCutter.cutMovePath(pathData);
-//				p_char.Walkdata.walk_pathCutter.walkNext(-1, -1);
+//				p_char.moveData.walk_pathCutter.cutMovePath(pathData);
+//				p_char.moveData.walk_pathCutter.walkNext(-1, -1);
 			}
 			
 			// 设置走路速度
@@ -198,14 +199,14 @@
 			// 设置目标点
 			var lastPoint:Point;
 			if (targetTilePoint != null) {
-				p_char.Walkdata.walk_targetP = targetTilePoint;
+				p_char.moveData.walk_targetP = targetTilePoint;
 			} else { // 没设定就使用走路路径的最后一点
 				lastPoint = pathData[pathData.length - 1] as Point;
-				p_char.Walkdata.walk_targetP = new Point(lastPoint.x, lastPoint.y);
+				p_char.moveData.walk_targetP = new Point(lastPoint.x, lastPoint.y);
 			}
 			
-			p_char.Walkdata.walk_standDis = error;
-			p_char.Walkdata.walk_vars = walkVars;
+			p_char.moveData.walk_standDis = error;
+			p_char.moveData.walk_MoveCallBack = moveCallBack;
 			
 			// 删除起点
 //			var firstPoint:Array = pathData.shift();
@@ -215,7 +216,7 @@
 //			if (p_char.TileY != firstPoint[1]) {
 //				p_char.TileY = firstPoint[1];
 //			}
-			p_char.Walkdata.walk_pathArr = pathData;
+			p_char.moveData.walk_pathArr = pathData;
 			
 			var lastPoint2:Point = pathData[pathData.length - 1] as Point;
 			var lastPointMapTile:MapTile = SceneCache.MapTiles[lastPoint2.x + "_" + lastPoint2.y];
@@ -224,16 +225,16 @@
 				sceneEvent = new CCEvent(CCEvent.WALK, CCEventActionWalk.READY, [p_char, lastPointMapTile, pathData]);
 				EventDispatchCenter.getInstance().dispatchEvent(sceneEvent);
 			}
-			if (walkVars != null && walkVars.onWalkReady != null) {
-				walkVars.onWalkReady(p_char, lastPointMapTile);
+			if (moveCallBack != null && moveCallBack.onMoveReady != null) {
+				moveCallBack.onMoveReady(p_char, lastPointMapTile);
 			}
 		}
 		
 		public static function walk1(p_char:CCCharacter, pathByteData:ByteArray, 
 									 targetTilePoint:Point=null, walkSpeed:Number=-1, 
-									 error:Number=0, walkVars:Object=null):void {
+									 error:Number=0, moveCallBack:MoveCallBack=null):void {
 //			var arr:Array = PathConverter.convertToPoint(pathByteData);
-//			walk0(p_char, arr, targetTilePoint, walkSpeed, error, walkVars);
+//			walk0(p_char, arr, targetTilePoint, walkSpeed, error, moveCallBack);
 		}
 		
 		public static function jump(p_char:CCCharacter, p_pos:Point, p_speed:Number=-1, 

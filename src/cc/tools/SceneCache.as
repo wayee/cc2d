@@ -79,6 +79,11 @@
 //            return ((mapSolids2[((x + "_") + y)] as Cell));
 //        }
 		
+		
+		///////////////////////////////////
+		// public methods
+		///////////////////////////////////
+		
 		/**
 		 * 添加加载角色等待队列
 		 * <br> 等待加载的队列
@@ -249,48 +254,6 @@
         }
 		
 		/**
-		 * 添加部件 
-		 * @param sceneChar
-		 * @param avatarParamData
-		 * @param avatarParamDataRes
-		 * 
-		 */		
-        private static function addAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void {
-            if (sceneChar == null || !sceneChar.usable) {
-                avatarParamData.executeCallBack(sceneChar);
-                return;
-            }
-			
-            if (avatarParamData.useType == 1) {
-                avatarParamData.executeCallBack(sceneChar);
-                return;
-            }
-            if (avatarParamData.avatarPartType == AvatarPartType.BODY) {
-                if (avatarParamData.Id == AvatarPartID.BLANK) {
-                    if (sceneChar.hasTypeAvatarParts(AvatarPartType.BODY)) {
-                        avatarParamData.executeCallBack(sceneChar);
-                        return;
-                    }
-                } else {
-                    sceneChar.removeAvatarPartByID(AvatarPartID.BLANK, false);
-                }
-            }
-			
-            var part:CCAvatarPart = CCAvatarPart.createAvatarPart(avatarParamData.Id, avatarParamData.avatarPartType, avatarParamData.depth, avatarParamData.useType, avatarParamDataRes, avatarParamData.vars);
-            part.avatarParamData = avatarParamData.clone();
-            part.isBlank = (avatarParamData.Id == AvatarPartID.BLANK);
-			
-            var avatarPlayCondition:AvatarPlayCondition = sceneChar.avatar.playCondition;
-            if (avatarPlayCondition != null) {
-                avatarPlayCondition = avatarPlayCondition.clone();
-            }
-            sceneChar.addAvatarPart(part, avatarParamData.clearSameType);
-            if (sceneChar.usable) {
-                part.playTo(sceneChar.avatar.status, sceneChar.avatar.logicAngle, avatarParamData.rotation, avatarPlayCondition);
-            }
-        }
-		
-		/**
 		 * 每 1000 帧检查1次(30秒), 当资源超过2分钟没有使用, 则释放它
 		 */
         public static function checkUninstall():void {
@@ -370,7 +333,7 @@
 	                    bm1 = new BitmapData(width, height, true, 0);
 	                    bm1.copyPixels(bm0, new Rectangle(0, 0, width, height), new Point(0, 0));
 					}
-                    matrix = new Matrix();
+                    matrix = new Matrix(); // 镜像（水平翻转）
                     matrix.scale(-1, 1);
                     matrix.translate(bm1.width, 0);
                     bm2 = new BitmapData(bm1.width, bm1.height, true, 0);
@@ -394,5 +357,51 @@
             }
             return avatarImgData;
         }
+		
+		
+		///////////////////////////////////
+		// private methods
+		///////////////////////////////////
+		
+		/**
+		 * 添加部件 
+		 * @param sceneChar
+		 * @param avatarParamData
+		 * @param avatarParamDataRes
+		 */		
+		private static function addAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void {
+			if (sceneChar == null || !sceneChar.usable) {
+				avatarParamData.executeCallBack(sceneChar);
+				return;
+			}
+			
+			if (avatarParamData.useType == 1) {
+				avatarParamData.executeCallBack(sceneChar);
+				return;
+			}
+			if (avatarParamData.avatarPartType == AvatarPartType.BODY) {
+				if (avatarParamData.Id == AvatarPartID.BLANK) {
+					if (sceneChar.hasTypeAvatarParts(AvatarPartType.BODY)) {
+						avatarParamData.executeCallBack(sceneChar);
+						return;
+					}
+				} else {
+					sceneChar.removeAvatarPartByID(AvatarPartID.BLANK, false);
+				}
+			}
+			
+			var part:CCAvatarPart = CCAvatarPart.createAvatarPart(avatarParamData.Id, avatarParamData.avatarPartType, avatarParamData.depth, avatarParamData.useType, avatarParamDataRes, avatarParamData.playCallBack);
+			part.avatarParamData = avatarParamData.clone();
+			part.isBlank = (avatarParamData.Id == AvatarPartID.BLANK);
+			
+			var avatarPlayCondition:AvatarPlayCondition = sceneChar.avatar.playCondition;
+			if (avatarPlayCondition != null) {
+				avatarPlayCondition = avatarPlayCondition.clone();
+			}
+			sceneChar.addAvatarPart(part, avatarParamData.clearSameType);
+			if (sceneChar.usable) {
+				part.playTo(sceneChar.avatar.status, sceneChar.avatar.logicAngle, avatarParamData.rotation, avatarPlayCondition);
+			}
+		}
     }
 }

@@ -11,6 +11,7 @@
 	import cc.vo.avatar.AvatarImgData;
 	import cc.vo.avatar.AvatarParamData;
 	import cc.vo.avatar.AvatarPartStatus;
+	import cc.vo.avatar.AvatarPlayCallBack;
 	import cc.vo.avatar.AvatarPlayCondition;
 	
 	import flash.display.BitmapData;
@@ -28,7 +29,6 @@
 	public class CCAvatarPart implements IPoolObject
 	{
 		private static const MOUSE_ON_GLOWFILTER:GlowFilter = new GlowFilter(0xFFFFFF, 0.7, 7, 7, 4, 1);
-		private static const MOUSE_ON_GLOWFILTER_BY_RELIGION_NPC:GlowFilter = new GlowFilter(0x55e9ff , 0.7, 10, 10, 4, 1);
 		
 		public var usable:Boolean = false;
 		public var avatarParamData:AvatarParamData;			// 原始数据, MODEL
@@ -87,8 +87,8 @@
 		// avatarParamData.id, avatarParamData.avatarPartType, avatarParamData.depth, avatarParamData.useType, avatarParamDataRes, avatarParamData.vars
 		public static function createAvatarPart(partID:String, avatarPartType:String, 
 												depth:int=0, useType:int=0, avatarParamDataRes:Object=null, 
-												vars:Object=null):CCAvatarPart {
-			return ScenePool.avatarPartPool.createObj(CCAvatarPart, partID, avatarPartType, depth, useType, avatarParamDataRes, vars) as CCAvatarPart;
+												playCallBack:AvatarPlayCallBack=null):CCAvatarPart {
+			return ScenePool.avatarPartPool.createObj(CCAvatarPart, partID, avatarPartType, depth, useType, avatarParamDataRes, playCallBack) as CCAvatarPart;
 		}
 		
 		public static function recycleAvatarPart(part:CCAvatarPart):void {
@@ -159,13 +159,6 @@
 				this._only1LogicAngle = true;
 			}
 			
-			// 如果是建筑
-//			if (avatar.sceneCharacter.type == CharType.BUILDING) {
-//				this._currentStatus = CharStatusType.STAND;
-//				this._currentLogicAngle = 0;
-//				this._only1LogicAngle = true;
-//			}
-			
 			// 如果是法术
 			if (type == AvatarPartType.MAGIC || type == AvatarPartType.MAGIC_PASS) {
 				this._currentStatus = CharStatusType.STAND;
@@ -175,7 +168,7 @@
 			
 			// 如果是躯体, 战斗, 则需要回调战斗
 			if (type == AvatarPartType.BODY && this._currentStatus == CharStatusType.ATTACK
-			&& _currentStatus == CharStatusType.MAGIC_ATTACK) {
+										&& _currentStatus == CharStatusType.MAGIC_ATTACK) {
 				_callBackAttack = true;
 			}
 			
@@ -185,7 +178,7 @@
 				this._only1LogicAngle = true;
 			}
 			
-			// 如果是法术通道
+			// 如果是魔法通道
 			if (type == AvatarPartType.MAGIC_PASS) {
 				_only1Frame = true;
 			}
@@ -196,12 +189,12 @@
 				_drawMouseOn = false;
 			}
 			
-			// 如果是躯体
+			// 如果是身体
 			if (type == AvatarPartType.BODY) {
 				_autoToStand = true;
 			}
 			
-			// 如果是 马匹
+			// 如果是坐骑
 			if (type == AvatarPartType.MOUNT || avatar.sceneCharacter.type == CharType.MOUNT) {
 				_useSpecilizeXY = false;
 			}
@@ -321,8 +314,8 @@
 			var time_1:int;
 			var time_2:int;
 			var bb:Boolean;
-			var px:Number;
-			var py:Number;
+			var charPixelX:Number;
+			var charPixelY:Number;
 			var source_x:int;
 			var source_y:int;
 			var halfWidth:Number;
@@ -404,16 +397,24 @@
 				// 如果可见
 				if (visible && avatar.visible && avatar.sceneCharacter.visible && avatar.sceneCharacter.inViewDistance())
 				{
+					var sx:Number = avatarParamData.scaleX;
+					var sy:Number = avatarParamData.scaleY;
+					var smoothing:Boolean = true;
+					var tempbd:BitmapData;
+					var offsetRange:Point = ZMath.getOffsetRange(_currentAvatarPartStatus.width*sx, _currentAvatarPartStatus.height*sy, _currentRotation); // 变形后偏移
+					
 					// 计算 cutRect, 为当前部位的矩形范围
 					
 					// 如果: 使用特殊坐标 && (跳跃中 || 双人打坐???)
 					if (_useSpecilizeXY && avatar.sceneCharacter.isJumping() || avatar.sceneCharacter.restStatus == RestType.DOUBLE_SIT) {
-						px = Math.round(this.avatar.sceneCharacter.specilizeX);
-						py = Math.round(this.avatar.sceneCharacter.specilizeY);
+						charPixelX = Math.round(this.avatar.sceneCharacter.specilizeX);
+						charPixelY = Math.round(this.avatar.sceneCharacter.specilizeY);
 					} else {
-						px = Math.round(this.avatar.sceneCharacter.PixelX);
-						py = Math.round(this.avatar.sceneCharacter.PixelY);
+						charPixelX = Math.round(this.avatar.sceneCharacter.PixelX);
+						charPixelY = Math.round(this.avatar.sceneCharacter.PixelY);
 					}
+					charPixelX += avatarParamData.offsetX;
+					charPixelY += avatarParamData.offsetY;
 					
 					cutRect.width = _currentAvatarPartStatus.width;
 					cutRect.height = _currentAvatarPartStatus.height;
@@ -435,11 +436,11 @@
 								}
 							}
 						}
-						cutRect.x = (px - _currentAvatarPartStatus.tx);		// 左上角位置
+						cutRect.x = (charPixelX - _currentAvatarPartStatus.tx);		// 左上角位置
 					} else {
 						source_x = ((_currentAvatarPartStatus.frame - _currentFrame) - 1);
 						source_y = (_currentLogicAngle - 1);
-						cutRect.x = ((px + _currentAvatarPartStatus.tx) - _currentAvatarPartStatus.width);	// 镜像位置
+						cutRect.x = ((charPixelX + _currentAvatarPartStatus.tx) - _currentAvatarPartStatus.width);	// 镜像位置
 					}
 					
 					// 只有一个角度，只取一行
@@ -447,33 +448,34 @@
 						source_y = 0;
 					}
 					
-					cutRect.y = (py - _currentAvatarPartStatus.ty);			// 上面位置
+					cutRect.y = (charPixelY - _currentAvatarPartStatus.ty);			// 上面位置
 					
 					// 计算源像素位置
 					_sourcePoint.x = (source_x * _currentAvatarPartStatus.width);		// 像素坐标
 					_sourcePoint.y = (source_y * _currentAvatarPartStatus.height);
-					if (_currentRotation != 0) {
+					
+					halfWidth = (_currentAvatarPartStatus.width / 2);		// center x/y
+					halfHeight = (_currentAvatarPartStatus.height / 2);
+					
+					if (_currentRotation > 0) {
 						// 更新  _currentRotation
-						if (_oldData.oldDrawRotation != _currentRotation) {
-							_oldData.oldDrawRotation = _currentRotation;
-							halfWidth = (_currentAvatarPartStatus.width / 2);		// center x/y
-							halfHeight = (_currentAvatarPartStatus.height / 2);
+						if (_oldData['oldDrawRotation'] != _currentRotation || true) {
+							_oldData['oldDrawRotation'] = _currentRotation;
 							matrix = new Matrix();
-							matrix.tx = (matrix.tx - (_sourcePoint.x + halfWidth));	// 向左移动到 该子位图中心坐标
-							matrix.ty = (matrix.ty - (_sourcePoint.y + halfHeight));
-							matrix.rotate(((_currentRotation * Math.PI) / 180));		// 旋转弧度 
-							matrix.tx = (matrix.tx + (_sourcePoint.x + halfWidth));	// 回到中心
-							matrix.ty = (matrix.ty + (_sourcePoint.y + halfHeight));
-							
-							point1 = ZMath.getRotPoint(new Point(halfWidth, halfHeight), new Point(0, 0), _currentRotation);
-							point2 = ZMath.getRotPoint(new Point(halfWidth, -halfHeight), new Point(0, 0), _currentRotation);
+							matrix.scale(sx, sy);
+							matrix.rotate((_currentRotation * Math.PI * 2) / 360);		// 旋转弧度 
+							point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
+							point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
 							xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
 							yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
-							_drawSourceBitmapData = new BitmapData(xMax, yMax, true, 0);
-							_drawSourceBitmapData.draw(sourceBitmapData, matrix, null, null, new Rectangle(_sourcePoint.x, _sourcePoint.x, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height));
+							matrix.translate(offsetRange.x, offsetRange.y);
+							tempbd = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
+							tempbd.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, smoothing);
+							_drawSourceBitmapData=new BitmapData(xMax, yMax, true, 0);
+							_drawSourceBitmapData.draw(tempbd, matrix, null, null, null, smoothing);
 						}
-						cutRect.x = (px - (_drawSourceBitmapData.width / 2));
-						cutRect.y = (py - (_drawSourceBitmapData.height / 2));
+						cutRect.x = (charPixelX - (_drawSourceBitmapData.width / 2));
+						cutRect.y = (charPixelY - (_drawSourceBitmapData.height / 2));
 						cutRect.width = _drawSourceBitmapData.width;
 						cutRect.height = _drawSourceBitmapData.height;
 						_sourcePoint.x = 0;
@@ -483,22 +485,32 @@
 						if (_drawMouseOn && avatar.sceneCharacter.isMouseOn) {
 							_drawSourceBitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
 							_drawSourceBitmapData.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, true);
-							if(_currentAvatarPartStatus.classNamePrefix == "npc51." || _currentAvatarPartStatus.classNamePrefix == "npc52." || _currentAvatarPartStatus.classNamePrefix == "npc53."){
-								_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER_BY_RELIGION_NPC);
-							}else{
-								_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
-							}
-							
+							_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
 							_sourcePoint.x = 0;
 							_sourcePoint.y = 0;
-							
-							if (avatar.sceneCharacter.headFace && avatar.sceneCharacter.isMouseOn) {
-								avatar.sceneCharacter.headFace.filters = [MOUSE_ON_GLOWFILTER];
-							}
 						} else {
-							_drawSourceBitmapData = sourceBitmapData;
-							if(avatar.sceneCharacter.headFace)
-								avatar.sceneCharacter.headFace.filters = [];
+							if (sx > 1 || sy > 1) {
+								matrix = new Matrix();
+								matrix.scale(sx, sy);
+								point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
+								point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
+								xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
+								yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
+								matrix.translate(offsetRange.x, offsetRange.y);
+								tempbd = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
+								tempbd.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, smoothing);
+								_drawSourceBitmapData=new BitmapData(xMax, yMax, true, 0);
+								_drawSourceBitmapData.draw(tempbd, matrix, null, null, null, smoothing);
+								
+								cutRect.x = (charPixelX - (_drawSourceBitmapData.width / 2));
+								cutRect.y = (charPixelY - (_drawSourceBitmapData.height / 2));
+								cutRect.width = _drawSourceBitmapData.width;
+								cutRect.height = _drawSourceBitmapData.height;
+								_sourcePoint.x = 0;
+								_sourcePoint.y = 0;
+							} else {
+								_drawSourceBitmapData = sourceBitmapData;
+							}
 						}
 					}
 					
@@ -525,7 +537,7 @@
 				
 				// 把  oldCutRect 和  cutRect 放入到 clearBoundsArr 中
 				if (avatar.sceneCharacter.scene) {
-					avatar.sceneCharacter.scene.sceneAvatarLayer.clearBoundsArr.push(Bounds.fromRectangle(_oldData.oldCutRect));
+					avatar.sceneCharacter.scene.sceneAvatarLayer.clearBoundsArr.push(Bounds.fromRectangle(_oldData['oldCutRect']));
 					avatar.sceneCharacter.scene.sceneAvatarLayer.clearBoundsArr.push(Bounds.fromRectangle(cutRect));
 				}
 				
@@ -533,10 +545,10 @@
 				renderRectArr.push(cutRect);
 				
 				// 复制 oldCutRect
-				_oldData.oldCutRect.x = cutRect.x;
-				_oldData.oldCutRect.y = cutRect.y;
-				_oldData.oldCutRect.width = cutRect.width;
-				_oldData.oldCutRect.height = cutRect.height;
+				_oldData['oldCutRect']['x'] = cutRect.x;
+				_oldData['oldCutRect']['y'] = cutRect.y;
+				_oldData['oldCutRect']['width'] = cutRect.width;
+				_oldData['oldCutRect']['height'] = cutRect.height;
 			}
 			// 不需要重绘
 			else {
@@ -665,7 +677,7 @@
 		
 		public function clearMe():void {
 			if (avatar.sceneCharacter.scene) {
-				avatar.sceneCharacter.scene.sceneAvatarLayer.removeBoundsArr.push(Bounds.fromRectangle(_oldData.oldCutRect));
+				avatar.sceneCharacter.scene.sceneAvatarLayer.removeBoundsArr.push(Bounds.fromRectangle(_oldData['oldCutRect']));
 			}
 		}
 		
@@ -674,13 +686,13 @@
 		}
 		
 		public function dispose():void {
-			var _local1:String;
+			var partStatus:String;
 			usable = false;
 			avatarParamData = null;
 			clearMe();
 			if (_currentStatus != null && _currentStatus != "") {
-				_local1 = (_classNamePrefix + _currentStatus);
-				SceneCache.uninstallAvatarImg(_local1);
+				partStatus = (_classNamePrefix + _currentStatus);
+				SceneCache.uninstallAvatarImg(partStatus);
 			}
 			needRender = false;
 			_oldData = null;
@@ -737,14 +749,14 @@
 			depth = arr[2];
 			useType = arr[3];
 			_avatarPartStatusRes = arr[4];
-			var vars:Object = arr[5];
-			if (vars != null) {
-				_onPlayBeforeStart = vars.onPlayBeforeStart;
-				_onPlayStart = vars.onPlayStart;
-				_onPlayUpdate = vars.onPlayUpdate;
-				_onPlayComplete = vars.onPlayComplete;
-				_onAdd = vars.onAdd;
-				_onRemove = vars.onRemove;
+			var playCallBack:AvatarPlayCallBack = arr[5];
+			if (playCallBack != null) {
+				_onPlayBeforeStart = playCallBack.onPlayBeforeStart;
+				_onPlayStart = playCallBack.onPlayStart;
+				_onPlayUpdate = playCallBack.onPlayUpdate;
+				_onPlayComplete = playCallBack.onPlayComplete
+				_onAdd = playCallBack.onAdd;
+				_onRemove = playCallBack.onRemove;
 			}
 			usable = true;
 			needRender = true;

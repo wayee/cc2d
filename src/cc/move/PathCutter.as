@@ -1,4 +1,4 @@
-﻿package cc.walk
+﻿package cc.move
 {
 	import flash.geom.Point;
 	import flash.utils.ByteArray;

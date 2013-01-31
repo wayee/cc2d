@@ -1,4 +1,4 @@
-﻿package cc.walk
+﻿package cc.move
 {
 	import cc.CCCharacter;
 	import cc.define.AvatarPartType;
@@ -40,7 +40,7 @@
                 return;
             }
 			
-            sceneChar.Walkdata.clear();
+            sceneChar.moveData.clear();
             var fromTile:MapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
             mapTile = SceneCache.MapTiles[((tilePos.x + "_") + tilePos.y)];
             if (mapTile == null){
@@ -62,15 +62,15 @@
             p1 = new Point(mapTile.PixelX, mapTile.PixelY);
             var angle:* = ZMath.getTwoPointsAngle(p0, p1);
             var distance:* = Point.distance(p0, p1);
-            sceneChar.Walkdata.clear();
+            sceneChar.moveData.clear();
             if (speed == -1){
-                speed = sceneChar.Walkdata.jump_speed;
+                speed = sceneChar.moveData.jump_speed;
             }
             if (maxDis == -1){
-                maxDis = sceneChar.Walkdata.jump_maxDis;
+                maxDis = sceneChar.moveData.jump_maxDis;
             }
-            sceneChar.Walkdata.jump_targetP = tilePos;
-            sceneChar.Walkdata.jump_vars = vars;
+            sceneChar.moveData.jump_targetP = tilePos;
+            sceneChar.moveData.jump_vars = vars;
             if (speed == 0){
                 return;
             }
@@ -98,7 +98,7 @@
             sceneChar.playTo(CharStatusType.JUMP, CharAngleType[("ANGEL_" + angle)], -1, new AvatarPlayCondition(true, true));
             var middleX:* = ((p0.x + p1.x) * 0.5);
             var middleY:* = (((p0.y + p1.y) * 0.5) - 200);
-            sceneChar.Walkdata.isJumping = true;
+            sceneChar.moveData.isJumping = true;
             sceneChar.specilizeX = sceneChar.PixelX;
             sceneChar.specilizeY = sceneChar.PixelY;
             var time:* = Math.max((distance / speed), 0.6);
@@ -126,7 +126,7 @@
                             sceneChar.showAvatarPartsByType(AvatarPartType.MOUNT);
                         };
                         sceneChar.showAvatarPartsByType(AvatarPartType.WEAPON);
-                        sceneChar.Walkdata.clear();
+                        sceneChar.moveData.clear();
                         sceneChar.setXY(sceneChar.PixelX, sceneChar.PixelY);
                         mapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
                         if (sceneChar == sceneChar.scene.mainChar){
@@ -151,7 +151,7 @@
                     sceneChar.showAvatarPartsByType(AvatarPartType.WEAPON);
                     sceneChar.setXY(p1.x, p1.y);
                     sceneChar.playTo(CharStatusType.STAND, -1, -1);
-                    sceneChar.Walkdata.clear();
+                    sceneChar.moveData.clear();
                     if (sceneChar == sceneChar.scene.mainChar){
                         evt = new CCEvent(CCEvent.WALK, CCEventActionWalk.JUMP_ARRIVED, [sceneChar, mapTile]);
                         EventDispatchCenter.getInstance().dispatchEvent(evt);
@@ -174,7 +174,7 @@
             var speed:Number = p_speed;
             var $isPetJump:Boolean = p_is_pet;
             var vars:Object = p_vars;
-            sceneChar.Walkdata.clear();
+            sceneChar.moveData.clear();
             if (speed == 0){
                 return;
             }
@@ -198,7 +198,7 @@
             } else {
                 easeFun = Expo.easeOut;
             }
-            sceneChar.Walkdata.isJumping = true;
+            sceneChar.moveData.isJumping = true;
             sceneChar.specilizeX = sceneChar.PixelX;
             sceneChar.specilizeY = sceneChar.PixelY;
             if (((!((vars == null))) && (!((vars.onLineReady == null))))){
@@ -217,7 +217,7 @@
                         return;
                     }
                     if (sceneChar.getStatus() == CharStatusType.DEATH){
-                        sceneChar.Walkdata.clear();
+                        sceneChar.moveData.clear();
                         if ($isPetJump){
                             if (hasSolid){
                                 sceneChar.visible = true;
@@ -232,7 +232,7 @@
                     }
                 },
                 onComplete:function ():void{
-                    sceneChar.Walkdata.clear();
+                    sceneChar.moveData.clear();
                     if ($isPetJump){
                         if (hasSolid){
                             sceneChar.visible = true;
@@ -254,14 +254,14 @@
             var pixelPos:Point = p_pos;
             var speed:Number = p_speed;
             var onComplete:Function = callback;
-            sceneChar.Walkdata.clear();
+            sceneChar.moveData.clear();
             if (speed == 0){
                 return;
             }
             var p0:Point = new Point(sceneChar.PixelX, sceneChar.PixelY);
             p1 = new Point(pixelPos.x, pixelPos.y);
             var distance:* = Point.distance(p0, p1);
-            sceneChar.Walkdata.isJumping = true;
+            sceneChar.moveData.isJumping = true;
             sceneChar.specilizeX = sceneChar.PixelX;
             sceneChar.specilizeY = sceneChar.PixelY;
             var time:* = (distance / speed);
@@ -278,7 +278,7 @@
                     }
                 },
                 onComplete:function ():void{
-                    sceneChar.Walkdata.clear();
+                    sceneChar.moveData.clear();
                     sceneChar.setXY(p1.x, p1.y);
                     if (onComplete != null){
                         HandlerHelper.execute(onComplete);

@@ -5,16 +5,17 @@
 	import cc.graphics.avatar.CCAvatarPart;
 	import cc.graphics.tagger.HeadFace;
 	import cc.helper.MagicHelper;
+	import cc.helper.MoveHelper;
 	import cc.helper.TaggerHelper;
-	import cc.helper.WalkHelper;
+	import cc.move.WalkStep;
 	import cc.tools.SceneCache;
 	import cc.tools.ScenePool;
 	import cc.utils.Transformer;
 	import cc.vo.avatar.AvatarParamData;
 	import cc.vo.avatar.AvatarPlayCondition;
 	import cc.vo.map.MapTile;
-	import cc.vo.walk.WalkData;
-	import cc.walk.WalkStep;
+	import cc.vo.move.MoveCallBack;
+	import cc.vo.move.MoveData;
 	
 	import flash.display.DisplayObject;
 	import flash.display.IBitmapDrawable;
@@ -68,7 +69,7 @@
 		 * }
 		 */		
         private var oldData:Object;				// 旧的状态数据
-        private var walkData:WalkData;			// 移动数据
+        private var _moveData:MoveData;			// 移动数据
 
 		/**
 		 * 场景对象 
@@ -96,11 +97,11 @@
 				(SceneCache.MapTiles[TileX + "_" + TileY] as MapTile).isMask );
         }
 		
-        public function get Walkdata():WalkData {
-            if (walkData == null) {
-                walkData = new WalkData();
+        public function get moveData():MoveData {
+            if (_moveData == null) {
+                _moveData = new MoveData();
             }
-            return walkData;
+            return _moveData;
         }
 		
         public function faceTo(px:Number, py:Number):void {
@@ -134,15 +135,15 @@
 		
         public function reviseTileXY(p_tx:Number, p_ty:Number):void {
             setTileXY(p_tx, p_ty);
-            WalkHelper.reviseWalkPath(this);
+            MoveHelper.reviseWalkPath(this);
         }
 		
         public function setSpeed(p_walkSpeed:Number):void {
-            walkData.walk_speed = p_walkSpeed;
+            _moveData.walk_speed = p_walkSpeed;
         }
 		
         public function getSpeed():Number {
-            return walkData.walk_speed;
+            return _moveData.walk_speed;
         }
 		
         public function setStatus(p_status:String):void {
@@ -188,7 +189,7 @@
         }
 		
         public function stopWalk(is_stand:Boolean=true):void {
-            WalkHelper.stopWalk(this, is_stand);
+            MoveHelper.stopWalk(this, is_stand);
         }
 		
 		/**
@@ -201,8 +202,8 @@
 		 * @param walkVars 回调列表
 		 */
         public function walk(targetTilePoint:Point, walkSpeed:Number=-1, 
-							 error:Number=0, walkVars:Object=null):void {
-            WalkHelper.walk(this, targetTilePoint, walkSpeed, error, walkVars);
+							 error:Number=0, moveCallBack:MoveCallBack=null):void {
+            MoveHelper.walk(this, targetTilePoint, walkSpeed, error, moveCallBack);
         }
 		
 		/**
@@ -210,8 +211,8 @@
 		 * <br> 直接提供路径 
 		 */
         public function walk0(walkPaths:Array, targetTilePoint:Point=null, walkSpeed:Number=-1, 
-							  error:Number=0, walkVars:Object=null):void {
-            WalkHelper.walk0(this, walkPaths, targetTilePoint, walkSpeed, error, walkVars);
+							  error:Number=0, moveCallBack:MoveCallBack=null):void {
+            MoveHelper.walk0(this, walkPaths, targetTilePoint, walkSpeed, error, moveCallBack);
         }
 		
 		/**
@@ -219,21 +220,21 @@
 		 * <br> 路径信息是二进制
 		 */
         public function walk1(pathByteData:ByteArray, targetTilePoint:Point=null, 
-							  walkSpeed:Number=-1, error:Number=0, walkVars:Object=null):void {
-            WalkHelper.walk1(this, pathByteData, targetTilePoint, walkSpeed, error, walkVars);
+							  walkSpeed:Number=-1, error:Number=0, moveCallBack:MoveCallBack=null):void {
+            MoveHelper.walk1(this, pathByteData, targetTilePoint, walkSpeed, error, moveCallBack);
         }
 		
 		/**
 		 * 跳跃 
 		 */		
 		public function jump(p_pos:Point, p_speed:Number=-1, p_max_dis:Number=-1, p_vars:Object=null):void {
-			WalkHelper.jump(this, p_pos, p_speed, p_max_dis, p_vars);
+			MoveHelper.jump(this, p_pos, p_speed, p_max_dis, p_vars);
 		}
 		public function lineTo(p_pos:Point, p_speed:Number, p_is_pet:Boolean=false, p_vars:Object=null):void {
-			WalkHelper.lineTo(this, p_pos, p_speed, p_is_pet, p_vars);
+			MoveHelper.lineTo(this, p_pos, p_speed, p_is_pet, p_vars);
 		}
 		public function lineToPixel(p_pos:Point, p_speed:Number, p_callback:Function=null):void {
-			WalkHelper.lineToPixel(this, p_pos, p_speed, p_callback);
+			MoveHelper.lineToPixel(this, p_pos, p_speed, p_callback);
 		}
 		
 		///////////////////////////////////
@@ -481,7 +482,7 @@
         }
 		
 		public function isJumping():Boolean {
-			return Walkdata.isJumping;
+			return moveData.isJumping;
 		}
 		
         public function clearMe():void {
@@ -508,7 +509,7 @@
             isSelected = false;
             isMouseOn = false;
             restStatus = RestType.COMMON;
-            walkData = null;
+            _moveData = null;
 			specilizeX = 0;
 			specilizeY = 0;
             showIndex = 0;

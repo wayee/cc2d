@@ -1,4 +1,4 @@
-﻿package cc.walk
+﻿package cc.move
 {
 	import cc.CCCharacter;
 	import cc.CCRender;
@@ -13,7 +13,7 @@
 	import cc.utils.Transformer;
 	import cc.vo.map.MapTile;
 	import cc.vo.map.SceneInfo;
-	import cc.vo.walk.WalkData;
+	import cc.vo.move.MoveData;
 	
 	import flash.geom.Point;
 	
@@ -56,10 +56,10 @@
                 if (sceneChar == sceneChar.scene.mainChar) {	// 如果是主玩家
                     sceneChar.scene.HideMouseChar();			// 隐藏鼠标对象
                 }
-                sceneChar.Walkdata.clear();						// 清空数据
+                sceneChar.moveData.clear();						// 清空数据
                 return;
             }
-            var walkData:WalkData = sceneChar.Walkdata;
+            var walkData:MoveData = sceneChar.moveData;
 			
 			// 如果没有路径, 则结束移动
             if (walkData.walk_pathArr == null || walkData.walk_pathArr.length == 0) {
@@ -108,8 +108,8 @@
                 }
 				
 				// 回调函数, walkData.walk_vars.onWalkThrough( sceneChar, MapTile);
-                if (walkData.walk_vars != null && walkData.walk_vars.onWalkThrough != null) {
-                    walkData.walk_vars.onWalkThrough(sceneChar, SceneUtil.GetMapTile(passUnit.x, passUnit.y));
+                if (walkData.walk_MoveCallBack != null && walkData.walk_MoveCallBack.onMoveThrough != null) {
+                    walkData.walk_MoveCallBack.onMoveThrough(sceneChar, SceneUtil.GetMapTile(passUnit.x, passUnit.y));
                 }
             }
 			
@@ -118,17 +118,17 @@
                 return;
             }
 			
-			if (sceneChar == sceneChar.scene.mainChar) {
-				_walkThroughDistance += frameSpeed;
-				if (_walkThroughDistance > walkData.walk_speed) {
-					if (walkData.walk_vars != null && walkData.walk_vars.onWalkThroughSecond != null) {
-						walkData.walk_vars.onWalkThroughSecond(sceneChar);
-					}
+//			if (sceneChar == sceneChar.scene.mainChar) {
+//				_walkThroughDistance += frameSpeed;
+//				if (_walkThroughDistance > walkData.walk_speed) {
+//					if (walkData.walk_MoveCallBack != null && walkData.walk_MoveCallBack.onWalkThroughSecond != null) {
+//						walkData.walk_MoveCallBack.onWalkThroughSecond(sceneChar);
+//					}
 //					trace('[Log] Walking through distance for one second:', _walkThroughDistance);
-					clearWalkThroughDistance();
+//					clearWalkThroughDistance();
 					
-				}
-			}
+//				}
+//			}
 			
 			// 判断移动结束
             if (walkData.walk_pathArr.length == 0) {
@@ -153,16 +153,16 @@
 					clearWalkThroughDistance();
                 }
 				
-				// 回调通知, walkData.walk_vars.onWalkArrived( sceneChar, mapTile) 
-                if (walkData.walk_vars != null && walkData.walk_vars.onWalkArrived != null) {
-                    walkData.walk_vars.onWalkArrived(sceneChar, SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY));
+				// 回调通知, walkData.walk_MoveCallBack.onWalkArrived( sceneChar, mapTile) 
+                if (walkData.walk_MoveCallBack != null && walkData.walk_MoveCallBack.onMoveArrived != null) {
+                    walkData.walk_MoveCallBack.onMoveArrived(sceneChar, SceneUtil.GetMapTile(sceneChar.TileX, sceneChar.TileY));
                 }
                 walkData.clear();
 				
 //				var walkArrived:Function;
-//				if (walkData.walk_vars != null && walkData.walk_vars.onWalkArrived != null) {
-//					walkArrived =  walkData.walk_vars.onWalkArrived;
-//					//                    walkData.walk_vars.onWalkArrived(sceneChar, SceneUtil.getMapTile(sceneChar.TileX, sceneChar.TileY));
+//				if (walkData.walk_MoveCallBack != null && walkData.walk_MoveCallBack.onWalkArrived != null) {
+//					walkArrived =  walkData.walk_MoveCallBack.onWalkArrived;
+//					//                    walkData.walk_MoveCallBack.onWalkArrived(sceneChar, SceneUtil.getMapTile(sceneChar.TileX, sceneChar.TileY));
 //				}
 //				walkData.clear();
 //				if ( walkArrived != null ) walkArrived(sceneChar, SceneUtil.getMapTile(sceneChar.TileX, sceneChar.TileY));
@@ -191,7 +191,7 @@
                 throughTileArr:[]		// 已经经过的格子数组
             };
 			
-            var walkData:WalkData = sceneChar.Walkdata;				// 移动数据
+            var walkData:MoveData = sceneChar.moveData;				// 移动数据
             var startPixel:Point = resultObj.standPixel;			// 当前坐标
             var want_distance:Number = distance;					// 移动距离
             var throughTileArray:Array = resultObj.throughTileArr;	// 已经经过的格子
