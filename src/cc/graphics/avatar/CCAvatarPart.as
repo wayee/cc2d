@@ -447,7 +447,6 @@
 					if (_currentAvatarPartStatus.only1Angle == 1) {
 						source_y = 0;
 					}
-					
 					cutRect.y = (charPixelY - _currentAvatarPartStatus.ty);			// 上面位置
 					
 					// 计算源像素位置
@@ -456,62 +455,48 @@
 					
 					halfWidth = (_currentAvatarPartStatus.width / 2);		// center x/y
 					halfHeight = (_currentAvatarPartStatus.height / 2);
-					
-					if (_currentRotation > 0) {
-						// 更新  _currentRotation
-						if (_oldData['oldDrawRotation'] != _currentRotation || true) {
-							_oldData['oldDrawRotation'] = _currentRotation;
+					// 鼠标over，加上发光滤镜
+					if (_drawMouseOn && avatar.sceneCharacter.isMouseOn) {
+						_drawSourceBitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
+						_drawSourceBitmapData.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, true);
+						_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
+						_sourcePoint.x = 0;
+						_sourcePoint.y = 0;
+					} else {
+						if ((sx > 0 && sx != 1) || (sy > 0 && sy != 1) || _currentRotation > 0) { // 有缩放或者旋转
 							matrix = new Matrix();
 							matrix.scale(sx, sy);
-							matrix.rotate((_currentRotation * Math.PI * 2) / 360);		// 旋转弧度 
-							point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
-							point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
-							xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
-							yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
+							if (_currentRotation > 0) {
+								if (_oldData['oldDrawRotation'] != _currentRotation || true) {
+									_oldData['oldDrawRotation'] = _currentRotation;
+									matrix.rotate((_currentRotation * Math.PI * 2) / 360);		// 旋转弧度 
+									point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
+									point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
+									xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
+									yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
+								}
+							} else {
+								xMax = _currentAvatarPartStatus.width * sx;
+								yMax = _currentAvatarPartStatus.height * sy;
+							}
 							matrix.translate(offsetRange.x, offsetRange.y);
 							tempbd = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
 							tempbd.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, smoothing);
 							_drawSourceBitmapData=new BitmapData(xMax, yMax, true, 0);
 							_drawSourceBitmapData.draw(tempbd, matrix, null, null, null, smoothing);
-						}
-						cutRect.x = (charPixelX - (_drawSourceBitmapData.width / 2));
-						cutRect.y = (charPixelY - (_drawSourceBitmapData.height / 2));
-						cutRect.width = _drawSourceBitmapData.width;
-						cutRect.height = _drawSourceBitmapData.height;
-						_sourcePoint.x = 0;
-						_sourcePoint.y = 0;
-					} else {
-						// 鼠标over，加上发光滤镜
-						if (_drawMouseOn && avatar.sceneCharacter.isMouseOn) {
-							_drawSourceBitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
-							_drawSourceBitmapData.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, true);
-							_drawSourceBitmapData.applyFilter(_drawSourceBitmapData, new Rectangle(0, 0, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(), MOUSE_ON_GLOWFILTER);
+							
+//							cutRect.x = (charPixelX - (_drawSourceBitmapData.width / 2)); // 调整位置，居中
+//							cutRect.y = (charPixelY - (_drawSourceBitmapData.height / 2));
+							cutRect.width = _drawSourceBitmapData.width;
+							cutRect.height = _drawSourceBitmapData.height;
 							_sourcePoint.x = 0;
 							_sourcePoint.y = 0;
+							
 						} else {
-							if (sx > 1 || sy > 1) {
-								matrix = new Matrix();
-								matrix.scale(sx, sy);
-								point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
-								point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
-								xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
-								yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
-								matrix.translate(offsetRange.x, offsetRange.y);
-								tempbd = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
-								tempbd.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, smoothing);
-								_drawSourceBitmapData=new BitmapData(xMax, yMax, true, 0);
-								_drawSourceBitmapData.draw(tempbd, matrix, null, null, null, smoothing);
-								
-								cutRect.x = (charPixelX - (_drawSourceBitmapData.width / 2));
-								cutRect.y = (charPixelY - (_drawSourceBitmapData.height / 2));
-								cutRect.width = _drawSourceBitmapData.width;
-								cutRect.height = _drawSourceBitmapData.height;
-								_sourcePoint.x = 0;
-								_sourcePoint.y = 0;
-							} else {
-								_drawSourceBitmapData = sourceBitmapData;
-							}
+							_drawSourceBitmapData = sourceBitmapData;
 						}
+//						trace("px, py", charPixelX, charPixelY);
+//						trace("scale, cutRect.x, cutRect.y, w, h", sx, cutRect.x, cutRect.y, _drawSourceBitmapData.width, _drawSourceBitmapData.height);
 					}
 					
 					// 遮挡效果，掩码位图修改, 如果在掩码中, 则建立 _inMaskDrawSourceBitmapData 并 半透明度绘制
