@@ -11,7 +11,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class DoubleClick 
+	public class doubleclick 
 	{
 		private static var _timer:Timer;
 		private static var _counter:int = -1;
@@ -68,7 +68,7 @@ package wit.utils
 			iObject.doubleClickEnabled = false;
 		}
 		
-		public function DoubleClick()
+		public function doubleclick()
 		{    
 			throw new Error("DoubleClick class is static class only");    
 		}  

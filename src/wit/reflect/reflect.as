@@ -1,4 +1,4 @@
-package wit.reflection
+package wit.reflect
 {
 	import flash.display.DisplayObject;
 	import flash.system.ApplicationDomain;
@@ -11,7 +11,7 @@ package wit.reflection
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class Reflection
+	public class reflect
 	{
 		public static function createDisplayObjectInstance(fullClassName:String, applicationDomain:ApplicationDomain=null):DisplayObject{
 			return createInstance(fullClassName, applicationDomain) as DisplayObject;
@@ -60,7 +60,7 @@ package wit.reflection
 			}
 		}
 		
-		public function Reflection () {
+		public function reflect () {
 			throw new Error("Reflection class is static class only");    
 		}  
 	}

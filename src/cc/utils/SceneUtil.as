@@ -8,7 +8,7 @@
 	import cc.vo.map.MapTile;
 	import cc.tools.SceneCache;
 	import cc.utils.Transformer;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
     public class SceneUtil
 	{
@@ -90,7 +90,7 @@
             var mapTile:MapTile;
             var pos1:Point = new Point(mapTile1.PixelX, mapTile1.PixelY);
             var pos2:Point = new Point(mapTile2.PixelX, mapTile2.PixelY);
-            var angle:Number = ZMath.getTwoPointsAngle(pos1, pos2);
+            var angle:Number = math.getTwoPointsAngle(pos1, pos2);
             var logicAngle:Number = (angle * Math.PI) / 180;
             var opposieSide:Number = Math.cos(logicAngle);
             var neighborSide:Number = Math.sin(logicAngle);
@@ -115,7 +115,7 @@
             var mapTile:MapTile;
             var pos1:Point = new Point(mapTile1.PixelX, mapTile1.PixelY);
             var pos2:Point = new Point(mapTile2.PixelX, mapTile2.PixelY);
-            var angle:Number = ZMath.getTwoPointsAngle(pos1, pos2);
+            var angle:Number = math.getTwoPointsAngle(pos1, pos2);
             var logicAngle:Number = ((angle * Math.PI) / 180);
             var opposieSide:Number = Math.cos(logicAngle);
             var neighborSide:Number = Math.sin(logicAngle);

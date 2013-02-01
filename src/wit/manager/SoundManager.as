@@ -1,7 +1,7 @@
 ﻿package wit.manager
 {
 	import wit.cache.Cache;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 	import wit.sound.SoundData;
 	import wit.sound.SoundThread;
 
@@ -52,7 +52,7 @@
 		public static function creatNewSoundThread():SoundThread
 		{
 			var soundThread:SoundThread = (_soundThreadArr[_soundThreadArr.length] = new SoundThread());
-			Log4J.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:" + getSoundThreadsNum());
+			Log4a.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:" + getSoundThreadsNum());
 			return soundThread;
 		}
 		
@@ -73,7 +73,7 @@
 				tmpSoundThread = soundThread;
 				if (!hasSoundThread(tmpSoundThread)){
 					_soundThreadArr.push(tmpSoundThread);
-					Log4J.Info(("SoundManager.playSound::_soundThreadArr.length:" + getSoundThreadsNum()));
+					Log4a.Info(("SoundManager.playSound::_soundThreadArr.length:" + getSoundThreadsNum()));
 				}
 			} else {
 				tmpSoundThread = _defaultSoundThread;
@@ -131,7 +131,7 @@
 		{
 			removeAllSounds();
 			_soundThreadArr = [];
-			Log4J.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:0");
+			Log4a.Info("SoundManager.creatNewSoundThread::_soundThreadArr.length:0");
 		}
 		
 		/**

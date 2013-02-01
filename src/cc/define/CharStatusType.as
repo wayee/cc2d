@@ -11,5 +11,6 @@
         public static const MOUNT_ATTACK:String = "mount_attack";		// 马匹攻击
         public static const INJURED:String = "injured";					// 受伤
         public static const DEATH:String = "death";						// 死亡
+        public static const STANDBY:String = "standby";				// 待机
     }
 }

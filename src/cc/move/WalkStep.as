@@ -18,7 +18,7 @@
 	import flash.geom.Point;
 	
 	import wit.event.EventDispatchCenter;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
 	/**
 	 * 运动管理器
@@ -90,8 +90,8 @@
             var throughTileArr:Array = distanceObj.throughTileArr;		// 被经过的格子
 //			trace('currentPoint:', currentPoint.x, currentPoint.y);
 			// 得到朝向, 并播放动画
-            var angle:Number = ZMath.getTwoPointsAngle(new Point(sceneChar.PixelX, sceneChar.PixelY), currentPoint);	// 目标位置的方向
-            var nearAngel:Number = ZMath.getNearAngel((angle - 90));		// 返回最近的角度
+            var angle:Number = math.getTwoPointsAngle(new Point(sceneChar.PixelX, sceneChar.PixelY), currentPoint);	// 目标位置的方向
+            var nearAngel:Number = math.getNearAngel((angle - 90));		// 返回最近的角度
             sceneChar.playTo(CharStatusType.WALK, CharAngleType[("ANGEL_" + nearAngel)]);		// ANGEL_0(垂直向下), ANGEL_45, ANGEL_90, ...
 			
 			// 设置到目标坐标点
@@ -208,7 +208,7 @@
             if (next_distance > want_distance){		
                 tmpDistance = want_distance;
                 want_distance = (want_distance - tmpDistance);
-                tmpAngle = (ZMath.getTwoPointsAngle(startPixel, endPixel) * TO_RAD);		// 方向角度
+                tmpAngle = (math.getTwoPointsAngle(startPixel, endPixel) * TO_RAD);		// 方向角度
                 startPixel.x = (startPixel.x + (tmpDistance * cos(tmpAngle)));	// 在该方向上移动
                 startPixel.y = (startPixel.y + (tmpDistance * sin(tmpAngle)));
                 return resultObj;			// 返回移动信息

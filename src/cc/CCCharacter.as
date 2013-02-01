@@ -25,7 +25,7 @@
 	import flash.utils.ByteArray;
 	
 	import wit.pool.IPoolObject;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
 	/**
 	 * 场景中的对象，继承自BaseElement
@@ -109,7 +109,7 @@
                 return;
             }
 			
-            var angle:Number = ZMath.getTwoPointsAngle(new Point(pixelX, pixelY), new Point(px, py));
+            var angle:Number = math.getTwoPointsAngle(new Point(pixelX, pixelY), new Point(px, py));
             setAngle(angle);
         }
 		

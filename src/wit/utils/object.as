@@ -2,27 +2,173 @@ package wit.utils
 {
 	import com.adobe.serialization.json.JSON;
 	
+	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
+	import flash.utils.ByteArray;
 	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	import wit.reflection.Reflection;
+	import wit.reflect.reflect;
 	
 	/**
-	 * JSON, XML 解析器
-	 * 
+	 * 对象工具类
+	 *  
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class ObjectParser
+	public class object
 	{
-		public static const NAME:String = "ObjectParser";
+		public static function newSibling(sourceObj:Object):*
+		{
+			if(sourceObj) {
+				var objSibling:*;
+				try {
+					var classOfSourceObj:Class = getDefinitionByName(getQualifiedClassName(sourceObj)) as Class;
+					objSibling = new classOfSourceObj();
+				}
+				catch(e:Object) {}
+				
+				return objSibling;
+			}
+			return null;
+		}
+		
+		public static function clone(source:Object):Object
+		{
+			var clone:Object;
+			if(source) {
+				clone = newSibling(source);
+				
+				if(clone) {
+					copyData(source, clone);
+				}
+			}
+			
+			return clone;
+		}
+		
+		public static function copyData(source:Object, destination:Object):void
+		{
+			//copies data from commonly named properties and getter/setter pairs
+			if(source && destination) {
+				try {
+					var sourceInfo:XML = describeType(source);
+					var prop:XML;
+					
+					for each(prop in sourceInfo.variable) {
+						if(destination.hasOwnProperty(prop.@name)) {
+							destination[prop.@name] = source[prop.@name];
+						}
+					}
+					
+					for each(prop in sourceInfo.accessor) {
+						if(prop.@access == "readwrite") {
+							if(destination.hasOwnProperty(prop.@name)) {
+								destination[prop.@name] = source[prop.@name];
+							}
+						}
+					}
+				}
+				catch (err:Error) {
+				}
+			}
+		}
+		
+		/**
+		 * Deep clone object using thiswind@gmail.com 's solution
+		 */
+		public static function baseClone(source:*):*
+		{
+			var typeName:String = getQualifiedClassName(source);
+			var packageName:String = typeName.split("::")[1];
+			var type:Class = Class(getDefinitionByName(typeName));
+			
+			registerClassAlias(packageName, type);
+			
+			var copier:ByteArray = new ByteArray();
+			copier.writeObject(source);
+			copier.position = 0;
+			return copier.readObject();
+		}
+		
+		/**
+		 * 尝试复制对像
+		 * @param source
+		 * @return 
+		 * 
+		 */		
+		static public function cloneObject(source:Object):*
+		{ 
+			//			var typeName:String = getQualifiedClassName(source);
+			//		    var packageName:String = typeName.split("::")[0];
+			//			var type:Class = getDefinitionByName(typeName) as Class;
+			//			registerClassAlias(packageName, type);
+			var copier:ByteArray = new ByteArray(); 
+			copier.writeObject(source); 
+			copier.position = 0; 
+			return copier.readObject(); 
+		} 
+		
+		static public function merge(a1:Array,a2:Array):Array{
+			var a3:Array=new Array();
+			a3=a1.concat();
+			for(var j:int=0;j<a2.length;j++){
+				if(a1.indexOf(a2[j])==-1)a3.push(a2[j]);
+				else continue;
+			}
+			
+			return a3;
+		}
+		
+		/**
+		 * 把一个对象转化成一个字符串
+		 * param value 任何值
+		 * param key    当前的key
+		 * 
+		 * 如：
+		 * var obj:Object=new Object();
+		 * obj.test1="1";
+		 * obj.test2=[2,3];
+		 * var o:Object=new Object(); o.test5=5;
+		 * obj.test4=o;
+		 * 返回的值为  {test1:1,test2:[0:2,1:3],test4:{test5:5}}  
+		 * 
+		 */ 
+		public static function  objectToString(value:*,key:String=""):String{			
+			if(value is int|| value is Number || value is String || value is Boolean) {				
+				return key==""?value:key+":"+value;
+			}else if(value is Array){				
+				var str:String=key==""?"[":key+":[";
+				var len:int=value.length;
+				for(var i:int=0;i<len;i++){
+					if(i==len-1){
+						str+=objectToString(value[i],String(i));
+					}else{
+						str+=objectToString(value[i],String(i))+", ";
+					}					
+				}
+				str+="]";				
+				return str;				
+			}else if(value is Object){
+				var str2:String=key==""?"{":key+":{";
+				for(var key:String in value){										
+					str2+=objectToString(value[key],key)+", ";					
+				}
+				if(str2!="{"&&str2!=key+":{"){
+					str2=str2.substr(0,str2.length-2);
+				}
+				str2+="}";
+				return str2;			
+			}		
+			return key==""?value:key+":"+value;;			
+		}
 		
 		public static const classMap:Object = {};
 		
 		public static function loopObjectVals(obj:Object):void {
 			for(var i:Object in obj){
-//				trace("propName:"+i+", type:"+typeof(obj[i])+", value:"+obj[i]);
+				//				trace("propName:"+i+", type:"+typeof(obj[i])+", value:"+obj[i]);
 				if(typeof(obj[i])=='object') {
 					loopObjectVals(obj[i]);
 				}
@@ -30,6 +176,7 @@ package wit.utils
 			}
 			
 		}
+		
 		/**
 		 * 将对象列表转换为对象的数组列表
 		 *  
@@ -125,7 +272,7 @@ package wit.utils
 		private static function getVoClass(className:String):Class {
 			if (className === 'Object') return null;
 			
-			var tClass:Class = Reflection.getClass(className);
+			var tClass:Class = reflect.getClass(className);
 			if (tClass == null) {
 				throw new Error('ObjectParser.getVoClass: class '+className+'couldn\'t be found.');
 			}
@@ -142,12 +289,11 @@ package wit.utils
 		 * @return				由 tClass 实例构成的对象列表
 		 */
 		public static function parseList(xml:XMLList, tClass:Object, strictMode:Boolean=false):Array {
-						
 			// 得到属性描述
 			var desc:XMLList = describeType(new (tClass))["variable"];
 			var list:XMLList;
 			const LEN:int = xml.length();
-						
+			
 			// 建立对象数组 arr
 			var arr:Array = new Array;
 			for each(var key:XML in desc)
@@ -184,18 +330,16 @@ package wit.utils
 							arr[i][name] = list[i];
 						}
 					}
-					break;
+						break;
 					
 					case "Object":
-					break;
+						break;
 					
 					case "Array":
-					break;
+						break;
 				}
-				
 				continue;
 			}
-			
 			return arr;
 		}
 		
@@ -215,7 +359,7 @@ package wit.utils
 			var obj:Object = new tClass;
 			var desc:XMLList = describeType(obj)["variable"];
 			var list:XMLList;
-						
+			
 			// 设置 obj 的每个属性
 			for each(var key:XML in desc)
 			{
@@ -239,8 +383,7 @@ package wit.utils
 					{
 						obj[name] = list;
 					}
-					break;
-										
+						break;
 					case "Array":
 					{
 						// 得到节点名 nodeName, 当数组数据位于 xml 的 .. 层次时
@@ -254,15 +397,13 @@ package wit.utils
 							obj[name] = parseList(t, tClass, strictMode);
 						}
 					}
-					break;
+						break;
 				}
-				
 				continue;
 			}
-			
 			return obj;
 		}
-
+		
 		/**
 		 * 解析单个对象
 		 * ignoreProps = 忽略的属性名列表
@@ -276,11 +417,11 @@ package wit.utils
 		public static function parseUniObject(xml:Object, tClass:Class, ignoreProps:Array=null):Object {
 			if(xml is XMLList) xml = xml[0];		// 调整到子结点
 			if(xml == null) return null;
-//			if(! (xml is XML) ) return null;
+			//			if(! (xml is XML) ) return null;
 			
 			var obj:Object = new (tClass);
 			var desc:XMLList = flash.utils.describeType( obj )["variable"];
-						
+			
 			// 设置 obj 的每个属性 prop
 			for each(var prop:XML in desc)
 			{
@@ -303,7 +444,7 @@ package wit.utils
 					{
 						obj[propName] = list;;		// 变量名 和 xml节点名 必须相同 
 					}
-					break;
+						break;
 					
 					// 数组
 					case "Array":
@@ -311,7 +452,7 @@ package wit.utils
 						var arr:Array = parseUniList( list, null );
 						if(arr && arr.length) obj[propName]=arr;		// 如果长度为0, 则设置为null  
 					}
-					break;
+						break;
 					
 					// 对象
 					default:
@@ -320,7 +461,7 @@ package wit.utils
 						if(tClass != null)
 							obj[propName] = parseUniObject( list[0], tClass);
 					}
-					break;
+						break;
 				}
 			}
 			
@@ -425,9 +566,41 @@ package wit.utils
 			return tClass;
 		}
 		
-		public function ObjectParser()
+		/**
+		 * Checks wherever passed-in value is <code>String</code>.
+		 */
+		public static function isString(value:*):Boolean
+		{
+			return ( typeof(value) == "string" || value is String );
+		}
+		
+		/**
+		 * Checks wherever passed-in value is <code>Number</code>.
+		 */
+		public static function isNumber(value:*):Boolean
+		{
+			return ( typeof(value) == "number" || value is Number );
+		}
+		
+		/**
+		 * Checks wherever passed-in value is <code>Boolean</code>.
+		 */
+		public static function isBoolean(value:*):Boolean
+		{
+			return ( typeof(value) == "boolean" || value is Boolean );
+		}
+		
+		/**
+		 * Checks wherever passed-in value is <code>Function</code>.
+		 */
+		public static function isFunction(value:*):Boolean
+		{
+			return ( typeof(value) == "function" || value is Function );
+		}
+		
+		public function object()
 		{    
-			throw new Error(I18n.get('ObjectParser class is static class only'));    
+			throw new Error("ObjectUtils class is static class only");    
 		}  
 	}
 }

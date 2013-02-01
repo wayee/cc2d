@@ -20,9 +20,9 @@
 	import wit.handler.HandlerThread;
 	import wit.loader.LoadData;
 	import wit.loader.RslLoader;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 	import wit.utils.Fun;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 	
 	public class SceneMapLayer extends Sprite
 	{
@@ -145,7 +145,7 @@
 						// 如果没有在等待队列中, 则添加到等待队列
 						if (this.waitingLoadData[key] == null) {		// 如果某个图片加载失败, 则会被重复添加
 							// 计算 _loccurrentZoneone 的距离
-							distance = -(Math.round(ZMath.getDistanceSquare(currentZone.PixelX, currentZone.PixelY, zone.PixelX, zone.PixelY)));
+							distance = -(Math.round(math.getDistanceSquare(currentZone.PixelX, currentZone.PixelY, zone.PixelX, zone.PixelY)));
 							loadData = this.addMapZone(currentZone, distance);		// 添加
 							if (loadData) {
 								loadDataList.push(loadData);
@@ -222,7 +222,7 @@
 					var itemLoadError:Function = function (event:Event):void {
 						loadData.userData.retry++;		// 增加重试次数
 						if (loadData.userData.retry > 3){
-							Log4J.Fatal(("尝试加载地图" + filePath) + "3次均失败，已经放弃加载");
+							Log4a.Fatal(("尝试加载地图" + filePath) + "3次均失败，已经放弃加载");
 							waitingLoadData[key] = null;								// 放弃加载
 							delete waitingLoadData[key];
 						} else {

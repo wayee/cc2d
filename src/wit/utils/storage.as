@@ -5,39 +5,39 @@ package wit.utils
 	/**
 	 * 写本地文件
 	 * 
-	 * <li> var obj:SharedObject = new LocalStorge;
+	 * <li> var obj:SharedObject = new storage;
 	 * <li>写数据到本地： obj.data.time = '2012-6-25'; obj.flush();
 	 * <li>获取数据：textField.text = obj.data.time;
 	 *  
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class LocalStorge
+	public class storage
 	{
-		private var storge:SharedObject;
+		private var storage:SharedObject;
 		
-		public function LocalStorge(name:String) {
-			storge = SharedObject.getLocal(name);
+		public function storage(name:String) {
+			storage = SharedObject.getLocal(name);
 		}
 		
 		public function get Storge():SharedObject {
-			return storge;
+			return storage;
 		}
 		
 		public function get Data():Object {
-			return storge.data;
+			return storage.data;
 		}
 		
 		public function Flush():void {
-			storge.flush();
+			storage.flush();
 		}
 		
 		public function Clear():void {
-			storge.clear();
+			storage.clear();
 		}
 		
 		public function HasKey(key:String):Boolean {
-			if (storge.data.hasOwnProperty(key))
+			if (storage.data.hasOwnProperty(key))
 				return true;
 			return false;
 		}

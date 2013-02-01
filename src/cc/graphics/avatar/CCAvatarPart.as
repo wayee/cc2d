@@ -24,7 +24,7 @@
 	
 	import wit.draw.Bounds;
 	import wit.pool.IPoolObject;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
 	public class CCAvatarPart implements IPoolObject
 	{
@@ -126,6 +126,9 @@
 			_drawMouseOn = true;
 			_callBackAttack = false;
 			_only1LogicAngle = false;
+			
+			if (rotation < 0) rotation = 360 - (-rotation) % 360;
+			if (rotation > 360) rotation = rotation % 360;
 			
 			// 设置 状态, 方向, 选装, 播放条件
 			if (status != null && status != this._currentStatus) {
@@ -401,7 +404,7 @@
 					var sy:Number = avatarParamData.scaleY;
 					var smoothing:Boolean = true;
 					var tempbd:BitmapData;
-					var offsetRange:Point = ZMath.getOffsetRange(_currentAvatarPartStatus.width*sx, _currentAvatarPartStatus.height*sy, _currentRotation); // 变形后偏移
+					var offsetRange:Point = math.getOffsetRange(_currentAvatarPartStatus.width*sx, _currentAvatarPartStatus.height*sy, _currentRotation); // 变形后偏移
 					
 					// 计算 cutRect, 为当前部位的矩形范围
 					
@@ -470,8 +473,8 @@
 								if (_oldData['oldDrawRotation'] != _currentRotation || true) {
 									_oldData['oldDrawRotation'] = _currentRotation;
 									matrix.rotate((_currentRotation * Math.PI * 2) / 360);		// 旋转弧度 
-									point1 = ZMath.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
-									point2 = ZMath.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
+									point1 = math.getRotPoint(new Point(halfWidth*sx, halfHeight*sy), new Point(0, 0), _currentRotation);
+									point2 = math.getRotPoint(new Point(halfWidth*sx, -halfHeight*sy), new Point(0, 0), _currentRotation);
 									xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
 									yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
 								}

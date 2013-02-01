@@ -20,7 +20,7 @@
 	
 	import wit.event.EventDispatchCenter;
 	import wit.handler.HandlerHelper;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
     public class Jump
 	{
@@ -60,7 +60,7 @@
             }
             var p0:Point = new Point(sceneChar.PixelX, sceneChar.PixelY);
             p1 = new Point(mapTile.PixelX, mapTile.PixelY);
-            var angle:* = ZMath.getTwoPointsAngle(p0, p1);
+            var angle:* = math.getTwoPointsAngle(p0, p1);
             var distance:* = Point.distance(p0, p1);
             sceneChar.moveData.clear();
             if (speed == -1){
@@ -94,7 +94,7 @@
                 sceneChar.hideAvatarPartsByType(AvatarPartType.MOUNT);
             }
             sceneChar.hideAvatarPartsByType(AvatarPartType.WEAPON);
-            angle = ZMath.getNearAngel((angle - 90));
+            angle = math.getNearAngel((angle - 90));
             sceneChar.playTo(CharStatusType.JUMP, CharAngleType[("ANGEL_" + angle)], -1, new AvatarPlayCondition(true, true));
             var middleX:* = ((p0.x + p1.x) * 0.5);
             var middleY:* = (((p0.y + p1.y) * 0.5) - 200);
@@ -185,14 +185,14 @@
             }
             var p0:Point = new Point(sceneChar.PixelX, sceneChar.PixelY);
             p1 = new Point(mapTile.PixelX, mapTile.PixelY);
-            var angle:* = ZMath.getTwoPointsAngle(p0, p1);
+            var angle:* = math.getTwoPointsAngle(p0, p1);
             var distance:* = Point.distance(p0, p1);
             if ($isPetJump){
                 hasSolid = SceneUtil.HasSolidBetween2MapTile(fromTile, mapTile);
                 if (hasSolid){
                     sceneChar.visible = false;
                 }
-                angle = ZMath.getNearAngel((angle - 90));
+                angle = math.getNearAngel((angle - 90));
                 sceneChar.playTo(CharStatusType.WALK, CharAngleType[("ANGEL_" + angle)], -1, new AvatarPlayCondition(true));
                 easeFun = Linear.easeNone;
             } else {

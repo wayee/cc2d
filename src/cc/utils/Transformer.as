@@ -5,7 +5,7 @@
 	
 	import flash.geom.Point;
 	
-	import wit.utils.ZMath;
+	import wit.utils.math;
 	
     public class Transformer
 	{
@@ -27,7 +27,7 @@
         }
 		
         public static function TransAngle2LogicAngle(p_angle:Number, p_logic:int=8):int {
-            var logicAngle:Number = ZMath.getNearAngel((p_angle - 90), p_logic);
+            var logicAngle:Number = math.getNearAngel((p_angle - 90), p_logic);
 			
             return CharAngleType[("ANGEL_" + logicAngle)];
         }

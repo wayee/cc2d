@@ -8,7 +8,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class XmlU
+	public class xml
 	{
 		public static function xmlDataToVO(xmllist:XMLList, vo:Object):void
 		{
@@ -208,7 +208,7 @@ package wit.utils
 				}
 				else if(checkPM)
 				{
-					trace(XmlU, '', k, '');
+					trace(xml, '', k, '');
 					result = false;
 				}
 			}
@@ -222,7 +222,7 @@ package wit.utils
 					k = node.@name;
 					if(key.indexOf( k ) < 0)
 					{
-						trace(XmlU, '', k, '');
+						trace(xml, '', k, '');
 						result = false;
 					}
 				}
@@ -231,7 +231,7 @@ package wit.utils
 			return result;
 		}
 		
-		public function XmlU()
+		public function xml()
 		{    
 			throw new Error("XMLUtil class is static class only");    
 		}  

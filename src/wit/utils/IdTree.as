@@ -6,7 +6,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class IdTree
+	public class idtree
 	{
 		private var m_map:Object;
 		
@@ -15,7 +15,7 @@ package wit.utils
 		 * @param map
 		 * 
 		 */
-		public function IdTree(...map)
+		public function idtree(...map)
 		{
 			m_map = new Object;
 			for each (var arr:Array in map) {

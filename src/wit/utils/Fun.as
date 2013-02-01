@@ -19,9 +19,9 @@
 	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	
-	import wit.manager.DelegateManager;
 	import wit.handler.HandlerThread;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
+	import wit.manager.DelegateManager;
 	import wit.manager.HandlerManager;
 	import wit.timer.TimerHelper;
 
@@ -125,7 +125,7 @@
                 new LocalConnection().connect("foo");
                 new LocalConnection().connect("foo");
             } catch (error:Error) {
-				Log4J.Info("Forcing Garbage Collection" /*+ error.toString()*/);
+				Log4a.Info("Forcing Garbage Collection" /*+ error.toString()*/);
             }
         }
 		

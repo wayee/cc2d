@@ -1,6 +1,7 @@
 package cc.ext
 {
 	import cc.tools.SceneCache;
+	import cc.utils.CCG;
 	import cc.vo.avatar.AvatarImgData;
 	import cc.vo.avatar.AvatarPartStatus;
 	
@@ -11,7 +12,8 @@ package cc.ext
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import cc.utils.CCG;
+	
+	import wit.utils.object;
 
 	/**
 	 * Sprite Sheet动画
@@ -38,6 +40,10 @@ package cc.ext
 		private var _preHeight:Number;
 		private var _currentLogicAngle:int;
 		private var _data:Object;
+		private var _loop:int = -1; // 循环次数
+		private var _stopAndRemove:Boolean;
+		private var _stopHandler:Function;
+		private var _stopHandlerParams:Array;
 		public var index:int;
 		
 		/**
@@ -83,9 +89,24 @@ package cc.ext
 			var source_x:int;
 			var source_y:int;
 			
+			if ( !this.contains(_bitmap)) addChild(_bitmap);
+			
 			_currentFrame++;
 			if (_currentFrame >= _currentAvatarPartStatus.frame) {
 				_currentFrame = 0;
+				if (_loop > 0) { // _loop < 0 无限循环
+					_loop -= 1;
+					if (_loop == 0) { // 循环完成
+						_loop = 1;
+						this.stop();
+						if (_stopHandler != null) {
+							_stopHandler.call(null, _stopHandlerParams);
+						}
+						if (_stopAndRemove) {
+							if (this.contains(_bitmap)) removeChild(_bitmap);
+						}
+					}
+				}
 			}
 			
 			// 角度转换: 0, 4567, 左右镜像
@@ -180,6 +201,8 @@ package cc.ext
 		{
 			if (_isPlaying && totalFrames != 0 && stage != null) {
 				addEventListener(Event.ENTER_FRAME, __onEnterFrame);
+			} else {
+				removeEventListener(Event.ENTER_FRAME, __onEnterFrame);
 			}
 		}
 		
@@ -199,8 +222,6 @@ package cc.ext
 		
 		/**
 		 * 对象加入舞台 
-		 * @param event
-		 * 
 		 */
 		private function __addToStage(event:Event):void
 		{
@@ -290,6 +311,26 @@ package cc.ext
 		{
 			return _bitmap;
 		}
+		
+		public function get loop():uint
+		{
+			return _loop;
+		}
+		
+		public function set loop(value:uint):void
+		{
+			_loop = value;
+		}
+		
+		public function get stopAndRemove():Boolean
+		{
+			return _stopAndRemove;
+		}
+		
+		public function set stopAndRemove(value:Boolean):void
+		{
+			_stopAndRemove = value;
+		}
 
 		public function get data():Object
 		{
@@ -300,6 +341,14 @@ package cc.ext
 		{
 			_data = value;
 		}
-
+		
+		public function clone():CCSpriteSheet
+		{
+			var sp:CCSpriteSheet = new CCSpriteSheet(_currentStatus, _apsRes, _currentLogicAngle);
+			sp.data = object.cloneObject(_data);
+			sp.loop = _loop;
+			sp.stopAndRemove = _stopAndRemove;
+			return sp;
+		}
 	}
 }

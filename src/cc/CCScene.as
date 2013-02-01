@@ -80,10 +80,10 @@
 		 * 	摄像机: sceneCamera 负责定位需要渲染的地图区域
 		 * 	渲染器: sceneRender 负责定期渲染地图
 		 * 
-		 * @param _width width
-		 * @param _height height
+		 * @param p_width width
+		 * @param p_height height
 		 */
-        public function CCScene(_width:Number, _height:Number) {
+        public function CCScene(p_width:Number, p_height:Number) {
 			super();
             
             if ( !CCDirector.IsReady ) {
@@ -95,7 +95,7 @@
             _sceneDummies = [];
 			
 			// 每个场景可以有不同的大小
-            sceneConfig = new SceneInfo(_width, _height);
+            sceneConfig = new SceneInfo(p_width, p_height);
 			
 			// 小地图
             sceneSmallMapLayer = new SceneSmallMapLayer(this);

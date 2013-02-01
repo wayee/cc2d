@@ -2,7 +2,7 @@
 {
 	import flash.utils.Dictionary;
 	
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 	import wit.timer.SuperTimer;
 	import wit.timer.TimerData;
 	import wit.timer.TimerHelper;
@@ -67,7 +67,7 @@
 		{
 			var data:TimerData = TimerHelper.createTimer(delay, repeat, handler, params, compHandler, compParams, autoStart);
 			_timerArr[_timerArr.length] = data;
-			Log4J.Info(("TimerManager.createTimer::_timerArr.length:" + getTimersNum()));
+			Log4a.Info(("TimerManager.createTimer::_timerArr.length:" + getTimersNum()));
 			return data;
 		}
 		
@@ -92,7 +92,7 @@
 		{
 			var data:TimerData = TimerHelper.createExactTimer(duration, from, to, updateHandler, compHandler, updateStep);
 			_timerArr[_timerArr.length] = data;
-			Log4J.Info("TimerManager.createTimer::_timerArr.length:" + getTimersNum());
+			Log4a.Info("TimerManager.createTimer::_timerArr.length:" + getTimersNum());
 			return data;
 		}
 		
@@ -108,7 +108,7 @@
 				data = _timerArr[num];
 				if (data == value){
 					_timerArr.splice(num, 1);
-					Log4J.Info("TimerManager.deleteTimer::_timerArr.length:" + getTimersNum());
+					Log4a.Info("TimerManager.deleteTimer::_timerArr.length:" + getTimersNum());
 					data.destroy();
 					break;
 				}
@@ -125,7 +125,7 @@
 				data.destroy();
 			}
 			_timerArr = [];
-			Log4J.Info("TimerManager.deleteAllTimers::_timerArr.length:0");
+			Log4a.Info("TimerManager.deleteAllTimers::_timerArr.length:0");
 		}
 		
 		

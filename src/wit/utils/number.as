@@ -7,7 +7,7 @@ package wit.utils
 	 * @author flashyiyi
 	 * 
 	 */	
-	public final class NumberU
+	public final class number
 	{
 		private static var randomHistory:Dictionary = new Dictionary();//随机数历史记录
 		
@@ -188,7 +188,7 @@ package wit.utils
 			return randomNum;
 		}
 		
-		public function NumberU()
+		public function number()
 		{    
 			throw new Error("RandomUtil class is static class only");    
 		}  

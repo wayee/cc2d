@@ -14,7 +14,7 @@ package wit.log
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class Log4J
+	public class Log4a
 	{
 		private static const logHT:HandlerThread = HandlerManager.creatNewHandlerThread();
 		

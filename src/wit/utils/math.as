@@ -10,7 +10,7 @@
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-    public class ZMath
+    public class math
 	{
         private static var abs:Function = Math.abs;
         private static var sin:Function = Math.sin;
@@ -38,7 +38,7 @@
 		
         public static function getRotPoint(pos1:Point, pos2:Point, angle:Number):Point
 		{
-            angle = angle * ZMath.toRad;
+            angle = angle * math.toRad;
             var target:Point = new Point();
             target.x = Math.cos(angle) * (pos1.x - pos2.x) - Math.sin(angle) * (pos1.y - pos2.y) + pos2.x;
             target.y = Math.sin(angle) * (pos1.x - pos2.x) + Math.cos(angle) * (pos1.y - pos2.y) + pos2.y;
@@ -51,7 +51,7 @@
 			var offsetX:Number = 0;
 			var offsetY:Number = 0;
 			
-			if (rotation < 0) rotation = rotation % 360 + 360;
+			if (rotation < 0) rotation = 360 - (-rotation) % 360;
 			if (rotation > 360) rotation = rotation % 360;
 			
 			var radian:Number = rotation * Math.PI / 180; // 弧度
@@ -68,7 +68,7 @@
 			} else if (rotation > 270 && rotation <= 360) {
 				offsetY = Math.sin(radian) * w;
 			}
-			
+//			trace("rotation, offsetX, offsetY", rotation, offsetX, offsetY);
 			return new Point(Math.abs(offsetX), Math.abs(offsetY));
 		}
 		

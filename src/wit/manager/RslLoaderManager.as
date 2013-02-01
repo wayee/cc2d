@@ -9,7 +9,7 @@
 	
 	import wit.loader.LoadData;
 	import wit.loader.RslLoader;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 
 	/**
 	 * RSL 加载器管理
@@ -42,7 +42,7 @@
 			if (loaderInfo && loaderInfo.applicationDomain.hasDefinition(className)) {
 				return loaderInfo.applicationDomain.getDefinition(className) as Class;
 			}
-			Log4J.Debug("RslLoaderManager.getClass: 类“" + className + "”不存在");
+			Log4a.Debug("RslLoaderManager.getClass: 类“" + className + "”不存在");
 			return null;
 		}
 		
@@ -262,7 +262,7 @@
 					break;
 				case IOErrorEvent.IO_ERROR:
 				case SecurityErrorEvent.SECURITY_ERROR:
-					Log4J.Fatal("RslLoaderManager: 加载" + loadData.url + "失败");
+					Log4a.Fatal("RslLoaderManager: 加载" + loadData.url + "失败");
 					if (loadData.onError != null) {
 						loadData.onError(loadData, event);
 					}

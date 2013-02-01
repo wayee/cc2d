@@ -10,7 +10,7 @@
 	import wit.drag.DragData;
 	import wit.drag.DragType;
 	import wit.handler.HandlerHelper;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 	import wit.utils.Fun;
 
 	/**
@@ -67,7 +67,7 @@
             }
             dragData.dobj.mouseEnabled = false;
             _dragArr[_dragArr.length] = dragData;
-            Log4J.add(("DragManager::addDrag()::_dragArr.length:" + _dragArr.length));
+            Log4a.add(("DragManager::addDrag()::_dragArr.length:" + _dragArr.length));
             if (_dragArr.length == 1) {
                 _stage = dragData.stage;
                 EventManager.addEvent(Event.ENTER_FRAME, update, _stage);
@@ -108,7 +108,7 @@
             var index:int = _dragArr.indexOf(data);
             if (index != -1) {
                 _dragArr.splice(index, 1);
-                Log4J.add(("DragManager::removeDrag()::_dragArr.length:" + _dragArr.length));
+                Log4a.add(("DragManager::removeDrag()::_dragArr.length:" + _dragArr.length));
             }
         }
 		
@@ -125,7 +125,7 @@
                 tmpData.face.alpha = tmpData.dobjStartAlpha;
             }
             _dragArr = [];
-            Log4J.add("DragManager::removeAllDrags()::_dragArr.length:0");
+            Log4a.add("DragManager::removeAllDrags()::_dragArr.length:0");
         }
 		
         private static function update(event:Event):void

@@ -3,7 +3,7 @@
 	import wit.handler.HandlerHelper;
 	import wit.handler.HandlerPool;
 	import wit.handler.HandlerThread;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 
 	/**
 	 * 线程管理器
@@ -53,7 +53,7 @@
 		{
             var ht:HandlerThread = _handlerThreadArr[_handlerThreadArr.length] = new HandlerThread(handleArr, isQueue);
             try {
-                Log4J.Info("HandlerManager.creatNewHandlerThread::_handlerThreadArr.length:" + getHandlerThreadsNum());
+                Log4a.Info("HandlerManager.creatNewHandlerThread::_handlerThreadArr.length:" + getHandlerThreadsNum());
             } catch(e:Error) {
             }
             return ht;
@@ -74,7 +74,7 @@
                 handler = targetHandler;
                 if (!hasHandlerThread(handler)) {
                     _handlerThreadArr.push(handler);
-                    Log4J.Info("HandlerManager.push::_handlerThreadArr.length:" + getHandlerThreadsNum());
+                    Log4a.Info("HandlerManager.push::_handlerThreadArr.length:" + getHandlerThreadsNum());
                 }
             } else {
                 handler = _defaultHandlerThread;
@@ -124,7 +124,7 @@
 		{
             removeAllHandlers();
             _handlerThreadArr = [];
-            Log4J.Info("HandlerManager.removeAllHandlerThreads::_handlerThreadArr.length:0");
+            Log4a.Info("HandlerManager.removeAllHandlerThreads::_handlerThreadArr.length:0");
         }
 		
 		/**
@@ -152,7 +152,7 @@
                 if (thread == handler){
                     thread.removeAllHandlers();
                     _handlerThreadArr.splice(_handlerThreadArr.indexOf(thread), 1);
-                    Log4J.Info("HandlerManager.removeHandlerThread::_handlerThreadArr.length:" + getHandlerThreadsNum());
+                    Log4a.Info("HandlerManager.removeHandlerThread::_handlerThreadArr.length:" + getHandlerThreadsNum());
                     break;
                 }
             }

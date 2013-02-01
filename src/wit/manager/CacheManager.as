@@ -1,7 +1,7 @@
 ﻿package wit.manager
 {
 	import wit.cache.Cache;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 
 	/**
 	 * 缓存管理器
@@ -60,7 +60,7 @@
 		public static function creatNewCache(name:String="", len:int=2147483647):Cache
 		{
 			var cache:Cache = _cacheArr[_cacheArr.length] = new Cache(name, len);
-			Log4J.Info(("CacheManager.creatNewCache::_cacheArr.length:" + getCachesNum()));
+			Log4a.Info(("CacheManager.creatNewCache::_cacheArr.length:" + getCachesNum()));
 			return cache;
 		}
 		
@@ -72,7 +72,7 @@
 			for each (cache in _cacheArr) {
 				if (cache == rmCache){
 					_cacheArr.splice(_cacheArr.indexOf(rmCache), 1);
-					Log4J.Info(("CacheManager.deleteCache::_cacheArr.length:" + getCachesNum()));
+					Log4a.Info(("CacheManager.deleteCache::_cacheArr.length:" + getCachesNum()));
 					cache.dispose();
 					break;
 				}
@@ -87,7 +87,7 @@
 			for each (cache in _cacheArr) {
 				if (cache.name == name){
 					_cacheArr.splice(_cacheArr.indexOf(cache), 1);
-					Log4J.Info(("CacheManager.deleteCacheByName::_cacheArr.length:" + getCachesNum()));
+					Log4a.Info(("CacheManager.deleteCacheByName::_cacheArr.length:" + getCachesNum()));
 					cache.dispose();
 					break;
 				}
@@ -104,7 +104,7 @@
 				cache.dispose();
 			}
 			_cacheArr = [];
-			Log4J.Info("CacheManager.deleteAllCaches::_cacheArr.length:0");
+			Log4a.Info("CacheManager.deleteAllCaches::_cacheArr.length:0");
 		}
 		
 		/**

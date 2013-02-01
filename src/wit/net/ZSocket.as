@@ -8,7 +8,7 @@
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
 	
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 
 	/**
 	 * 网络层
@@ -61,7 +61,7 @@
                 writeBytes(sendBytes);
                 flush();
             } catch(e:IOError) {
-                Log4J.add(e.toString());
+                Log4a.add(e.toString());
             }
         }
 		

@@ -9,7 +9,7 @@ package wit.utils
 	 * @author Andy Cai <huayicai@gmail.com>
 	 * 
 	 */
-	public class StringU
+	public class string
 	{
 		/**
 		 * Returns value is a string type value.
@@ -607,22 +607,22 @@ package wit.utils
 			}
 			else // o is a class instance
 			{
-				for each ( var v:XML in classInfo..*.( name() == "variable" || name() == "accessor" ) )
-				{
-					if ( s.length > 0 ) {
-						s += " | "
-					}
-					
-					s += escapeString( v.@name.toString() ) + " = " 
-						+ convertToString( o[ v.@name ] );
-				}
+//				for each ( var v:XML in classInfo..*.( name() == "variable" || name() == "accessor" ) )
+//				{
+//					if ( s.length > 0 ) {
+//						s += " | "
+//					}
+//					
+//					s += escapeString( v.@name.toString() ) + " = " 
+//						+ convertToString( o[ v.@name ] );
+//				}
 				
 			}
 			
 			return "{" + s + "}\n";
 		}
 		
-		public function StringU()
+		public function string()
 		{    
 			throw new Error("StringUtils class is static class only");    
 		}  

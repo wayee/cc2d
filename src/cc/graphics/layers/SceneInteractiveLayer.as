@@ -7,7 +7,7 @@
 	
 	import wit.draw.DrawHelper;
 	import wit.draw.StyleData;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 	import cc.events.CCEvent;
 	import cc.events.CCEventActionInteractive;
 	import cc.CCScene;

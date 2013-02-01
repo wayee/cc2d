@@ -6,7 +6,7 @@
 	import wit.event.EventDispatchHelper;
 	import wit.event.EventListenData;
 	import wit.event.EventListenHelper;
-	import wit.log.Log4J;
+	import wit.log.Log4a;
 
 	/**
 	 * 事件管理器 
@@ -41,7 +41,7 @@
 				return;
 			}
 			_eventArr[_eventArr.length] = new EventListenData(type, listener, eventDispatcher, useCapture, priority, useWeakReference);
-			Log4J.Info("EventManager.addEvent::_eventArr.length:" + getEventsNum());
+			Log4a.Info("EventManager.addEvent::_eventArr.length:" + getEventsNum());
 			EventListenHelper.addEvent(type, listener, eventDispatcher, useCapture, priority, useWeakReference);
 		}
 		
@@ -55,7 +55,7 @@
 				if (eventData.type == type && eventData.listener == listener && 
 					eventData.dispatcher == eventDispatcher && eventData.useCapture == useCapture) {
 					_eventArr.splice(_eventArr.indexOf(eventData), 1);
-					Log4J.Info("EventManager.removeEvent::_eventArr.length:" + getEventsNum());
+					Log4a.Info("EventManager.removeEvent::_eventArr.length:" + getEventsNum());
 					break;
 				}
 			}
@@ -158,7 +158,7 @@
 				}
 				index++;
 			}
-			Log4J.Info("EventManager.removeEventsByDispatcher::_eventArr.length:" + getEventsNum());
+			Log4a.Info("EventManager.removeEventsByDispatcher::_eventArr.length:" + getEventsNum());
 		}
 		
 		/**

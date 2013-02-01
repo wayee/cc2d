@@ -14,7 +14,7 @@
 	import flash.geom.Point;
 	
 	import wit.handler.HandlerHelper;
-	import wit.utils.ZMath;
+	import wit.utils.math;
 
     public class MagicHelper
 	{
@@ -412,7 +412,7 @@
                 secondScPoint = new Point(toSceneChar.PixelX, toSceneChar.PixelY);
                 distance = Point.distance(firstScPoint, secondScPoint);
 				realDistance = ((distance / 0.5) * 0.0007);
-                angle = ZMath.getTwoPointsAngle(firstScPoint, secondScPoint);
+                angle = math.getTwoPointsAngle(firstScPoint, secondScPoint);
                 passSceneChar.playTo(null, -1, (angle - 90));
                 TweenLite.to(passSceneChar, realDistance, {
                     PixelX:toSceneChar.PixelX,
