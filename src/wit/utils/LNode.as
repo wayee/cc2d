@@ -13,9 +13,9 @@ package wit.utils
 		private var pre:LNode;
 		private var next:LNode;
 		
-		public function LNode(value:Object, id:String=null) {
+		public function LNode(value:Object, p_id:String=null) {
 			data = value;
-			id = id;
+			id = p_id;
 			next = null;
 			pre = null;
 		}
