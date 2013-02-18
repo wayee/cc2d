@@ -25,8 +25,8 @@
 	{
         public static const UNINSTALL_DELAY_TIME:int = 120000;
 
-        private static var LOAD_AVATAR_DELAY:int = 10;
-        private static var ADD_AVATAR_DELAY:int = 10;
+        private static var LOAD_AVATAR_DELAY:int = 0;
+        private static var ADD_AVATAR_DELAY:int = 0;
 		
 		/**
 		 * 地图 
