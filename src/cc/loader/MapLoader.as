@@ -57,7 +57,7 @@
 				 */
 				
 				data = data.replace(/\s/g, ''); // 去掉json字符串中的所有空白
-				var dataObj:Object = JSON.decode(data);
+				var dataObj:Object = com.adobe.serialization.json.JSON.decode(data);
 				if (!dataObj) return;
 				
 				var mapConfig:MapInfo = new MapInfo;

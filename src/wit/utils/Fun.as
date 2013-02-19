@@ -1,4 +1,4 @@
-﻿package wit.utils
+package wit.utils
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -297,16 +297,16 @@
 		 * @param setTime	更新 上次操作时间 为 当前的时间
 		 * @return			返回是否允许运行, 如果为false, 则表示操作太频繁了
 		 */
-		private static var _frequencyDict:Dictionary = new Dictionary;		// 每个 opid 对应的上次操作时间
+		private static var _frequencyDict:Dictionary = new Dictionary;		// 每个 opid 对应的上次操作时间
 		public static function checkFrequency(op:Object, interval:int=-1, setTime:Boolean=true):Boolean
 		{
 			if ( interval < 0 ) interval = 1000;			// 默认操作间隔(毫秒)
 			
-			var prev:int = int( _frequencyDict[op] );
+			var prev:int = int( _frequencyDict[op] );
 			var cur:int = getTimer();
 			if ((cur - prev) < interval) return false;		// 禁止频繁操作
 			
-			if (setTime) _frequencyDict[op] = cur;
+			if (setTime) _frequencyDict[op] = cur;
 			return true;
 		}
 		
@@ -317,13 +317,13 @@
 		public static function clearFrequencyDict(op:Object=null):void
 		{
 			if (op == null) {
-				for (var op:Object in _frequencyDict) {
-					_frequencyDict[op] = null;
-					delete _frequencyDict[op];
+				for (var op:Object in _frequencyDict) {
+					_frequencyDict[op] = null;
+					delete _frequencyDict[op];
 				}
 			} else {
-				_frequencyDict[op] = null;
-				delete _frequencyDict[op];
+				_frequencyDict[op] = null;
+				delete _frequencyDict[op];
 			}
 		}
 		
