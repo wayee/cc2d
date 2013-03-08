@@ -3,6 +3,8 @@ package cc.utils
 	import flash.geom.Point;
 	
 	import flashx.textLayout.formats.Float;
+	
+	import wit.log.Log4a;
 
 	public class PathFind
 	{
@@ -275,14 +277,21 @@ package cc.utils
 		
 		public static function getRealPath( startPos:int, endPos:int, bfMap:Object, simplified:Boolean=true ):Array
 		{
-			if( !isBlock( bfMap, endPos ) )
-				return getPath(startPos, endPos, bfMap, false, false, simplified);
-			
 			// 寻找8个方向上的最近的非阻塞点
 			var endP:Point = pos2Coord( bfMap, endPos );
 			var nearPoint:Point = new Point(0,0);
 			var minSteps:uint = 0xFFFFFFFF;
 			var steps:uint = 0;
+
+			if ( !isValid( bfMap, endP ) ) {
+				Log4a.Info('### 越界了' + endP.toString());
+				return [];
+			}
+			
+			if( !isBlock( bfMap, endPos ) )
+				return getPath(startPos, endPos, bfMap, false, false, simplified);
+			
+			
 			for( var idx:int=0; idx < 8; idx++ )
 			{
 				var point:Point = new Point(endP.x, endP.y);

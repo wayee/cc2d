@@ -24,6 +24,7 @@
 	import flash.geom.Point;
 	
 	import wit.draw.DrawHelper;
+	import wit.log.Log4a;
 
 	/**
 	 * 游戏场景
@@ -420,7 +421,7 @@
                 }
                 sceneCharacters.push(sceneChar);
                 renderCharacters.push(sceneChar);
-//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+                Log4a.Info("### 场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			// 傀儡
 			else {
@@ -429,7 +430,7 @@
                 }
                 _sceneDummies.push(sceneChar);
                 renderCharacters.push(sceneChar);
-//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+                Log4a.Info("### 场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			
             sceneChar.visible = ( sceneChar == mainChar || GetCharVisible(sceneChar.type) );
@@ -466,7 +467,7 @@
                         sceneChar.clearMe();
                     }
                 }
-//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+                Log4a.Info("### 场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
 			// 傀儡
 			else {
@@ -484,7 +485,7 @@
                         sceneChar.clearMe();
                     }
                 }
-//                Log4J.Info("###场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
+                Log4a.Info("### 场景其他角色数量：" + sceneCharacters.length + " 虚拟体数量：" + _sceneDummies.length);
             }
         }
 		

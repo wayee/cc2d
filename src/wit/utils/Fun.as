@@ -33,6 +33,9 @@ package wit.utils
 	 */
     public class Fun
 	{
+		private static var _startTime:int;
+		private static var _tempStartTime:int;
+		
 		/**
 		 * 释放节点 disp的所有孩子或位图资源
 		 * @param disp 目标节点, 可以是 doc, 或 bitmap
@@ -496,6 +499,49 @@ package wit.utils
 		public static function get isBrower():Boolean
 		{
 			return ExternalInterface.available;
+		}
+		
+		public static function setStartTime():void
+		{
+			_startTime = getTimer();
+			_tempStartTime = getTimer();
+		}
+		public static function getStartTimer():int
+		{
+			return _startTime;
+		}
+		
+		public static function getGlobalTimerDiff():Number
+		{
+			return (getTimer() - _startTime) / 1000; 
+		}
+		
+		public static function getTimerDiff():Number
+		{
+			var elapse:Number = (getTimer() - _tempStartTime) / 1000; 
+			_tempStartTime = getTimer();
+			
+			return elapse;
+		}
+		
+		public static function traceElapsingTime(headstring:String):void
+		{
+			trace("[", headstring, "]", "total:", getGlobalTimerDiff(), "used:", getTimerDiff(), "[second]");
+		}
+		
+		public static function traceElapsingTimeIf(headstring:String, elapse:Number):void
+		{
+			if (elapsingTime() > elapse)
+				trace("[", headstring, "]", "total:", getGlobalTimerDiff(), "used:", getTimerDiff(), "[second]");
+			else
+				getTimerDiff();
+		}
+		
+		public static function elapsingTime():Number
+		{
+			var elapse:Number = (getTimer() - _tempStartTime) / 1000; 
+			
+			return elapse;
 		}
     }
 }
