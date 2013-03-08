@@ -13,6 +13,8 @@ package wit.timer
 		public var delay:int;
 		public var times:int;
 		public var leftDelay:int;
+		public var completeHandler:Function;
+		public var completeParams:Array;
 		
 		/**
 		 * 定时器参数实体 
@@ -22,10 +24,12 @@ package wit.timer
 		 * @param times 次数
 		 * 
 		 */
-		public function TimerOption(handler:Function, params:Array, delay:int, times:int=1)
+		public function TimerOption(handler:Function, params:Array, delay:int=1, times:int=1, completeHandler:Function=null, completeParams:Array=null)
 		{
 			this.handler = handler;
 			this.params = params;
+			this.completeHandler = completeHandler;
+			this.completeParams = completeParams;
 			this.delay = delay;
 			this.leftDelay = delay;
 			this.times = times;
@@ -34,6 +38,11 @@ package wit.timer
 		public function callBack():void
 		{
 			handler.apply(null, params);
+		}
+		
+		public function complete():void
+		{
+			completeHandler.apply(null, completeParams);
 		}
 		
 		public function resetDelay():void

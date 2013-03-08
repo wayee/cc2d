@@ -48,6 +48,9 @@ package wit.timer
 					option.times -= 1;
 					option.callBack();
 				} else {
+					if (option.completeHandler != null) {
+						option.complete();
+					}
 					_dict.remove(option.handler);
 				}
 			}

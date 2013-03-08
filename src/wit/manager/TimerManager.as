@@ -142,14 +142,16 @@
 		 * 
 		 * @param handler 回调函数
 		 * @param params 回调函数参数
+		 * @param completeHandler 完成回调函数
+		 * @param completeParams 完成回调函数参数
 		 * @param delay 延迟间隔 	 (unit: second)
 		 * @param times 次数 int  default:1
 		 * 
 		 */	
-		public static function createGlobalTimer(handler:Function, params:Array, delay:int, times:int=1):void
+		public static function createGlobalTimer(handler:Function, params:Array=null, delay:int=1, times:int=1, completeHandler:Function=null, completeParams:Array=null):void
 		{
 			if ( !(handler is Function)) return;
-			if (times < 0) return;
+			if (times <= 0) return;
 			
 			var id:String = 'timer_'+delay;
 			if ( !_timerDict.hasOwnProperty(id) || !(_timerDict[id] is SuperTimer) ) {
@@ -162,8 +164,10 @@
 				var timerOp:TimerOption = superTimer.get(handler);
 				timerOp.times = times;
 				timerOp.params = params;
+				timerOp.completeHandler = completeHandler;
+				timerOp.completeParams = completeParams;
 			} else {
-				superTimer.add(new TimerOption(handler, params, delay, times));
+				superTimer.add(new TimerOption(handler, params, delay, times, completeHandler, completeParams));
 			}
 		}
 		
