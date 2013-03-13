@@ -15,6 +15,7 @@ package wit.timer
 		public var leftDelay:int;
 		public var completeHandler:Function;
 		public var completeParams:Array;
+		public var autoStart:Boolean;
 		
 		/**
 		 * 定时器参数实体 
@@ -24,15 +25,16 @@ package wit.timer
 		 * @param times 次数
 		 * 
 		 */
-		public function TimerOption(handler:Function, params:Array, delay:int=1, times:int=1, completeHandler:Function=null, completeParams:Array=null)
+		public function TimerOption(p_handler:Function, p_params:Array, p_delay:int=1, p_times:int=1, p_completeHandler:Function=null, p_completeParams:Array=null, p_autoStart:Boolean=true)
 		{
-			this.handler = handler;
-			this.params = params;
-			this.completeHandler = completeHandler;
-			this.completeParams = completeParams;
-			this.delay = delay;
-			this.leftDelay = delay;
-			this.times = times;
+			this.handler = p_handler;
+			this.params = p_params;
+			this.completeHandler = p_completeHandler;
+			this.completeParams = p_completeParams;
+			this.delay = p_delay;
+			this.leftDelay = p_delay;
+			this.times = p_times;
+			this.autoStart = p_autoStart;
 		}
 		
 		public function callBack():void

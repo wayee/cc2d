@@ -67,6 +67,9 @@ package wit.timer
 		public function add(option:TimerOption):void
 		{
 			_dict.put(option.handler, option);
+			if (option.autoStart) {
+				option.callBack();
+			}
 			start();
 		}
 		

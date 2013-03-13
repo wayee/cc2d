@@ -140,15 +140,16 @@
 		 * 这就是timeid约定以秒为单位，可以让同一时间的需求共享同一定时器，当每种类
 		 * 型的定时器都执行完，定时器自动停止并删除
 		 * 
+		 * @param delay 延迟间隔 	 (unit: second秒)
+		 * @param times 次数 int  default:1
 		 * @param handler 回调函数
 		 * @param params 回调函数参数
 		 * @param completeHandler 完成回调函数
 		 * @param completeParams 完成回调函数参数
-		 * @param delay 延迟间隔 	 (unit: second)
-		 * @param times 次数 int  default:1
+		 * @param autoStart 是否自动开始 
 		 * 
 		 */	
-		public static function createGlobalTimer(handler:Function, params:Array=null, delay:int=1, times:int=1, completeHandler:Function=null, completeParams:Array=null):void
+		public static function createGlobalTimer(delay:int, times:int, handler:Function, params:Array=null, completeHandler:Function=null, completeParams:Array=null, autoStart:Boolean=true):void
 		{
 			if ( !(handler is Function)) return;
 			if (times <= 0) return;
@@ -166,8 +167,9 @@
 				timerOp.params = params;
 				timerOp.completeHandler = completeHandler;
 				timerOp.completeParams = completeParams;
+				timerOp.autoStart = autoStart;
 			} else {
-				superTimer.add(new TimerOption(handler, params, delay, times, completeHandler, completeParams));
+				superTimer.add(new TimerOption(handler, params, delay, times, completeHandler, completeParams, autoStart));
 			}
 		}
 		
@@ -206,6 +208,46 @@
 			SuperTimer(_timerDict[id]).dispose();
 			_timerDict[id] = null;
 			delete _timerDict[id];
+		}
+		
+		///////////////////////////////////
+		// 全局在跑的定时器
+		///////////////////////////////////
+		
+		private static var _listeners:Dictionary = new Dictionary;
+		private static var _listenerLength:uint = 0;
+		public static function addListenerTimer(key:String):void
+		{
+			if (_listeners.hasOwnProperty(key)) trace('### TimerManager.addListener key 已经存在，被你重置为0了', key);
+			_listeners[key] = 0;
+			_listenerLength = _listenerLength + 1;
+			
+			if ( !TimerManager.hasGlobalHandler(runGlobalTimer, 1) ) TimerManager.createGlobalTimer(1, 72000, runGlobalTimer);
+		}
+		public static function removeListenerTimer(key:String):void
+		{
+			delete _listeners[key];
+			_listenerLength = _listenerLength - 1;
+			
+			if (_listenerLength <= 0) TimerManager.deleteGlobalHandler(runGlobalTimer, 1);
+		}
+		public static function getListenerTimes(key:String):uint
+		{
+			if (_listeners.hasOwnProperty(key)) {
+				return _listeners[key]; 
+			} 
+			return 0;
+		}
+		
+		private static function runGlobalTimer():void
+		{
+			if (_listenerLength > 0) {
+				for (var key:String in _listeners) {
+					_listeners[key] = _listeners[key] + 1;
+				}
+			} else {
+				TimerManager.deleteGlobalHandler(runGlobalTimer, 1);
+			}
 		}
 	}
 }
