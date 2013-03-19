@@ -338,9 +338,10 @@
                     matrix.translate(bm1.width, 0);
                     bm2 = new BitmapData(bm1.width, bm1.height, true, 0);
                     bm2.draw(bm1, matrix);
-                    bm1 = bm2;
+					bm1.dispose();
+//                    bm1 = bm2;
 					
-                    avatarImgData = new AvatarImgData(bm0, bm1, 1);	// 2个镜像的图片
+                    avatarImgData = new AvatarImgData(bm0, bm2, 1);	// 2个镜像的图片
                     avatarImgCache.push(avatarImgData, name);
                 }
             }
