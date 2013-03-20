@@ -279,7 +279,7 @@
                         sceneChar = CreateSceneCharacter(CharType.DUMMY);		// 建立傀儡
                         sceneChar.PixelX = slipcovers.pixel_x;
                         sceneChar.PixelY = slipcovers.pixel_y;
-						sceneChar.loadAvatarPart(new AvatarParamData(slipcovers.sourcePath));
+						sceneChar.LoadAvatarPart(new AvatarParamData(slipcovers.sourcePath));
                     }
                 }
 				
@@ -353,13 +353,13 @@
                 
 				// 场景空白人物形象
 				if (blankAvatarParamData != null) {
-                    sceneChar.loadAvatarPart(blankAvatarParamData);
+                    sceneChar.LoadAvatarPart(blankAvatarParamData);
                 }
 				
 				// 除了传送点和建筑，显示影子
                 if (sceneChar.type != CharType.TRANSPORT
 					&& shadowAvatarParamData != null) {
-                    sceneChar.loadAvatarPart(shadowAvatarParamData);
+                    sceneChar.LoadAvatarPart(shadowAvatarParamData);
                 }
             }
             return sceneChar;
@@ -526,7 +526,7 @@
             SceneCache.MapTiles = {};
             SceneCache.MapSolids = {};
             SceneCache.MapZones = {};
-            SceneCache.removeWaitingAvatar(null, null, null, [mainChar, _mouseChar]);
+            SceneCache.RemoveWaitingAvatar(null, null, null, [mainChar, _mouseChar]);
 			
 			// this & Scene
             mapConfig = null;
@@ -624,7 +624,7 @@
             }
 			
             if (_selectedCharacter != null && _selectedCharacter.usable) {
-                _selectedCharacter.removeAvatarPartByID(AvatarPartID.SELECTED);
+                _selectedCharacter.RemoveAvatarPartByID(AvatarPartID.SELECTED);
                 _selectedCharacter.isSelected = false;
             }
 			
@@ -632,7 +632,7 @@
 			
             if (_selectedCharacter != null && _selectedCharacter.usable) {
                 if (_selectedAvatarParamData != null) {
-                    _selectedCharacter.loadAvatarPart(_selectedAvatarParamData);
+                    _selectedCharacter.LoadAvatarPart(_selectedAvatarParamData);
                 }
                 _selectedCharacter.isSelected = true;
             } else {

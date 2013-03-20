@@ -37,8 +37,8 @@
 		public var avatarParts:Array;								// [AvatarPart], 每个部分
 		
 		private var _bornAvatarParamData:AvatarParamData;			// 身体数据 -- 原始值
-//		private var _bornOnMountAvatarParamData:AvatarParamData;	// 骑马时的身体数据 -- 原始值
-//		private var _bornMountAvatarParamData:AvatarParamData;		// 马的数据 -- 原始值
+		private var _bornOnMountAvatarParamData:AvatarParamData;	// 骑马时的身体数据 -- 原始值
+		private var _bornMountAvatarParamData:AvatarParamData;		// 马的数据 -- 原始值
 		
 		/**
 		 * Avatar 必须关联到一个  CCCharacter 对象, 作为后者的表观(VIEW)
@@ -176,10 +176,10 @@
 			visible = true;
 			updateNow = false;
 			_oldData = null;
-//			_isOnMount = false;
+			_isOnMount = false;
 			_bornAvatarParamData = null;
-//			_bornOnMountAvatarParamData = null;
-//			_bornMountAvatarParamData = null;
+			_bornOnMountAvatarParamData = null;
+			_bornMountAvatarParamData = null;
 		}
 		
 		public function reset(value:Array):void {
@@ -188,11 +188,23 @@
 			usable = true;
 		}
 		
-		public function getBornAvatarParamData():AvatarParamData {
+		/**
+		 * 是否在马背上
+		 */
+		public function set IsOnMount(b:Boolean):void {
+			this._isOnMount = b;
+			this.updateDefaultAvatar();
+		}
+		
+		public function get IsOnMount():Boolean{
+			return this._isOnMount;
+		}
+		
+		public function GetBornAvatarParamData():AvatarParamData {
 			return _bornAvatarParamData;
 		}
 		
-		public function setBornAvatarParamData(avatarParamData:AvatarParamData):void {
+		public function SetBornAvatarParamData(avatarParamData:AvatarParamData):void {
 			if (avatarParamData == null) {
 				return;
 			}
@@ -205,30 +217,93 @@
 			this.updateDefaultAvatar();
 		}
 		
+		/**
+		 * 设置 _bornOnMountAvatarParamData
+		 */
+		public function GetBornOnMountAvatarParamData():AvatarParamData {
+			return this._bornOnMountAvatarParamData;
+		}
+		
+		public function SetBornOnMountAvatarParamData(apd:AvatarParamData):void{
+			if (apd == null) {
+				return;
+			}
+			apd.Id_noCheckValid = AvatarPartID.BORN_ONMOUNT;		// id
+			apd.avatarPartType = AvatarPartType.BODY;				// type
+			apd.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.BODY);
+			apd.useType = 2;
+			apd.clearSameType = false;
+			this._bornOnMountAvatarParamData = apd;
+			this.updateDefaultAvatar();
+		}
+		
+		/**
+		 * 设置 _bornMountAvatarParamData
+		 */
+		public function GetBornMountAvatarParamData():AvatarParamData{
+			return this._bornMountAvatarParamData;
+		}
+		
+		public function SetBornMountAvatarParamData(apd:AvatarParamData):void{
+			if (apd == null) {
+				return;
+			}
+			apd.Id_noCheckValid = AvatarPartID.BORN_MOUNT;		// id
+			apd.avatarPartType = AvatarPartType.MOUNT;			// type
+			apd.depth = AvatarPartType.GetDefaultDepth(AvatarPartType.MOUNT);
+			apd.useType = 2;
+			apd.clearSameType = false;
+			this._bornMountAvatarParamData = apd;
+			this.updateDefaultAvatar();
+		}
+		
 		private function updateDefaultAvatar():void {
-			// TODO load the avatar body
-			
-			// 如果 没有身体
-			if (!hasTypeAvatarParts(AvatarPartType.BODY)) {
-				// 根据 _bornAvatarParamData 加载身体数据 
-				if (this._bornAvatarParamData != null) {
-					this.sceneCharacter.loadAvatarPart(this._bornAvatarParamData);
-				} else {
-					// 否则根据 blankAvatarParamData(默认空白对象) 来加载身体
-					if (this.sceneCharacter.scene.blankAvatarParamData != null) {
-						if (this.sceneCharacter.type != CharType.DUMMY 
-							&& this.sceneCharacter.type != CharType.BAG) {
-							this.sceneCharacter.loadAvatarPart(this.sceneCharacter.scene.blankAvatarParamData);
+			// 不在马上
+			if ( !this._isOnMount ) {
+				// 删除  BORN_ONMOUNT, BORN_MOUNT
+				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN_ONMOUNT, false);	// this.removeAvatarPartByID
+				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN_MOUNT, false);
+				
+				// 如果 没有身体
+				if ( !hasTypeAvatarParts(AvatarPartType.BODY) ) {
+					// 根据 _bornAvatarParamData 加载身体数据 
+					if (this._bornAvatarParamData != null) {
+						this.sceneCharacter.LoadAvatarPart(this._bornAvatarParamData);
+					} else {
+						// 否则根据 blankAvatarParamData(默认空白对象) 来加载身体
+						if (this.sceneCharacter.scene.blankAvatarParamData != null) {
+							if (this.sceneCharacter.type != CharType.DUMMY 
+								&& this.sceneCharacter.type != CharType.BAG) {
+								this.sceneCharacter.LoadAvatarPart(this.sceneCharacter.scene.blankAvatarParamData);
+							}
 						}
 					}
 				}
-			}
-			else {
-				// 否则, 如果有空白 
-				if (this.hasIDAvatarPart(AvatarPartID.BLANK)) {
-					// 从 _bornAvatarParamData 加载身体
-					if (this._bornAvatarParamData != null) {
-						this.sceneCharacter.loadAvatarPart(this._bornAvatarParamData);
+				else {
+					// 否则, 如果有空白 
+					if (this.hasIDAvatarPart(AvatarPartID.BLANK)) {
+						// 从 _bornAvatarParamData 加载身体
+						if (this._bornAvatarParamData != null) {
+							this.sceneCharacter.LoadAvatarPart(this._bornAvatarParamData);
+						}
+					}
+				}
+			} else { // 在马上
+				// 删除  BLANK, BORN
+				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
+				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN, false);
+				
+				// 如果没有身体, 加载 _bornOnMountAvatarParamData 身体
+				if ( !this.hasTypeAvatarParts(AvatarPartType.BODY) ) {
+					if (this._bornOnMountAvatarParamData != null) {
+						this.sceneCharacter.LoadAvatarPart(this._bornOnMountAvatarParamData);
+					}
+				}
+				// 如果没有马
+				if ( !this.hasTypeAvatarParts(AvatarPartType.MOUNT) ) {
+					// 加载马 
+					if (this._bornMountAvatarParamData != null) {
+						this.sceneCharacter.LoadAvatarPart(this._bornMountAvatarParamData);
 					}
 				}
 			}
@@ -356,7 +431,7 @@
 			if (partID == null || partID == "") {
 				return;
 			}
-			SceneCache.removeWaitingAvatar(sceneCharacter, partID);
+			SceneCache.RemoveWaitingAvatar(sceneCharacter, partID);
 			for each (part in avatarParts) {
 				if (part.id == partID) {
 					part.onRemove();
@@ -372,7 +447,7 @@
 		
 		public function removeAvatarPartsByType(partType:String, update:Boolean=true):void {
 			var part:CCAvatarPart;
-			SceneCache.removeWaitingAvatar(this.sceneCharacter, null, partType);
+			SceneCache.RemoveWaitingAvatar(this.sceneCharacter, null, partType);
 			for each (part in this.avatarParts) {
 				if (part.type == partType) {
 					part.onRemove();
@@ -387,7 +462,7 @@
 		
 		public function removeAllAvatarParts(update:Boolean=true):void {
 			var part:CCAvatarPart;
-			SceneCache.removeWaitingAvatar(this.sceneCharacter);
+			SceneCache.RemoveWaitingAvatar(this.sceneCharacter);
 			for each (part in this.avatarParts) {
 				part.onRemove();
 				CCAvatarPart.recycleAvatarPart(part);

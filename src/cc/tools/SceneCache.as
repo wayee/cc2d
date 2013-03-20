@@ -88,7 +88,7 @@
 		 * 添加加载角色等待队列
 		 * <br> 等待加载的队列
 		 */
-        public static function addWaitingLoadAvatar(sceneChar:CCCharacter, 
+        public static function AddWaitingLoadAvatar(sceneChar:CCCharacter, 
 													avatarParamData:AvatarParamData, 
 													loadSource:Function=null):void {
             var exists:Boolean;
@@ -128,7 +128,7 @@
 		 * @param avatarParamDataRes Object see SceneCache.avatarXmlCache.get(paramData.sourcePath).data
 		 * 
 		 */
-        public static function addWaitingAddAvatar(sceneChar:CCCharacter, 
+        public static function AddWaitingAddAvatar(sceneChar:CCCharacter, 
 												   avatarParamData:AvatarParamData, 
 												   avatarParamDataRes:Object):void {
             var arr:Array = null;
@@ -140,7 +140,7 @@
                     waitingAddAvatars.splice(index, 1);
                 }
 				// 角色加入显示列表
-                addAvatarPart(sceneChar, avatarParamData, avatarParamDataRes);
+                AddAvatarPart(sceneChar, avatarParamData, avatarParamDataRes);
             }
             arr = [sceneChar, avatarParamData, ht_addAvatarPart];
             waitingAddAvatars.push(arr);
@@ -156,7 +156,7 @@
 		 * @param except_char_arr
 		 * 
 		 */
-        public static function removeWaitingAvatar(sceneChar:CCCharacter=null, 
+        public static function RemoveWaitingAvatar(sceneChar:CCCharacter=null, 
 												   avatarPartID:String=null, 
 												   avatarPartType:String=null, 
 												   except_char_arr:Array=null):void {
@@ -234,7 +234,7 @@
 		 * @param avatarParamDataRes Object see SceneCache.avatarXmlCache.get(paramData.sourcePath).data
 		 * 
 		 */
-        public static function dowithWaiting(sourcePath:String, avatarParamDataRes:Object=null):void {
+        public static function DowithWaiting(sourcePath:String, avatarParamDataRes:Object=null):void {
             var arr:Array;
             var sceneChar:CCCharacter;
             var avatarParamData:AvatarParamData;
@@ -245,7 +245,7 @@
                     for each (unitArr in arr) {
                         sceneChar = unitArr[0];
                         avatarParamData = unitArr[1];
-                        addWaitingAddAvatar(sceneChar, avatarParamData, avatarParamDataRes);
+                        AddWaitingAddAvatar(sceneChar, avatarParamData, avatarParamDataRes);
                     }
                 }
             }
@@ -256,7 +256,7 @@
 		/**
 		 * 每 1000 帧检查1次(30秒), 当资源超过2分钟没有使用, 则释放它
 		 */
-        public static function checkUninstall():void {
+        public static function CheckUninstall():void {
             var name:String;
             if (++count < 1000) {		// 1000 次检查一次
                 return;
@@ -275,7 +275,7 @@
 		/**
 		 * 释放资源, 减少引用技术, 如果<=0则记录到释放队列中
 		 */
-        public static function uninstallAvatarImg(name:String):void {
+        public static function UninstallAvatarImg(name:String):void {
             var avatarImgData:AvatarImgData;
             if (avatarImgCache.has(name)) {
                 avatarImgData = avatarImgCache.get(name) as AvatarImgData;
@@ -311,7 +311,7 @@
 		 * 检索1个资源, 新建, 或复用, 增加引用计数，获取镜像
 		 * @param name 资源类名
 		 */
-        public static function installAvatarImg(name:String, only1LogicAngel:Boolean):AvatarImgData {
+        public static function InstallAvatarImg(name:String, only1LogicAngel:Boolean):AvatarImgData {
             var avatarImgData:AvatarImgData;
             var bm0:BitmapData;
             var bm1:BitmapData;
@@ -342,6 +342,7 @@
 //                    bm1 = bm2;
 					
                     avatarImgData = new AvatarImgData(bm0, bm2, 1);	// 2个镜像的图片
+//                    avatarImgData = new AvatarImgData(bm0, null, 1, only1LogicAngel);	// 2个镜像的图片
                     avatarImgCache.push(avatarImgData, name);
                 }
             }
@@ -370,24 +371,68 @@
 		 * @param avatarParamData
 		 * @param avatarParamDataRes
 		 */		
-		private static function addAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void {
+		private static function AddAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData, avatarParamDataRes:Object):void {
 			if (sceneChar == null || !sceneChar.usable) {
 				avatarParamData.executeCallBack(sceneChar);
 				return;
 			}
 			
-			if (avatarParamData.useType == 1) {
-				avatarParamData.executeCallBack(sceneChar);
-				return;
-			}
-			if (avatarParamData.avatarPartType == AvatarPartType.BODY) {
-				if (avatarParamData.Id == AvatarPartID.BLANK) {
-					if (sceneChar.hasTypeAvatarParts(AvatarPartType.BODY)) {
-						avatarParamData.executeCallBack(sceneChar);
-						return;
+			if ( !sceneChar.IsOnMount ) {
+				if (avatarParamData.useType == 2) {
+					avatarParamData.executeCallBack(sceneChar);
+					return;
+				}
+				
+				if (avatarParamData.avatarPartType == AvatarPartType.BODY) {
+					if (avatarParamData.Id == AvatarPartID.BLANK) {
+						if (sceneChar.HasTypeAvatarParts(AvatarPartType.BODY)) {
+							avatarParamData.executeCallBack(sceneChar);
+							return;
+						}
+					} else {
+						if (avatarParamData.Id == AvatarPartID.BORN) {
+							if (sceneChar.HasTypeAvatarParts(AvatarPartType.BODY) && !sceneChar.HasIDAvatarPart(AvatarPartID.BLANK)) {
+								avatarParamData.executeCallBack(sceneChar);
+								return;
+							}
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
+						} else {
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BORN, false);
+						}
 					}
-				} else {
-					sceneChar.removeAvatarPartByID(AvatarPartID.BLANK, false);
+				}
+			} else {
+				if (avatarParamData.useType == 1) {
+					avatarParamData.executeCallBack(sceneChar);
+					return;
+				}
+				if (avatarParamData.avatarPartType == AvatarPartType.BODY) {
+					if (avatarParamData.Id == AvatarPartID.BLANK) {
+						if (sceneChar.HasTypeAvatarParts(AvatarPartType.BODY)) {
+							avatarParamData.executeCallBack(sceneChar);
+							return;
+						}
+					} else {
+						if (avatarParamData.Id == AvatarPartID.BORN_ONMOUNT) {
+							if (sceneChar.HasTypeAvatarParts(AvatarPartType.BODY) && !sceneChar.HasIDAvatarPart(AvatarPartID.BLANK)) {
+								avatarParamData.executeCallBack(sceneChar);
+								return;
+							}
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
+						} else {
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
+							sceneChar.RemoveAvatarPartByID(AvatarPartID.BORN_ONMOUNT, false);
+						}
+					}
+				}
+				if (avatarParamData.avatarPartType == AvatarPartType.MOUNT) {
+					if (avatarParamData.Id == AvatarPartID.BORN_MOUNT) {
+						if (sceneChar.HasTypeAvatarParts(AvatarPartType.MOUNT)) {
+							avatarParamData.executeCallBack(sceneChar);
+							return;
+						}
+					}
 				}
 			}
 			
@@ -399,7 +444,7 @@
 			if (avatarPlayCondition != null) {
 				avatarPlayCondition = avatarPlayCondition.clone();
 			}
-			sceneChar.addAvatarPart(part, avatarParamData.clearSameType);
+			sceneChar.AddAvatarPart(part, avatarParamData.clearSameType);
 			if (sceneChar.usable) {
 				part.playTo(sceneChar.avatar.status, sceneChar.avatar.logicAngle, avatarParamData.rotation, avatarPlayCondition);
 			}

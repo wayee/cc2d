@@ -30,7 +30,7 @@
             if (sceneChar != null && sceneChar.usable && paramData.sourcePath != null && paramData.sourcePath != "") {
 				// 删除正在加载的同类数据
                 if (paramData.clearSameType) {
-                    SceneCache.removeWaitingAvatar(sceneChar, null, paramData.avatarPartType);
+                    SceneCache.RemoveWaitingAvatar(sceneChar, null, paramData.avatarPartType);
                 }
 				
 				// 如果没有该 URL 路径, 则新建加载
@@ -75,7 +75,7 @@
                             } else {
                                 SceneCache.avatarXmlCache.push({data:apsRes}, paramData.sourcePath);
                             }
-                            SceneCache.dowithWaiting(paramData.sourcePath, apsRes);
+                            SceneCache.DowithWaiting(paramData.sourcePath, apsRes);
                         } else {
                             loadError(null, null, false);
                         }
@@ -97,7 +97,7 @@
                             if (SceneCache.avatarXmlCache.has(paramData.sourcePath)){
                                 SceneCache.avatarXmlCache.remove(paramData.sourcePath);
                             }
-                            SceneCache.dowithWaiting(paramData.sourcePath, null);
+                            SceneCache.DowithWaiting(paramData.sourcePath, null);
                             paramData.executeCallBack(sceneChar);
                         }
                     };
@@ -106,17 +106,17 @@
 					// addWaitingLoadAvatar 
 					// addWaitingAddAvatar 
                     SceneCache.avatarXmlCache.push({data:null}, paramData.sourcePath);
-                    SceneCache.addWaitingLoadAvatar(sceneChar, paramData, loadSource);
+                    SceneCache.AddWaitingLoadAvatar(sceneChar, paramData, loadSource);
                     tryLoadCount = 0;
                 }
 				// 已经有缓存了, 则从缓存中获取
 				else {
                     apsRes = SceneCache.avatarXmlCache.get(paramData.sourcePath).data;
                     if (apsRes == null) {
-                        SceneCache.addWaitingLoadAvatar(sceneChar, paramData.clone());
+                        SceneCache.AddWaitingLoadAvatar(sceneChar, paramData.clone());
 //						trace('[AvatarPartLoader.loadAvatarPart 333]', 'exec SceneCache.addWaitingLoadAvatar ' + paramData.sourcePath, SceneCache.waitingLoadAvatars[paramData.sourcePath].length);
                     } else {
-                        SceneCache.addWaitingAddAvatar(sceneChar, paramData.clone(), apsRes);
+                        SceneCache.AddWaitingAddAvatar(sceneChar, paramData.clone(), apsRes);
 //						trace('[AvatarPartLoader.loadAvatarPart 333]', 'exec SceneCache.addWaitingAddAvatar ' + paramData.sourcePath);
                     }
                 }

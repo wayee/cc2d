@@ -264,12 +264,12 @@
 					// 当前部件是否存在当前状态，例如角色特效没有走路的效果
 					if (tmpCurrentStatus != null && tmpCurrentStatus != "") {
 						resName = (tmpClassNamePrefix + tmpCurrentStatus);
-						SceneCache.uninstallAvatarImg(resName);
+						SceneCache.UninstallAvatarImg(resName);
 					}
 					if (this._currentStatus != null && this._currentStatus != "") {
 						resName = (this._classNamePrefix + this._currentStatus);
 						if (this._classNamePrefix) {
-							_sourceBitmapDataObj = SceneCache.installAvatarImg(resName, this._only1LogicAngle);
+							_sourceBitmapDataObj = SceneCache.InstallAvatarImg(resName, this._only1LogicAngle);
 						}
 					}
 					
@@ -680,7 +680,7 @@
 			clearMe();
 			if (_currentStatus != null && _currentStatus != "") {
 				partStatus = (_classNamePrefix + _currentStatus);
-				SceneCache.uninstallAvatarImg(partStatus);
+				SceneCache.UninstallAvatarImg(partStatus);
 			}
 			needRender = false;
 			_oldData = null;

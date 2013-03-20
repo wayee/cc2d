@@ -91,9 +91,9 @@
             }
             hasSolid = SceneUtil.HasSolidBetween2MapTile(fromTile, mapTile);
             if (hasSolid){
-                sceneChar.hideAvatarPartsByType(AvatarPartType.MOUNT);
+                sceneChar.HideAvatarPartsByType(AvatarPartType.MOUNT);
             }
-            sceneChar.hideAvatarPartsByType(AvatarPartType.WEAPON);
+            sceneChar.HideAvatarPartsByType(AvatarPartType.WEAPON);
             angle = math.getNearAngel((angle - 90));
             sceneChar.playTo(CharStatusType.JUMP, CharAngleType[("ANGEL_" + angle)], -1, new AvatarPlayCondition(true, true));
             var middleX:* = ((p0.x + p1.x) * 0.5);
@@ -123,9 +123,9 @@
                             sceneChar.scene.HideMouseChar();
                         }
                         if (hasSolid){
-                            sceneChar.showAvatarPartsByType(AvatarPartType.MOUNT);
+                            sceneChar.ShowAvatarPartsByType(AvatarPartType.MOUNT);
                         };
-                        sceneChar.showAvatarPartsByType(AvatarPartType.WEAPON);
+                        sceneChar.ShowAvatarPartsByType(AvatarPartType.WEAPON);
                         sceneChar.moveData.clear();
                         sceneChar.setXY(sceneChar.PixelX, sceneChar.PixelY);
                         mapTile = SceneCache.MapTiles[((sceneChar.TileX + "_") + sceneChar.TileY)];
@@ -146,9 +146,9 @@
                         sceneChar.scene.HideMouseChar();
                     }
                     if (hasSolid){
-                        sceneChar.showAvatarPartsByType(AvatarPartType.MOUNT);
+                        sceneChar.ShowAvatarPartsByType(AvatarPartType.MOUNT);
                     }
-                    sceneChar.showAvatarPartsByType(AvatarPartType.WEAPON);
+                    sceneChar.ShowAvatarPartsByType(AvatarPartType.WEAPON);
                     sceneChar.setXY(p1.x, p1.y);
                     sceneChar.playTo(CharStatusType.STAND, -1, -1);
                     sceneChar.moveData.clear();

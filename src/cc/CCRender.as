@@ -49,7 +49,7 @@
 			scene.sceneHeadLayer.Run();				// 绘制血条、昵称和称号等文本, 更新 Y 值
 			
 			// 自定义资源回收处理
-            SceneCache.checkUninstall();
+            SceneCache.CheckUninstall();
         }
     }
 }

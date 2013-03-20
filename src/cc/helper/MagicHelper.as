@@ -355,7 +355,7 @@
                 if (passApd == null){
                     for each (tmpSceneChar in toArray) {
                         if (tmpSceneChar.usable){
-                            tmpSceneChar.loadAvatarPart(toApd);
+                            tmpSceneChar.LoadAvatarPart(toApd);
                         } else {
                             if (toApd != null){
                                 toApd.executeCallBack(tmpSceneChar);
@@ -370,7 +370,7 @@
             }
             fromApd = fromApd || new AvatarParamData();
             fromApd.extendCallBack(null, passAndHit, null, null);
-            fromSceneChar.loadAvatarPart(fromApd);
+            fromSceneChar.LoadAvatarPart(fromApd);
         }
 		
         private static function showTweenAvatarPart(fromSceneChar:CCCharacter, 
@@ -387,7 +387,7 @@
             passSc.setXY(fromSceneChar.PixelX, fromSceneChar.PixelY);
             passApd = passApd || new AvatarParamData();
             passApd.extendCallBack(new_onPlayBeforeStart);
-            passSc.loadAvatarPart(passApd);
+            passSc.LoadAvatarPart(passApd);
         }
 		
         private static function tweenDandao(passSceneChar:CCCharacter, 
@@ -443,7 +443,7 @@
                     avatarParamData.executeCallBack(toSceneChar);
                 }
             } else {
-                toSceneChar.loadAvatarPart(avatarParamData);
+                toSceneChar.LoadAvatarPart(avatarParamData);
             }
         }
     }
