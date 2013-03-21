@@ -176,6 +176,9 @@
 		{
 			var index:int;
 			if (loadDataArr.length == 0) {
+				if (callback != null) {
+					callback();
+				}
 				if (loader) {
 					index = rslLoaderArr.indexOf(loader);
 					if (index != -1){
@@ -249,8 +252,8 @@
 			
 			switch (event.type) {
 				case Event.COMPLETE:
-					if (callback != null) {
-						callback(loadData, event);
+					if (loadData.onComplete != null) {
+						loadData.onComplete(loadData, event);
 					}
 					removeLoadEvent(loader);
 					loadNext(loader, loadDataArr, callback);

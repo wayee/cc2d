@@ -258,8 +258,7 @@
 		}
 		
 		private function updateDefaultAvatar():void {
-			// 不在马上
-			if ( !this._isOnMount ) {
+			if ( !this._isOnMount ) { // 不在马上
 				// 删除  BORN_ONMOUNT, BORN_MOUNT
 				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN_ONMOUNT, false);	// this.removeAvatarPartByID
 				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN_MOUNT, false);
@@ -278,30 +277,23 @@
 							}
 						}
 					}
-				}
-				else {
-					// 否则, 如果有空白 
+				} else {
 					if (this.hasIDAvatarPart(AvatarPartID.BLANK)) {
-						// 从 _bornAvatarParamData 加载身体
 						if (this._bornAvatarParamData != null) {
 							this.sceneCharacter.LoadAvatarPart(this._bornAvatarParamData);
 						}
 					}
 				}
 			} else { // 在马上
-				// 删除  BLANK, BORN
 				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BLANK, false);
 				this.sceneCharacter.RemoveAvatarPartByID(AvatarPartID.BORN, false);
 				
-				// 如果没有身体, 加载 _bornOnMountAvatarParamData 身体
 				if ( !this.hasTypeAvatarParts(AvatarPartType.BODY) ) {
 					if (this._bornOnMountAvatarParamData != null) {
 						this.sceneCharacter.LoadAvatarPart(this._bornOnMountAvatarParamData);
 					}
 				}
-				// 如果没有马
 				if ( !this.hasTypeAvatarParts(AvatarPartType.MOUNT) ) {
-					// 加载马 
 					if (this._bornMountAvatarParamData != null) {
 						this.sceneCharacter.LoadAvatarPart(this._bornMountAvatarParamData);
 					}
@@ -330,7 +322,7 @@
 		}
 
 		public function loadAvatarPart(param:AvatarParamData):void {
-			AvatarPartLoader.loadAvatarPart(sceneCharacter, param);
+			AvatarPartLoader.LoadAvatarPart(sceneCharacter, param);
 		}
 		
 		public function showAvatarPart(part:CCAvatarPart):void {

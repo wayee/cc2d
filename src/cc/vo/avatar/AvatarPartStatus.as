@@ -12,6 +12,10 @@
         public var height:int;
         public var tx:int;				// 中心点, 在位图中的坐标
         public var ty:int;
+        public var wx:int;				// 翅膀位置
+        public var wy:int;
+        public var mx:int;				// 坐骑鞍位置
+        public var my:int;
         public var classNamePrefix:String;
 		public var tClass:Class;
     }

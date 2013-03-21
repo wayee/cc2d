@@ -15,7 +15,7 @@
 		/**
 		 * 加载部件数据
 		 */
-        public static function loadAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData=null):void {
+        public static function LoadAvatarPart(sceneChar:CCCharacter, avatarParamData:AvatarParamData=null):void {
             var apsRes:Object = null;
             var aps:AvatarPartStatus = null;
             var tryLoadCount:int = 0;
@@ -64,6 +64,10 @@
                                 aps.height = avatarXMLPartData.@height;
                                 aps.tx = avatarXMLPartData.@tx;
                                 aps.ty = avatarXMLPartData.@ty;
+                                aps.mx = avatarXMLPartData.@mx;
+                                aps.my = avatarXMLPartData.@my;
+                                aps.wx = avatarXMLPartData.@wx;
+                                aps.wy = avatarXMLPartData.@wy;
 								aps.only1Angle = avatarXMLPartData.@only1Angel;
                                 aps.classNamePrefix = (paramData.className + ".");
                                 apsRes[aps.type] = aps;

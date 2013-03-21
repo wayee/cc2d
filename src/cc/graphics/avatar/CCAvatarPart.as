@@ -1,6 +1,7 @@
 ﻿package cc.graphics.avatar
 {
 	import cc.CCRender;
+	import cc.define.AvatarPartID;
 	import cc.define.AvatarPartType;
 	import cc.define.CharStatusType;
 	import cc.define.CharType;
@@ -407,7 +408,6 @@
 					var offsetRange:Point = math.getOffsetRange(_currentAvatarPartStatus.width*sx, _currentAvatarPartStatus.height*sy, _currentRotation); // 变形后偏移
 					
 					// 计算 cutRect, 为当前部位的矩形范围
-					
 					// 如果: 使用特殊坐标 && (跳跃中 || 双人打坐???)
 					if (_useSpecilizeXY && avatar.sceneCharacter.isJumping() || avatar.sceneCharacter.restStatus == RestType.DOUBLE_SIT) {
 						charPixelX = Math.round(this.avatar.sceneCharacter.specilizeX);
@@ -416,6 +416,37 @@
 						charPixelX = Math.round(this.avatar.sceneCharacter.PixelX);
 						charPixelY = Math.round(this.avatar.sceneCharacter.PixelY);
 					}
+					
+					// 在坐骑上
+					var offsetDir:int = -1;
+					if (_currentLogicAngle == 0 || _currentLogicAngle >= 4) {
+						offsetDir = 1;
+					}
+					if (avatar.IsOnMount) {
+						var bornMountPart:CCAvatarPart = this.avatar.getAvatarPartByID(AvatarPartID.BORN_MOUNT);
+						var bornOnMountPart:CCAvatarPart = this.avatar.getAvatarPartByID(AvatarPartID.BORN_ONMOUNT);
+						var mount_onMount_mx:int;
+						var mount_onMount_my:int;
+						if (bornMountPart && bornOnMountPart) {
+							if (this.id == AvatarPartID.BORN_ONMOUNT) {
+								charPixelX += (bornMountPart.currentAvatarPartStatus.mx - currentAvatarPartStatus.mx) * offsetDir;
+								charPixelY += (bornMountPart.currentAvatarPartStatus.my - currentAvatarPartStatus.my);
+							}
+							if (this.id == AvatarPartID.WING_LEFT || this.id == AvatarPartID.WING_RIGHT) { // 翅膀
+								mount_onMount_mx = bornMountPart.currentAvatarPartStatus.mx - bornOnMountPart.currentAvatarPartStatus.mx;
+								mount_onMount_my = bornMountPart.currentAvatarPartStatus.my - bornOnMountPart.currentAvatarPartStatus.my;
+								charPixelX += (bornOnMountPart.currentAvatarPartStatus.wx - currentAvatarPartStatus.wx + mount_onMount_mx) * offsetDir;
+								charPixelY += (bornOnMountPart.currentAvatarPartStatus.wy - currentAvatarPartStatus.wy + mount_onMount_my);
+							}
+						}
+					} else {
+						var bornPart:CCAvatarPart = this.avatar.getAvatarPartByID(AvatarPartID.BORN);
+						if (this.id == AvatarPartID.WING_LEFT || this.id == AvatarPartID.WING_RIGHT) { // 翅膀
+							charPixelX += (bornPart.currentAvatarPartStatus.wx - currentAvatarPartStatus.wx) * offsetDir;
+							charPixelY += (bornPart.currentAvatarPartStatus.wy - currentAvatarPartStatus.wy);
+						}
+					}
+					
 					charPixelX += avatarParamData.offsetX;
 					charPixelY += avatarParamData.offsetY;
 					
