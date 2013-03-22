@@ -10,10 +10,13 @@ package cc.ext
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.filters.GlowFilter;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import wit.utils.math;
 	import wit.utils.object;
+	
 
 	/**
 	 * Sprite Sheet动画
@@ -44,6 +47,11 @@ package cc.ext
 		private var _stopAndRemove:Boolean;
 		private var _stopHandler:Function;
 		private var _stopHandlerParams:Array;
+		private var _offsetX:Number = 0;
+		private var _offsetY:Number = 0;
+		private var _scaleX:Number = 1;
+		private var _scaleY:Number = 1;
+		private var _currentRotation:Number = 0;
 		public var index:int;
 		
 		/**
@@ -64,6 +72,8 @@ package cc.ext
 			_currentLogicAngle = angle;
 			
 			_sourcePoint = new Point;
+			
+			_stopAndRemove = false;
 			
 //			_bitmap.x = -(_currentAvatarPartStatus.tx);
 //			_bitmap.y = -(_currentAvatarPartStatus.ty);
@@ -137,13 +147,48 @@ package cc.ext
 				source_y = 0;
 			}
 			
+			var smoothing:Boolean = true;
+			var tempbd:BitmapData;
+			var offsetRange:Point = math.getOffsetRange(_currentAvatarPartStatus.width*_scaleX, _currentAvatarPartStatus.height*_scaleY, _currentRotation);
+			var matrix:Matrix;
+			var point1:Point;
+			var point2:Point;
+			var xMax:Number;
+			var yMax:Number;
+			var halfWidth:Number;
+			var halfHeight:Number;
+			
+			_bitmap.x = _bitmap.x + _offsetX;
+			_bitmap.y = _bitmap.y + _offsetY;
+			
 			// 计算源像素位置
 			_sourcePoint.x = (source_x * _currentAvatarPartStatus.width);		// 像素坐标
 			_sourcePoint.y = (source_y * _currentAvatarPartStatus.height);
 			
-			var rect:Rectangle = new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height);
-			var tmpBmd:BitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height);
-			tmpBmd.copyPixels(sourceBitmapData, rect, ZERO_POINT);
+			halfWidth = (_currentAvatarPartStatus.width / 2);		// center x/y
+			halfHeight = (_currentAvatarPartStatus.height / 2);
+			
+			matrix = new Matrix();
+			matrix.scale(_scaleX, _scaleY);
+			if (_currentRotation > 0) {
+				matrix.rotate((_currentRotation * Math.PI * 2) / 360);		// 旋转弧度 
+				point1 = math.getRotPoint(new Point(halfWidth*_scaleX, halfHeight*_scaleY), new Point(0, 0), _currentRotation);
+				point2 = math.getRotPoint(new Point(halfWidth*_scaleX, -halfHeight*_scaleY), new Point(0, 0), _currentRotation);
+				xMax = (Math.max(Math.abs(point1.x), Math.abs(point2.x)) * 2);
+				yMax = (Math.max(Math.abs(point1.y), Math.abs(point2.y)) * 2);
+			} else {
+				xMax = _currentAvatarPartStatus.width * _scaleX;
+				yMax = _currentAvatarPartStatus.height * _scaleY;
+			}
+			matrix.translate(offsetRange.x, offsetRange.y);
+			tempbd = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height, true, 0);
+			tempbd.copyPixels(sourceBitmapData, new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height), new Point(0, 0), null, null, smoothing);
+			var tmpBmd:BitmapData = new BitmapData(xMax, yMax, true, 0);
+			tmpBmd.draw(tempbd, matrix, null, null, null, smoothing);
+			
+//			var rect:Rectangle = new Rectangle(_sourcePoint.x, _sourcePoint.y, _currentAvatarPartStatus.width, _currentAvatarPartStatus.height);
+//			var tmpBmd:BitmapData = new BitmapData(_currentAvatarPartStatus.width, _currentAvatarPartStatus.height);
+//			tmpBmd.copyPixels(sourceBitmapData, rect, ZERO_POINT);
 			
 			_bitmap.bitmapData = tmpBmd;
 			
@@ -222,6 +267,8 @@ package cc.ext
 		
 		/**
 		 * 对象加入舞台 
+		 * @param event
+		 * 
 		 */
 		private function __addToStage(event:Event):void
 		{
@@ -238,7 +285,7 @@ package cc.ext
 			_interval = _currentAvatarPartStatus.delay/CCG.frameRate;
 			if (_currentAvatarPartStatus && _currentAvatarPartStatus.classNamePrefix) {
 				var resName:String = _currentAvatarPartStatus.classNamePrefix + this._currentStatus;
-				_sourceBitmapDataObj = SceneCache.installAvatarImg(resName, _currentAvatarPartStatus.only1Angle==1);
+				_sourceBitmapDataObj = SceneCache.InstallAvatarImg(resName, _currentAvatarPartStatus.only1Angle==1);
 			}
 		}
 		
@@ -282,12 +329,22 @@ package cc.ext
 			_parseBitmapData();
 		}
 		
+		public function get angle():int
+		{
+			return _currentLogicAngle;
+		}
+		
 		public function setStatus(status:String):void
 		{
 			_currentStatus = status;
 			_currentAvatarPartStatus = _apsRes[status];
 			_currentFrame = 0;
 			_parseBitmapData();
+		}
+		
+		public function get currentAvatarPartStatus():AvatarPartStatus
+		{
+			return _currentAvatarPartStatus;
 		}
 		
 		public function dispose():void
@@ -331,6 +388,17 @@ package cc.ext
 		{
 			_stopAndRemove = value;
 		}
+		
+		public function setScale(sx:Number, sy:Number):void
+		{
+			_scaleX = sx;
+			_scaleY = sy;
+		}
+		
+		public function setRotation(rot:Number):void
+		{
+			_currentRotation = rot;
+		}
 
 		public function get data():Object
 		{
@@ -350,5 +418,6 @@ package cc.ext
 			sp.stopAndRemove = _stopAndRemove;
 			return sp;
 		}
+
 	}
 }

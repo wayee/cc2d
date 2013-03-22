@@ -4,6 +4,7 @@ package
 	import cc.CCCharacter;
 	import cc.CCDirector;
 	import cc.CCScene;
+	import cc.define.AvatarPartID;
 	import cc.define.AvatarPartType;
 	import cc.define.CharAngleType;
 	import cc.define.CharStatusType;
@@ -19,6 +20,7 @@ package
 	import cc.vo.map.MapTile;
 	import cc.vo.move.MoveCallBack;
 	
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
@@ -39,7 +41,7 @@ package
 		private var mainChar:CCCharacter;
 		private var editor:MEditor;
 		private var characters:Vector.<CCCharacter>;
-		private static const MAX_CHARACTERS:int = 100;
+		private static const MAX_CHARACTERS:int = 50;
 		
 		public function GameApp() {
 		}
@@ -47,7 +49,9 @@ package
 		public function Startup():void {
 			SWFProfiler.init(this.stage, this);
 			
+//			CCDirector.Init('http://res.xy9.com:89/resource/', 24);
 			CCDirector.Init('res/', 24);
+//			CCDirector.Init('http://app36204.hoolaigames.com/qq/resource/', 24);
 			
 			if (scene == null) {
 				scene = new CCScene(1440, 900);
@@ -59,8 +63,16 @@ package
 			characters = new Vector.<CCCharacter>;
 			EnterScene();
 			EventManager.addEvent(CCEvent.INTERACTIVE, __onMouseDownEvent, CCScene.eventCenter);
-			
-			
+
+//			var handler:Function = function():void {
+//				trace('handler');
+//			};
+//			var handlerComplete:Function = function():void {
+//				trace('handler complete');
+//			};
+//			
+//			TimerManager.createGlobalTimer(handler, null, 1, 10, handlerComplete);
+//			
 //			_triggerFighting();
 			
 //			if (stage) {
@@ -87,19 +99,38 @@ package
 			scene.SetBlankAvatarParamData(blankApd);
 			
 			var mouseChar:CCCharacter = scene.CreateSceneCharacter(CharType.DUMMY, 0, 0);
-			mouseChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('share/mousechar.swf'), AvatarPartType.MAGIC));
+			mouseChar.SetBornAvatarParamData(new AvatarParamData(CCG.GetResPath('share/mousechar.swf'), AvatarPartType.MAGIC));
+//			mouseChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('share/mousechar.swf'), AvatarPartType.MAGIC));
 			scene.SetMouseChar(mouseChar);
 			scene.HideMouseChar();
 			
 			var apd:AvatarParamData;
+			var apdWingLeft:AvatarParamData;
+			var apdWingRight:AvatarParamData;
+			var apdMount:AvatarParamData;
 			if (mainChar == null) {
-				apd = new AvatarParamData(CCG.GetResPath('hero/hero4.swf'));
+//				apd = new AvatarParamData(CCG.GetResPath('hero/hero2.swf'));
+				apdWingLeft = new AvatarParamData(CCG.GetResPath('wing/wl1.swf'));
+				apdWingLeft.Id_noCheckValid = AvatarPartID.WING_LEFT;
+				apdWingLeft.avatarPartType = AvatarPartType.WING;
+				
+				apdWingRight = new AvatarParamData(CCG.GetResPath('wing/wr1.swf'));
+				apdWingRight.Id_noCheckValid = AvatarPartID.WING_RIGHT;
+				apdWingRight.avatarPartType = AvatarPartType.WING;
+				apd = new AvatarParamData(CCG.GetResPath('hero/hero4m3.swf'));
+				apdMount = new AvatarParamData(CCG.GetResPath('mount/mount1005.swf'));
 				//				apd.rotation = 45;
 				//				apd.scaleX = 2;
 				//				apd.scaleY = 2;
 				//				mainChar = scene.CreateSceneCharacter(CharType.PLAYER, 28, 24);
 				mainChar = scene.CreateSceneCharacter(CharType.PLAYER, 68, 68);
-				mainChar.loadAvatarPart(apd);
+				mainChar.SetBornOnMountAvatarParamData(apd);
+				mainChar.SetBornMountAvatarParamData(apdMount);
+				mainChar.IsOnMount = true;
+//				mainChar.SetBornAvatarParamData(apd);
+				mainChar.LoadAvatarPart(apdWingLeft);
+				mainChar.LoadAvatarPart(apdWingRight);
+//				mainChar.loadAvatarPart(apd);
 				//				mainChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('npc/npc101211.swf')));
 				//				mainChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('npc/npc101011.swf')));
 				//				mainChar.loadAvatarPart(new AvatarParamData(CCG.GetResPath('npc/npc100521.swf')));
@@ -115,7 +146,7 @@ package
 			}
 			
 			// 切换场景
-			scene.SwitchScene(11, 11, onEnteredScene);
+			scene.SwitchScene(7001, 7001, onEnteredScene);
 			
 		}
 		
@@ -123,7 +154,7 @@ package
 		// private methods
 		///////////////////////////////////
 		
-		private function updateCharacterWalkPath():void
+		private function updateCharacterWalkPath(e:Event=null):void
 		{
 			var path:Array;
 			var moveXDist:Number;
@@ -164,7 +195,7 @@ package
 			
 			var n:int = 0;
 			while (characters.length < MAX_CHARACTERS) {
-				characters.push(createCharacter(68, 68));
+				characters.push(createOnMountCharacter(scene.mainChar.TileX, scene.mainChar.TileY));
 				n++;
 			}
 		}
@@ -172,7 +203,13 @@ package
 		private function updateMainCharacter(data:Array):void
 		{
 			if (data) {
-				//
+				var url:String = CCG.GetResPath('hero/'+data[0]+'.swf');
+				if (url != mainChar.GetBornAvatarParamData().sourcePath) {
+					var apd:AvatarParamData = new AvatarParamData(CCG.GetResPath('hero/'+data[0]+'.swf'));
+					mainChar.RemoveAvatarPartsByType(AvatarPartType.BODY, false);
+					mainChar.SetBornAvatarParamData(apd);
+				}
+				mainChar.playTo(data[1]);
 			}
 		}
 		
@@ -203,7 +240,7 @@ package
 		private function _triggerFighting():void
 		{
 			if ( !TimerManager.hasGlobalHandler(_handlerShowFighting, 2)) {
-				TimerManager.createGlobalTimer(_handlerShowFighting, null, 2, 999);
+				TimerManager.createGlobalTimer(2, 999, _handlerShowFighting);
 			}
 		}
 		
@@ -235,18 +272,62 @@ package
 			}
 		}
 		
+		private function createOnMountCharacter(tx:Number, ty:Number, sx:Number=1, sy:Number=1, rot:Number=0):CCCharacter
+		{
+			var npc:CCCharacter;
+			var apd:AvatarParamData;
+			apd = new AvatarParamData(CCG.GetResPath('hero/hero'+number.randRange(2, 5)+'m'+number.randRange(1, 6)+'.swf'));
+//			apd = new AvatarParamData(CCG.GetResPath('hero/hero4m2.swf'));
+			
+			var apdWingLeft:AvatarParamData;
+			apdWingLeft = new AvatarParamData(CCG.GetResPath('wing/wl1.swf'));
+			apdWingLeft.Id_noCheckValid = AvatarPartID.WING_LEFT;
+			apdWingLeft.avatarPartType = AvatarPartType.WING;
+			
+			var apdWingRight:AvatarParamData;
+			apdWingRight = new AvatarParamData(CCG.GetResPath('wing/wr1.swf'));
+			apdWingRight.Id_noCheckValid = AvatarPartID.WING_RIGHT;
+			apdWingRight.avatarPartType = AvatarPartType.WING;
+			
+			var apdMount:AvatarParamData;
+			apdMount = new AvatarParamData(CCG.GetResPath('mount/mount1005.swf'));
+			
+//			apd = new AvatarParamData(CCG.GetResPath('hero/hero4.swf'));
+//			apd = new AvatarParamData(CCG.GetResPath('share/attackdeath.swf'));
+			apd.scaleX = sx;
+			apd.scaleY = sy;
+			apd.rotation = rot;
+			npc = scene.CreateSceneCharacter(CharType.PLAYER, tx, ty);
+//			npc.RemoveAvatarPartsByType(AvatarPartType.BODY, false);
+			npc.SetBornOnMountAvatarParamData(apd);
+			npc.SetBornMountAvatarParamData(apdMount);
+			npc.LoadAvatarPart(apdWingLeft);
+			npc.LoadAvatarPart(apdWingRight);
+			npc.IsOnMount = true;
+//			npc.setHeadFaceNickName('我是守卫');
+			
+			if (_characters == null) {
+				_characters = [];
+			}
+			_characters.push(npc);
+			
+			return npc;
+		}
+		
 		private function createCharacter(tx:Number, ty:Number, sx:Number=1, sy:Number=1, rot:Number=0):CCCharacter
 		{
 			var npc:CCCharacter;
 			var apd:AvatarParamData;
 			apd = new AvatarParamData(CCG.GetResPath('hero/hero'+number.randRange(1, 30)+'.swf'));
 //			apd = new AvatarParamData(CCG.GetResPath('hero/hero4.swf'));
+//			apd = new AvatarParamData(CCG.GetResPath('share/attackdeath.swf'));
 			apd.scaleX = sx;
 			apd.scaleY = sy;
 			apd.rotation = rot;
 			npc = scene.CreateSceneCharacter(CharType.PLAYER, tx, ty);
-			npc.loadAvatarPart(apd);
-			npc.setHeadFaceNickName('我是守卫');
+			npc.SetBornAvatarParamData(apd);
+//			npc.loadAvatarPart(apd);
+//			npc.setHeadFaceNickName('我是守卫');
 			
 			if (_characters == null) {
 				_characters = [];
@@ -269,17 +350,18 @@ package
 			
 			var tx:Number, ty:Number;
 			var char:CCCharacter;
-			for (var i:int=0; i<MAX_CHARACTERS; i++) {
+			/*for (var i:int=0; i<MAX_CHARACTERS; i++) {
 				tx = ty = 68;
 				
 				//				tx = number.randRange(40, 100);
 				//				ty = number.randRange(30, 80);
 				char = createCharacter(tx, ty)
 				characters.push(char);
-			}
+			}*/
 			
-			TimerManager.createGlobalTimer(updateCharacterWalkPath, null, 1, 9999);
-			updateCharacterWalkPath();
+//			this.addEventListener(Event.ENTER_FRAME, updateCharacterWalkPath);
+			
+//			TimerManager.createGlobalTimer(1, 9999, updateCharacterWalkPath);
 			
 			// 清理上一场景的走路信息
 			mainChar.stopWalk(true);
